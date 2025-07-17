@@ -1,27 +1,63 @@
-# ShoneHalachaPrompting
+# [Your Project Name]
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.6.
+> A brief, one-sentence summary of what this project does.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 1. Introduction and Goals
 
-## Code scaffolding
+This section outlines the purpose of the project, the problems it solves, and the key goals it aims to achieve.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* **Problem:** What is the core problem this project addresses?
+* **Solution:** How does this project solve that problem?
+* **Key Goals:**
+    * Goal 1: (e.g., To provide users with a platform to...)
+    * Goal 2: (e.g., To automate the process of...)
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 2. System Context (C4 Model: Level 1)
 
-## Running unit tests
+This diagram shows how our system fits into the world. It illustrates the key users (actors) and external systems that interact with it.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
++-----------------+|      User       ||  (e.g., Admin)  |+-------+---------+|| Usesv+-----------------+       +-------------------+|                 |------>|   External API    ||  [Your System]  |       | (e.g., Stripe)    ||                 |<------|                   |+-----------------+       +-------------------+^| Interacts with|+-------+---------+| External System || (e.g., Email    ||    Service)     |+-----------------+
+---
 
-## Running end-to-end tests
+## 3. Solution Strategy & Technology Stack
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+This section describes the high-level technical decisions and the technologies used.
 
-## Further help
+* **Architecture:** (e.g., Monolithic application, Microservices, Serverless)
+* **Primary Language:** (e.g., Python, TypeScript)
+* **Frameworks:** (e.g., Django, React, Node.js)
+* **Database:** (e.g., PostgreSQL, MongoDB)
+* **Deployment:** (e.g., Docker, AWS, Vercel)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 4. Requirements & Feature Set
+
+This table tracks the curated set of functional requirements for this project.
+
+| ID      | Status      | Feature                | Requirement Description                                                                | Rationale                                           |
+| :------ | :---------- | :--------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------- |
+| REQ-001 | `Accepted`  | User Authentication    | As a user, I can register and log in with an email and password.                       | To secure user data and provide personalized access.|
+| REQ-002 | `Proposed`  | Profile Management     | As a user, I can update my profile information.                                        | To allow users to manage their identity.            |
+| REQ-003 | `Done`      | CSV Data Export        | As an admin, I can export all user data to a CSV file.                                 | For backup and external reporting purposes.         |
+|         |             |                        |                                                                                        |                                                     |
+
+
+### How to Get Started
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [your-repo-url]
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the application:**
+    ```bash
+    npm start
+    ```

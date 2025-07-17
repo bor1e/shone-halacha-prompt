@@ -1,0 +1,79 @@
+---
+description: This rule defines the standards for project architecture and requirements documentation, ensuring clarity, consistency, and traceability using a structure inspired by arc42 and the C4 model.
+globs: ["**/README.md", "docs/**/*.md"]
+---
+
+# Architecture & Requirements Documentation Standards
+
+This project's documentation must follow a structured format to ensure anyone can quickly understand its purpose, architecture, and feature set. The `README.md` serves as the single source of truth for the high-level overview.
+
+## General Principles
+
+* **Clarity over Exhaustiveness:** The main `README.md` should be a clear and concise summary. Link to more detailed documents in a `/docs` directory if necessary.
+* **Living Document:** The documentation is not static. It must be updated continuously as the system evolves. Every new feature or architectural change must be reflected here.
+
+---
+
+## 1. Introduction and Goals
+
+This section is mandatory and must provide the core context for the project.
+
+* **Problem Statement:** Clearly and concisely define the business or user problem the system is designed to solve.
+* **Solution Summary:** Describe how the system solves the problem at a high level.
+* **Key Goals:** List the primary, measurable goals. This is not a list of features, but of outcomes.
+    * **Good:**
+        ```markdown
+        * **Goal:** Reduce manual data entry time by 50%.
+        * **Goal:** Achieve a user satisfaction score of over 90%.
+        ```
+    * **Bad:**
+        ```markdown
+        * **Goal:** Build a user dashboard.
+        * **Goal:** Add an export button.
+        ```
+
+---
+
+## 2. System Context (C4 Model: Level 1)
+
+A C4 Model Level 1 (System Context) diagram is required to show how the system fits into its environment.
+
+* **Content:** The diagram must show the system you are building as a single box, surrounded by the users (actors) and external systems it interacts with.
+* **Format:** Use ASCII/Mermaid diagrams for easy version control and editing.
+* **Required Elements:**
+    1.  Your system at the center.
+    2.  Key user roles (e.g., "Customer", "Administrator").
+    3.  Key external system dependencies (e.g., "Stripe API", "SendGrid Email Service").
+    4.  Labeled arrows showing the direction of interaction.
+
+---
+
+## 3. Solution Strategy & Technology Stack
+
+This section must provide a snapshot of the technical approach.
+
+* **Architecture Pattern:** Explicitly state the primary architectural pattern (e.g., Monolithic, Microservices, Serverless, Modular Monolith).
+* **Technology List:** Provide a bulleted list of the core technologies.
+    * **Required:**
+        ```markdown
+        * **Primary Language:** TypeScript
+        * **Frameworks:** Angular, NestJS
+        * **Database:** PostgreSQL
+        * **Deployment:** Docker on Google Cloud Run
+        ```
+
+---
+
+## 4. Requirements & Feature Set
+
+All functional requirements must be tracked in a structured table to ensure traceability.
+
+* **Mandatory Columns:** The table must contain `ID`, `Status`, `Feature`, `Requirement Description`, and `Rationale`.
+* **Unique ID:** Every requirement needs a unique, sequential identifier (e.g., `REQ-001`, `REQ-002`).
+* **Status:** The status must be kept up-to-date. Use a consistent set of statuses: `Proposed`, `Accepted`, `In Progress`, `Done`, `Rejected`.
+* **User Story Format:** The `Requirement Description` should follow the user story format: "As a [persona], I want [to perform an action], so that I can [achieve a benefit]."
+    * **Good:**
+        > As an admin, I want to be able to export all user data to a CSV file so that I can perform offline analysis.
+    * **Bad:**
+        > The system needs a CSV export feature.
+* **Rationale:** The `Rationale` must explain the business value or justification for the requirement.
