@@ -4,7 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "target": "es2021",
     "sourceMap": true,
     "strict": true,
