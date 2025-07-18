@@ -5,8 +5,7 @@
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
-    "strict": true,
-    "target": "es2017"
+    "strict": true
   },
   "compileOnSave": true,
   "include": [
