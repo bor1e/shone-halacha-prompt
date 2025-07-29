@@ -37,6 +37,6 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHONE_HALACHOT }}
           channelId: live
-          projectId: shone-halachot
+          projectId: fir-prompting
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
