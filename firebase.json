@@ -17,11 +17,17 @@
     }
   ],
   "hosting": {
-    "public": "dist",
+    "public": "dist/shone-halacha-prompting/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ],
     "frameworksBackend": {
       "region": "europe-west1"
