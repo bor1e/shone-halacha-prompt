@@ -1,14 +1,17 @@
 import { Component, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
+import { HalachaSummaryResponse } from '../types/halacha.types';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
-import { Nl2brPipe } from '../nl2br.pipe';
+import { MarkdownPipe } from '../markdown.pipe';
 
 @Component({
   selector: 'app-prompt-form',
@@ -22,7 +25,9 @@ import { Nl2brPipe } from '../nl2br.pipe';
     MatProgressSpinnerModule,
     MatCardModule,
     MatToolbarModule,
-    Nl2brPipe
+    MatIconModule,
+    MatTooltipModule,
+    MarkdownPipe
   ],
   templateUrl: './prompt-form.component.html',
   styleUrls: ['./prompt-form.component.scss']
@@ -35,6 +40,7 @@ export class PromptFormComponent {
   isLoading = signal(false);
   summary = signal('');
   error = signal('');
+  copied = signal(false);
 
   updateHebrewText(value: string) {
     this.hebrewText.set(value);
@@ -42,6 +48,15 @@ export class PromptFormComponent {
 
   updateHalachaNumber(value: string) {
     this.halachaNumber.set(value);
+  }
+
+  copyToClipboard() {
+    if (this.summary()) {
+      navigator.clipboard.writeText(this.summary()).then(() => {
+        this.copied.set(true);
+        setTimeout(() => this.copied.set(false), 2000);
+      });
+    }
   }
 
   submit() {
@@ -58,7 +73,7 @@ export class PromptFormComponent {
       hebrewText: this.hebrewText(),
       halachaNumber: this.halachaNumber()
     }).subscribe({
-      next: (response) => {
+      next: (response: HalachaSummaryResponse) => {
         this.summary.set(response.summary);
         this.isLoading.set(false);
       },

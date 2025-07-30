@@ -1,16 +1,16 @@
 <div class="form-container">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Halacha Zusammenfassung</mat-card-title>
-            <mat-card-subtitle>Geben Sie den hebräischen Text und die Halacha-Nummer ein</mat-card-subtitle>
+            <mat-card-title>Halacha Prompt Zusammenfassung</mat-card-title>
+            <mat-card-subtitle>Geben Sie unten Ihren hebräischen Text und die Halacha-Nummer ein.</mat-card-subtitle>
         </mat-card-header>
-
         <mat-card-content>
             <form (ngSubmit)="submit()" #form="ngForm">
                 <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
                     <mat-label>Halacha Nummer</mat-label>
                     <input matInput [value]="halachaNumber()" (input)="updateHalachaNumber($any($event.target).value)"
                         name="halachaNumber" placeholder="z.B. 1, 2, 3..." required>
+                    <mat-hint>Nummer der Halacha, z.B. 1</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
@@ -18,6 +18,7 @@
                     <textarea matInput [value]="hebrewText()" (input)="updateHebrewText($any($event.target).value)"
                         name="hebrewText" placeholder="Fügen Sie hier den hebräischen Halacha-Text ein..." rows="8"
                         required></textarea>
+                    <mat-hint>Fügen Sie den zu analysierenden Text ein</mat-hint>
                 </mat-form-field>
 
                 <div class="button-container">
@@ -44,14 +45,16 @@
             }
 
             @if (summary()) {
-            <mat-card style="margin-top: 16px;">
-                <mat-card-header>
-                    <mat-card-title>Zusammenfassung</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="summary-content" [innerHTML]="summary() | nl2br"></div>
-                </mat-card-content>
-            </mat-card>
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>Zusammenfassung</h3>
+                    <button mat-icon-button [color]="copied() ? 'accent' : 'primary'" (click)="copyToClipboard()"
+                        [matTooltip]="copied() ? 'Kopiert!' : 'In Zwischenablage kopieren'" [disabled]="!summary()">
+                        <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
+                    </button>
+                </div>
+                <div class="summary-content" [innerHTML]="summary() | markdown"></div>
+            </div>
             }
         </mat-card-content>
     </mat-card>
