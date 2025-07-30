@@ -39,7 +39,7 @@ export class AppComponent {
 
   languages = [
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-    { code: 'en-US', name: 'English', flag: '🇺🇸' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
     { code: 'he', name: 'עברית', flag: '🇮🇱' },
     { code: 'ru', name: 'Русский', flag: '🇷🇺' }

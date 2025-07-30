@@ -16,7 +16,7 @@
       "i18n": {
         "sourceLocale": "de",
         "locales": {
-          "en-US": {
+          "en": {
             "translation": "src/locale/messages.en.xlf",
             "baseHref": "/en/"
           },
@@ -62,6 +62,7 @@
           },
           "configurations": {
             "production": {
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -92,7 +93,7 @@
               "sourceMap": true,
               "namedChunks": true,
               "localize": [
-                "en-US"
+                "en"
               ]
             },
             "development-fr": {
@@ -142,7 +143,7 @@
             "production-en": {
               "baseHref": "/en/",
               "localize": [
-                "en-US"
+                "en"
               ],
               "optimization": true,
               "outputHashing": "all",

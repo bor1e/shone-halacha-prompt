@@ -31,7 +31,7 @@ export class ApiService {
     private getTargetLanguage(): string {
         const languageMap: Record<string, string> = {
             'de': 'German',
-            'en-US': 'English',
+            'en': 'English',
             'fr': 'French',
             'he': 'Hebrew',
             'ru': 'Russian'
