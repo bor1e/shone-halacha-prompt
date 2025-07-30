@@ -8,15 +8,18 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "extract-i18n": "ng extract-i18n",
-    "build:i18n": "npm run build:de && npm run build:en && npm run build:fr && npm run build:he && npm run build:ru",
-    "build:de": "ng build --configuration=production",
+    "extract-i18n": "ng extract-i18n --output-path src/locale",
+    "serve:en": "ng serve --configuration=en",
+    "serve:fr": "ng serve --configuration=fr",
+    "serve:he": "ng serve --configuration=he",
+    "serve:ru": "ng serve --configuration=ru",
+    "build:de": "ng build --configuration=production-de",
     "build:en": "ng build --configuration=production-en",
     "build:fr": "ng build --configuration=production-fr",
     "build:he": "ng build --configuration=production-he",
     "build:ru": "ng build --configuration=production-ru",
-    "serve:en": "ng serve --configuration=en",
-    "serve:fr": "ng serve --configuration=fr"
+    "build:all": "npm run build:de && npm run build:en && npm run build:fr && npm run build:he && npm run build:ru",
+    "deploy:firebase": "firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {

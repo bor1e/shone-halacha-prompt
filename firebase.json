@@ -15,7 +15,9 @@
         "npm --prefix \"$RESOURCE_DIR\" run lint",
         "npm --prefix \"$RESOURCE_DIR\" run build"
       ],
-      "secrets": ["GEMINI_KEY"]
+      "secrets": [
+        "GEMINI_KEY"
+      ]
     }
   ],
   "hosting": {
@@ -26,6 +28,22 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/en/**",
+        "destination": "/en/index.html"
+      },
+      {
+        "source": "/fr/**",
+        "destination": "/fr/index.html"
+      },
+      {
+        "source": "/he/**",
+        "destination": "/he/index.html"
+      },
+      {
+        "source": "/ru/**",
+        "destination": "/ru/index.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
