@@ -1,0 +1,58 @@
+<div class="form-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Halacha Zusammenfassung</mat-card-title>
+            <mat-card-subtitle>Geben Sie den hebräischen Text und die Halacha-Nummer ein</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form (ngSubmit)="submit()" #form="ngForm">
+                <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+                    <mat-label>Halacha Nummer</mat-label>
+                    <input matInput [value]="halachaNumber()" (input)="updateHalachaNumber($any($event.target).value)"
+                        name="halachaNumber" placeholder="z.B. 1, 2, 3..." required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+                    <mat-label>Hebräischer Text</mat-label>
+                    <textarea matInput [value]="hebrewText()" (input)="updateHebrewText($any($event.target).value)"
+                        name="hebrewText" placeholder="Fügen Sie hier den hebräischen Halacha-Text ein..." rows="8"
+                        required></textarea>
+                </mat-form-field>
+
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="isLoading() || !hebrewText() || !halachaNumber()">
+                        Zusammenfassung erstellen
+                    </button>
+                </div>
+            </form>
+
+            @if (error()) {
+            <mat-card style="margin-top: 16px; background-color: #ffebee;">
+                <mat-card-content>
+                    <p style="color: #c62828; margin: 0;">{{ error() }}</p>
+                </mat-card-content>
+            </mat-card>
+            }
+
+            @if (isLoading()) {
+            <div class="loading-container">
+                <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+                <p>Erstelle Zusammenfassung...</p>
+            </div>
+            }
+
+            @if (summary()) {
+            <mat-card style="margin-top: 16px;">
+                <mat-card-header>
+                    <mat-card-title>Zusammenfassung</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="summary-content" [innerHTML]="summary() | nl2br"></div>
+                </mat-card-content>
+            </mat-card>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>
