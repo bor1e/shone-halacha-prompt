@@ -1,8 +1,6 @@
 ---
-description: This rule defines the standards for project architecture and requirements documentation, ensuring clarity, consistency, and traceability using a structure inspired by arc42 and the C4 model.
-globs: ["**/README.md", "docs/**/*.md"]
+alwaysApply: true
 ---
-
 # Architecture & Requirements Documentation Standards
 
 This project's documentation must follow a structured format to ensure anyone can quickly understand its purpose, architecture, and feature set. The `README.md` serves as the single source of truth for the high-level overview.

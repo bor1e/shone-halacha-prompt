@@ -32,4 +32,13 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('mat-toolbar span')?.textContent).toContain('Schone Halacha');
   });
+
+  it('should display בס״ד in the toolbar', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const bsdElement = compiled.querySelector('.bsd-text');
+    expect(bsdElement).toBeTruthy();
+    expect(bsdElement?.textContent).toBe('בס״ד');
+  });
 });

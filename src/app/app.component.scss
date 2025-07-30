@@ -4,3 +4,28 @@ main {
     margin: 0 auto;
     min-height: calc(100vh - 64px);
 }
+
+.mat-mdc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bsd-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Times New Roman', serif;
+    direction: rtl;
+    text-align: right;
+    margin-left: auto;
+    padding-right: 16px;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .bsd-text {
+        font-size: 1rem;
+        padding-right: 8px;
+    }
+}
