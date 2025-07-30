@@ -16,7 +16,7 @@ const createHalachaPrompt = (hebrewText: string, targetLanguage: string): string
 Du bist ein hochpräziser Bot zur Analyse von Fachtexten. Deine Aufgabe ist es, hebräische halachische Texte zu verarbeiten und das Ergebnis ausschließlich in einem strukturierten JSON-Format zurückzugeben.
 
 ### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden.
+Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden. KEINE Code-Block-Markierungen (\`\`\`json oder \`\`\`)  
 Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
 
 ### JSON-Struktur:
