@@ -21,7 +21,7 @@
     }
   ],
   "hosting": {
-    "public": "dist/shone-halacha-prompting/",
+    "public": "dist/shone-halacha-prompting/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -30,23 +30,23 @@
     "rewrites": [
       {
         "source": "/en/**",
-        "destination": "/en/browser/index.html"
+        "destination": "/en/index.html"
       },
       {
         "source": "/fr/**",
-        "destination": "/fr/browser/index.html"
+        "destination": "/fr/index.html"
       },
       {
         "source": "/he/**",
-        "destination": "/he/browser/index.html"
+        "destination": "/he/index.html"
       },
       {
         "source": "/ru/**",
-        "destination": "/ru/browser/index.html"
+        "destination": "/ru/index.html"
       },
       {
         "source": "**",
-        "destination": "/de/browser/index.html"
+        "destination": "/de/index.html"
       }
     ],
     "frameworksBackend": {
