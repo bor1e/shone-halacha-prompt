@@ -21,63 +21,32 @@
     }
   ],
   "hosting": {
-    "public": "dist/shone-halacha-prompting",
+    "public": "dist/shone-halacha-prompting/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
-    "i18n": {
-      "root": "/browser"
-    },
     "rewrites": [
       {
-        "source": "/de/**",
-        "destination": "/browser/de/index.html"
-      },
-      {
-        "source": "/en/**", 
-        "destination": "/browser/en/index.html"
-      },
-      {
         "source": "/fr/**",
-        "destination": "/browser/fr/index.html"
+        "destination": "/fr/index.html"
       },
       {
-        "source": "/he/**",
-        "destination": "/browser/he/index.html"
+        "source": "/en/**",
+        "destination": "/en/index.html"
       },
       {
         "source": "/ru/**",
-        "destination": "/browser/ru/index.html"
+        "destination": "/ru/index.html"
       },
       {
-        "source": "/",
-        "destination": "/browser/de/index.html"
+        "source": "/he/**",
+        "destination": "/he/index.html"
       },
       {
         "source": "**",
-        "destination": "/browser/de/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(js|css)",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "text/javascript"
-          }
-        ]
-      },
-      {
-        "source": "**/*.css",
-        "headers": [
-          {
-            "key": "Content-Type", 
-            "value": "text/css"
-          }
-        ]
+        "destination": "/de/index.html"
       }
     ],
     "frameworksBackend": {
