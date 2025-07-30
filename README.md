@@ -44,7 +44,7 @@ This section describes the high-level technical decisions and the technologies u
 
 * **Architecture:** Modern Angular standalone application with Firebase backend
 * **Primary Language:** TypeScript
-* **Frameworks:** Angular 18, Angular Material
+* **Frameworks:** Angular 20, Angular Material
 * **AI/ML:** Google Gemini 2.5 Pro API
 * **Backend:** Firebase Functions
 * **Deployment:** Firebase Hosting
@@ -58,12 +58,13 @@ This table tracks the curated set of functional requirements for this project.
 
 | ID      | Status      | Feature                | Requirement Description                                                                | Rationale                                           |
 | :------ | :---------- | :--------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------- |
-| REQ-001 | `Done`      | Hebrew Text Input      | As a user, I can input Hebrew halachic text and specify a halacha number.              | To provide the source material for AI analysis.     |
+| REQ-001 | `Done`      | Hebrew Text Input      | As a user, I can input Hebrew halachic text and the halacha number is automatically extracted.              | To provide the source material for AI analysis.     |
 | REQ-002 | `Done`      | AI Analysis            | As a user, I can generate structured German analysis using Google Gemini API.          | To automate the translation and analysis process.    |
 | REQ-003 | `Done`      | Markdown Rendering     | As a user, I can view beautifully formatted markdown output with proper styling.        | To ensure readability and professional presentation. |
 | REQ-004 | `Done`      | Copy to Clipboard      | As a user, I can copy the generated analysis to clipboard for external use.            | To enable easy sharing and integration with other tools. |
 | REQ-005 | `Done`      | Responsive Design      | As a user, I can use the application on desktop and mobile devices.                   | To ensure accessibility across different devices.     |
 | REQ-006 | `Done`      | Error Handling         | As a user, I receive clear error messages when the API fails or input is invalid.      | To provide a robust user experience.                |
+| REQ-007 | `Done`      | Multi-language Support | As a user, I can switch between English, French, Russian, Hebrew, and German.         | To make the application accessible to diverse users. |
 
 ---
 
@@ -113,9 +114,9 @@ This table tracks the curated set of functional requirements for this project.
 
 ### Usage
 
-1. Enter a halacha number (e.g., "1", "2", "3")
-2. Paste or type Hebrew halachic text in the input field
-3. Click "Zusammenfassung erstellen" to generate the analysis
+1. Select your preferred language using the language selector in the top-right corner
+2. Paste or type Hebrew halachic text in the input field (the halacha number will be automatically extracted from the text)
+3. Click the "Create Summary" button (or equivalent in your selected language) to generate the analysis
 4. View the beautifully formatted markdown output
 5. Use the copy button to copy the result to clipboard
 
@@ -123,6 +124,7 @@ This table tracks the curated set of functional requirements for this project.
 
 * **AI-Powered Analysis:** Uses Google Gemini 2.5 Pro for intelligent text processing
 * **Structured Output:** Generates well-formatted markdown with proper citations
+* **Multi-language Support:** Available in English, French, Russian, Hebrew, and German
 * **Responsive Design:** Works seamlessly on desktop and mobile devices
 * **Modern UI:** Clean, professional interface using Angular Material
 * **Real-time Processing:** Immediate feedback and loading states
@@ -130,7 +132,7 @@ This table tracks the curated set of functional requirements for this project.
 
 ### Technology Highlights
 
-* **Angular 18:** Latest Angular with standalone components
+* **Angular 20:** Latest Angular with standalone components and modern features
 * **TypeScript:** Strict type checking for robust development
 * **Angular Material:** Professional UI components with Azure Blue theme
 * **Firebase Functions:** Serverless backend for AI processing

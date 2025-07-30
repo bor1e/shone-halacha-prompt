@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de" target-language="ru" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="app.title" datatype="html">
+        <source>Schone Halacha Analyse</source>
+        <target>Анализ Шёне Галаха</target>
+      </trans-unit>
+      
+      <trans-unit id="prompt.title" datatype="html">
+        <source>Halacha Prompt Zusammenfassung</source>
+        <target>Резюме запроса Галахи</target>
+      </trans-unit>
+      
+      <trans-unit id="prompt.subtitle" datatype="html">
+        <source>Geben Sie unten Ihren hebräischen Text ein. Die Halacha-Nummer wird automatisch aus dem Text extrahiert.</source>
+        <target>Введите ваш еврейский текст ниже. Номер Галахи будет автоматически извлечен из текста.</target>
+      </trans-unit>
+      
+      <trans-unit id="form.halacha-number" datatype="html">
+        <source>Halacha Nummer</source>
+        <target>Номер Галахи</target>
+      </trans-unit>
+      
+      <trans-unit id="form.halacha-number.placeholder" datatype="html">
+        <source>z.B. 872</source>
+        <target>напр. 872</target>
+      </trans-unit>
+      
+      <trans-unit id="form.hebrew-text" datatype="html">
+        <source>Hebräischer Text</source>
+        <target>Еврейский текст</target>
+      </trans-unit>
+      
+      <trans-unit id="form.hebrew-text.placeholder" datatype="html">
+        <source>Fügen Sie hier den hebräischen halachischen Text ein...</source>
+        <target>Вставьте еврейский текст Галахи здесь...</target>
+      </trans-unit>
+      
+      <trans-unit id="form.submit-button" datatype="html">
+        <source>Zusammenfassung erstellen</source>
+        <target>Создать резюме</target>
+      </trans-unit>
+      
+      <trans-unit id="form.loading" datatype="html">
+        <source>Analyse wird generiert...</source>
+        <target>Генерация анализа...</target>
+      </trans-unit>
+      
+      <trans-unit id="error.required" datatype="html">
+        <source>Bitte füllen Sie das Textfeld aus.</source>
+        <target>Пожалуйста, заполните текстовое поле.</target>
+      </trans-unit>
+      
+      <trans-unit id="error.api" datatype="html">
+        <source>Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.</source>
+        <target>Ошибка при создании резюме. Пожалуйста, попробуйте снова.</target>
+      </trans-unit>
+      
+      <trans-unit id="output.title" datatype="html">
+        <source>Zusammenfassung</source>
+        <target>Резюме</target>
+      </trans-unit>
+      
+      <trans-unit id="output.copy.tooltip" datatype="html">
+        <source>In Zwischenablage kopieren</source>
+        <target>Копировать в буфер обмена</target>
+      </trans-unit>
+      
+      <trans-unit id="output.copied.tooltip" datatype="html">
+        <source>Kopiert!</source>
+        <target>Скопировано!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff> 
