@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -34,13 +34,22 @@ import { MarkdownPipe } from '../markdown.pipe';
 })
 export class PromptFormComponent {
     private api = inject(ApiService);
+    private localeId = inject(LOCALE_ID);
 
     hebrewText = signal('');
     isLoading = signal(false);
     summary = signal('');
     error = signal('');
     copied = signal(false);
-
+    
+    /**
+     * Determines the text direction based on the current language locale.
+     * @returns 'rtl' for Hebrew, 'ltr' for all others.
+     */
+    get textDirection(): 'rtl' | 'ltr' {
+      return this.localeId.startsWith('he') ? 'rtl' : 'ltr';
+    }
+    
     updateHebrewText(value: string) {
         this.hebrewText.set(value);
     }

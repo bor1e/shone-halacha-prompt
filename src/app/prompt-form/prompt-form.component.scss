@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+[dir='rtl'] {
+    mat-form-field {
+        text-align: right;
+    }
+}
+
 .button-container {
     display: flex;
     justify-content: center;
