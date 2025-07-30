@@ -11,9 +11,9 @@ import localeEn from '@angular/common/locales/en';
 // Register locale data
 registerLocaleData(localeDe, 'de');
 registerLocaleData(localeEn, 'en-US');
-registerLocaleData(localeFr, 'fr-FR');
-registerLocaleData(localeHe, 'he-IL');
-registerLocaleData(localeRu, 'ru-RU');
+registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeHe, 'he');
+registerLocaleData(localeRu, 'ru');
 
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));

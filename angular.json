@@ -20,15 +20,15 @@
             "translation": "src/locale/messages.en.xlf",
             "baseHref": "/en/"
           },
-          "fr-FR": {
+          "fr": {
             "translation": "src/locale/messages.fr.xlf",
             "baseHref": "/fr/"
           },
-          "he-IL": {
+          "he": {
             "translation": "src/locale/messages.he.xlf",
             "baseHref": "/he/"
           },
-          "ru-RU": {
+          "ru": {
             "translation": "src/locale/messages.ru.xlf",
             "baseHref": "/ru/"
           }
@@ -39,6 +39,7 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/shone-halacha-prompting",
+            "i18nMissingTranslation": "error",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -100,7 +101,7 @@
               "sourceMap": true,
               "namedChunks": true,
               "localize": [
-                "fr-FR"
+                "fr"
               ]
             },
             "development-he": {
@@ -109,7 +110,7 @@
               "sourceMap": true,
               "namedChunks": true,
               "localize": [
-                "he-IL"
+                "he"
               ]
             },
             "development-ru": {
@@ -118,7 +119,7 @@
               "sourceMap": true,
               "namedChunks": true,
               "localize": [
-                "ru-RU"
+                "ru"
               ]
             },
             "production-de": {
@@ -158,7 +159,7 @@
             "production-fr": {
               "baseHref": "/fr/",
               "localize": [
-                "fr-FR"
+                "fr"
               ],
               "optimization": true,
               "outputHashing": "all",
@@ -175,7 +176,7 @@
             "production-he": {
               "baseHref": "/he/",
               "localize": [
-                "he-IL"
+                "he"
               ],
               "optimization": true,
               "outputHashing": "all",
@@ -192,7 +193,7 @@
             "production-ru": {
               "baseHref": "/ru/",
               "localize": [
-                "ru-RU"
+                "ru"
               ],
               "optimization": true,
               "outputHashing": "all",

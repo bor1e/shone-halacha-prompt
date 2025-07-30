@@ -32,9 +32,9 @@ export class ApiService {
         const languageMap: Record<string, string> = {
             'de': 'German',
             'en-US': 'English',
-            'fr-FR': 'French',
-            'he-IL': 'Hebrew',
-            'ru-RU': 'Russian'
+            'fr': 'French',
+            'he': 'Hebrew',
+            'ru': 'Russian'
         };
         return languageMap[this.currentLocale] || 'German';
     }

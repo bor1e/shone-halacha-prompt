@@ -40,13 +40,13 @@ export class AppComponent {
   languages = [
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'en-US', name: 'English', flag: '🇺🇸' },
-    { code: 'fr-FR', name: 'Français', flag: '🇫🇷' },
-    { code: 'he-IL', name: 'עברית', flag: '🇮🇱' },
-    { code: 'ru-RU', name: 'Русский', flag: '🇷🇺' }
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'he', name: 'עברית', flag: '🇮🇱' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
   ];
 
   get isRTL(): boolean {
-    return this.currentLocale === 'he-IL';
+    return this.currentLocale === 'he';
   }
 
   switchLanguage(locale: string): void {
