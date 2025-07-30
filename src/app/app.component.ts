@@ -38,7 +38,7 @@ export class AppComponent {
   currentLocale = inject(LOCALE_ID);
 
   languages = [
-    { code: 'de-DE', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'en-US', name: 'English', flag: '🇺🇸' },
     { code: 'fr-FR', name: 'Français', flag: '🇫🇷' },
     { code: 'he-IL', name: 'עברית', flag: '🇮🇱' },
@@ -52,7 +52,7 @@ export class AppComponent {
   switchLanguage(locale: string): void {
     // For production builds, redirect to language-specific URL
     const baseUrl = window.location.origin;
-    if (locale === 'de-DE') {
+    if (locale === 'de') {
       window.location.href = baseUrl;
     } else {
       const shortLocale = locale.split('-')[0];

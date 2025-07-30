@@ -14,7 +14,7 @@
       "sourceRoot": "src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "de-DE",
+        "sourceLocale": "de",
         "locales": {
           "en-US": {
             "translation": "src/locale/messages.en.xlf",
@@ -124,7 +124,7 @@
             "production-de": {
               "baseHref": "/",
               "localize": [
-                "de-DE"
+                "de"
               ],
               "optimization": true,
               "outputHashing": "all",

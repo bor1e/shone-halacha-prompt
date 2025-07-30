@@ -9,7 +9,7 @@ import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
 
 // Register locale data
-registerLocaleData(localeDe, 'de-DE');
+registerLocaleData(localeDe, 'de');
 registerLocaleData(localeEn, 'en-US');
 registerLocaleData(localeFr, 'fr-FR');
 registerLocaleData(localeHe, 'he-IL');
