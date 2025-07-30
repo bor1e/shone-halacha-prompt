@@ -8,17 +8,6 @@ import {
     HalachaSummaryResponse
 } from './types/halacha.types';
 
-export interface HalachaRequest {
-    hebrewText: string;
-    targetLanguage?: string;
-}
-
-export interface HalachaResponse {
-    id: string;
-    summary: string;
-    original: string;
-}
-
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -26,22 +15,18 @@ export class ApiService {
     private currentLocale = inject(LOCALE_ID);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
-    generateAnalysis(hebrewText: string): Observable<HalachaResponse> {
-        const request: HalachaRequest = {
+    generateAnalysis(hebrewText: string): Observable<HalachaSummaryResponse> {
+        const request: HalachaSummaryRequest = {
             hebrewText,
             targetLanguage: this.getTargetLanguage()
         };
 
-        return this.http.post<HalachaResponse>(this.endpoint, request).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    getHalachaSummary(request: HalachaSummaryRequest): Observable<HalachaSummaryResponse> {
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)
         );
     }
+
+
 
     private getTargetLanguage(): string {
         const languageMap: Record<string, string> = {

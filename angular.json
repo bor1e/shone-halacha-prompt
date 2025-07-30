@@ -14,21 +14,21 @@
       "sourceRoot": "src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "de",
+        "sourceLocale": "de-DE",
         "locales": {
-          "en": {
+          "en-US": {
             "translation": "src/locale/messages.en.xlf",
             "baseHref": "/en/"
           },
-          "fr": {
+          "fr-FR": {
             "translation": "src/locale/messages.fr.xlf",
             "baseHref": "/fr/"
           },
-          "he": {
+          "he-IL": {
             "translation": "src/locale/messages.he.xlf",
             "baseHref": "/he/"
           },
-          "ru": {
+          "ru-RU": {
             "translation": "src/locale/messages.ru.xlf",
             "baseHref": "/ru/"
           }
@@ -90,32 +90,42 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "localize": ["en-US"]
+              "localize": [
+                "en-US"
+              ]
             },
             "development-fr": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "localize": ["fr-FR"]
+              "localize": [
+                "fr-FR"
+              ]
             },
             "development-he": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "localize": ["he-IL"]
+              "localize": [
+                "he-IL"
+              ]
             },
             "development-ru": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true,
-              "localize": ["ru-RU"]
+              "localize": [
+                "ru-RU"
+              ]
             },
             "production-de": {
               "baseHref": "/",
-              "localize": ["de-DE"],
+              "localize": [
+                "de-DE"
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -130,7 +140,9 @@
             },
             "production-en": {
               "baseHref": "/en/",
-              "localize": ["en-US"],
+              "localize": [
+                "en-US"
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -145,7 +157,9 @@
             },
             "production-fr": {
               "baseHref": "/fr/",
-              "localize": ["fr-FR"],
+              "localize": [
+                "fr-FR"
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -160,7 +174,9 @@
             },
             "production-he": {
               "baseHref": "/he/",
-              "localize": ["he-IL"],
+              "localize": [
+                "he-IL"
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -175,7 +191,9 @@
             },
             "production-ru": {
               "baseHref": "/ru/",
-              "localize": ["ru-RU"],
+              "localize": [
+                "ru-RU"
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -231,7 +249,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",

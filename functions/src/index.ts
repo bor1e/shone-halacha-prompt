@@ -6,28 +6,30 @@ import { defineString } from "firebase-functions/params";
 const geminiKey = defineString("GEMINI_KEY");
 
 /**
- * Erzeugt einen hochspezialisierten Prompt für ein LLM, um eine hebräische halachische Analyse
- * als valides JSON-Objekt zu erstellen.
+ * Erzeugt einen hochspezialisierten, mehrsprachigen Prompt für ein LLM.
  * @param hebrewText Der hebräische Originaltext der Halacha.
+ * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
  * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
  */
-const createHalachaPrompt = (hebrewText: string): string => `
+const createHalachaPrompt = (hebrewText: string, targetLanguage: string): string => `
 ### Rolle:
 Du bist ein hochpräziser Bot zur Analyse von Fachtexten. Deine Aufgabe ist es, hebräische halachische Texte zu verarbeiten und das Ergebnis ausschließlich in einem strukturierten JSON-Format zurückzugeben.
 
 ### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden. - KEINE Code-Block-Markierungen (\`\`\`json oder \`\`\`)  
+Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden.
+Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
 
 ### JSON-Struktur:
 {
   "id": "NUMBER_STRING",
   "summary": "MARKDOWN_STRING",
-  "original": "HEBREW_STRING"
+  "original": "HEBREW_STRING",
+  "language": "TARGET_LANGUAGE_STRING"
 }
-
 -   \`id\`: Die Halacha-Nummer als String, extrahiert aus dem Eingabetext.
--   \`summary\`: Ein einzelner String, der die vollständige, nach den untenstehenden Anweisungen erstellte deutsche Analyse in Markdown-Formatierung enthält.
+-   \`summary\`: Ein einzelner String, der die vollständige, deutsche Analyse in Markdown-Formatierung enthält.
 -   \`original\`: Der vollständige, unveränderte hebräische Originaltext.
+-   \`language\`: Die Sprache, in der die Zusammenfassung verfasst wurde (z.B. "Deutsch", "English").
 
 ### Anweisungen für den Inhalt des "summary"-Feldes:
 -   **Einleitung und Start:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel. Schreibe **keinen** separaten Einleitungsabsatz.
@@ -47,7 +49,8 @@ Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **a
 -   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen lauten \`**Quellen**\` und \`**relevante Halachische Konzepte**\`.
 
 ### Glossar für Einzelbegriffe und Transliteration:
--   **Transliteration:** Nutze die deutsche Transkription (sch für ש, z für צ, j für י).
+**Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen und in deiner Ausgabe zu verwenden.
+-   **Transliteration:** Nutze eine passende Transkription für die Zielsprache (z.B. deutsch: sch, z, j).
 -   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren“.
 -   \`פסולת\` (Pesolet) → *das Unbrauchbare*
 -   \`חייב\` (Chajaw) → *schuldig*
@@ -80,23 +83,33 @@ export const getHalachaSummary = onRequest(
     timeoutSeconds: 540
   },
   async (request, response) => {
-
-    const { hebrewText } = request.body;
-
-    if (!hebrewText) {
-      logger.error("Fehlender hebrewText im Request Body.");
-      response.status(400).json({ error: "hebrewText ist ein erforderliches Feld." });
+    if (request.method !== "POST") {
+      response.setHeader("Allow", "POST");
+      response.status(405).send("Method Not Allowed");
       return;
     }
 
-    const fullPrompt = createHalachaPrompt(hebrewText);
+    // **ÄNDERUNG HIER: `targetLanguage` wird aus dem Body ausgelesen**
+    const { hebrewText, targetLanguage = "Deutsch" } = request.body; // Setzt "Deutsch" als Standard
+
+    if (!hebrewText) {
+      logger.error("Fehlender hebrewText im Request Body.", { body: request.body });
+      response.status(400).json({
+        error: "hebrewText ist ein erforderliches Feld."
+      });
+      return;
+    }
+
+    const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage);
+    
+    logger.info(`Starte Gemini API Anfrage für Sprache: ${targetLanguage}...`);
 
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-pro",
+        model: "gemini-1.5-pro-latest",
         generationConfig: {
-          temperature: 0.1, // Niedrigere Temperatur für konsistentere JSON-Ausgabe
+          temperature: 0.1,
           topP: 0.8,
           topK: 40,
         }
@@ -104,11 +117,17 @@ export const getHalachaSummary = onRequest(
 
       const result = await model.generateContent(fullPrompt);
       const jsonResponseString = result.response.text();
-
-      logger.info("Rohe Antwort von Gemini:", { rawResponse: jsonResponseString.substring(0, 200) + "..." });
-
+      
       try {
         const parsedResponse = JSON.parse(jsonResponseString);
+        
+        // **ÄNDERUNG HIER: Sprache wird zur Antwort hinzugefügt**
+        // (Das Modell sollte dies bereits tun, aber wir stellen es hier sicher)
+        if (!parsedResponse.language) {
+          parsedResponse.language = targetLanguage;
+        }
+
+        logger.info(`Erfolgreich eine valide JSON-Antwort erhalten für Sprache: ${targetLanguage}.`);
         response.status(200).json(parsedResponse);
       } catch (parseError) {
         logger.error("Modell hat eine ungültige JSON-Zeichenkette zurückgegeben.", { rawResponse: jsonResponseString });

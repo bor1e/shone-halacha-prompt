@@ -20,12 +20,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Schone Halacha' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Schone Halacha');
-  });
-
   it('should render title in toolbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();

@@ -64,9 +64,7 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        this.api.getHalachaSummary({
-            hebrewText: this.hebrewText()
-        }).subscribe({
+        this.api.generateAnalysis(this.hebrewText()).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 this.summary.set(response.summary);
                 this.isLoading.set(false);

@@ -3,8 +3,8 @@
   <file source-language="de-DE" target-language="fr-FR" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="app.title" datatype="html">
-        <source>Schöne Halacha Analyse</source>
-        <target>Analyse Halacha Schöne</target>
+        <source>Schone Halacha Analyse</source>
+        <target>Analyse Halacha Schone</target>
       </trans-unit>
       
       <trans-unit id="prompt.title" datatype="html">

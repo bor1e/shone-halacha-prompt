@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
     <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
-        <span i18n="@@app.title">Schöne Halacha Analyse</span>
+        <span i18n="@@app.title">Schone Halacha Analyse</span>
         <span class="bsd-text">בס״ד</span>
         <span class="spacer"></span>
         <div class="language-switcher">
