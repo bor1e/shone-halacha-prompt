@@ -32,8 +32,52 @@
     },
     "rewrites": [
       {
+        "source": "/de/**",
+        "destination": "/browser/de/index.html"
+      },
+      {
+        "source": "/en/**", 
+        "destination": "/browser/en/index.html"
+      },
+      {
+        "source": "/fr/**",
+        "destination": "/browser/fr/index.html"
+      },
+      {
+        "source": "/he/**",
+        "destination": "/browser/he/index.html"
+      },
+      {
+        "source": "/ru/**",
+        "destination": "/browser/ru/index.html"
+      },
+      {
+        "source": "/",
+        "destination": "/browser/de/index.html"
+      },
+      {
         "source": "**",
         "destination": "/browser/de/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/javascript"
+          }
+        ]
+      },
+      {
+        "source": "**/*.css",
+        "headers": [
+          {
+            "key": "Content-Type", 
+            "value": "text/css"
+          }
+        ]
       }
     ],
     "frameworksBackend": {
