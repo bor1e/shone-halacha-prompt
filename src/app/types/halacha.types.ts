@@ -1,7 +1,6 @@
 // Request interface
 export interface HalachaSummaryRequest {
     hebrewText: string;
-    halachaNumber: string;
 }
 
 // Response interface matching your Firebase function

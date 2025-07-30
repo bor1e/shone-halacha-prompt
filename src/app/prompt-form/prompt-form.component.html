@@ -1,29 +1,23 @@
 <div class="form-container">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Halacha Prompt Zusammenfassung</mat-card-title>
-            <mat-card-subtitle>Geben Sie unten Ihren hebräischen Text und die Halacha-Nummer ein.</mat-card-subtitle>
+            <mat-card-title i18n="@@prompt.title">Halacha Prompt Zusammenfassung</mat-card-title>
+            <mat-card-subtitle i18n="@@prompt.subtitle">Geben Sie unten Ihren hebräischen Text ein. Die Halacha-Nummer
+                wird automatisch aus dem Text extrahiert.</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
             <form (ngSubmit)="submit()" #form="ngForm">
                 <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
-                    <mat-label>Halacha Nummer</mat-label>
-                    <input matInput [value]="halachaNumber()" (input)="updateHalachaNumber($any($event.target).value)"
-                        name="halachaNumber" placeholder="z.B. 1, 2, 3..." required>
-                    <mat-hint>Nummer der Halacha, z.B. 1</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
-                    <mat-label>Hebräischer Text</mat-label>
+                    <mat-label i18n="@@form.hebrew-text">Hebräischer Text</mat-label>
                     <textarea matInput [value]="hebrewText()" (input)="updateHebrewText($any($event.target).value)"
-                        name="hebrewText" placeholder="Fügen Sie hier den hebräischen Halacha-Text ein..." rows="8"
+                        name="hebrewText" i18n-placeholder="@@form.hebrew-text.placeholder"
+                        placeholder="Fügen Sie hier den hebräischen halachischen Text ein..." rows="8"
                         required></textarea>
-                    <mat-hint>Fügen Sie den zu analysierenden Text ein</mat-hint>
                 </mat-form-field>
 
                 <div class="button-container">
-                    <button mat-raised-button color="primary" type="submit"
-                        [disabled]="isLoading() || !hebrewText() || !halachaNumber()">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="isLoading() || !hebrewText()"
+                        i18n="@@form.submit-button">
                         Zusammenfassung erstellen
                     </button>
                 </div>
@@ -32,7 +26,7 @@
             @if (error()) {
             <mat-card style="margin-top: 16px; background-color: #ffebee;">
                 <mat-card-content>
-                    <p style="color: #c62828; margin: 0;">{{ error() }}</p>
+                    <p style="color: #c62828; margin: 0;" [innerHTML]="error()"></p>
                 </mat-card-content>
             </mat-card>
             }
@@ -40,14 +34,14 @@
             @if (isLoading()) {
             <div class="loading-container">
                 <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-                <p>Erstelle Zusammenfassung...</p>
+                <p i18n="@@form.loading">Analyse wird generiert...</p>
             </div>
             }
 
             @if (summary()) {
             <div class="output-section">
                 <div class="output-header">
-                    <h3>Zusammenfassung</h3>
+                    <h3 i18n="@@output.title">Zusammenfassung</h3>
                     <button mat-icon-button [color]="copied() ? 'accent' : 'primary'" (click)="copyToClipboard()"
                         [matTooltip]="copied() ? 'Kopiert!' : 'In Zwischenablage kopieren'" [disabled]="!summary()">
                         <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>

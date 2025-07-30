@@ -14,74 +14,68 @@ import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
 
 @Component({
-  selector: 'app-prompt-form',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTooltipModule,
-    MarkdownPipe
-  ],
-  templateUrl: './prompt-form.component.html',
-  styleUrls: ['./prompt-form.component.scss']
+    selector: 'app-prompt-form',
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatTooltipModule,
+        MarkdownPipe
+    ],
+    templateUrl: './prompt-form.component.html',
+    styleUrls: ['./prompt-form.component.scss']
 })
 export class PromptFormComponent {
-  private api = inject(ApiService);
+    private api = inject(ApiService);
 
-  hebrewText = signal('');
-  halachaNumber = signal('');
-  isLoading = signal(false);
-  summary = signal('');
-  error = signal('');
-  copied = signal(false);
+    hebrewText = signal('');
+    isLoading = signal(false);
+    summary = signal('');
+    error = signal('');
+    copied = signal(false);
 
-  updateHebrewText(value: string) {
-    this.hebrewText.set(value);
-  }
-
-  updateHalachaNumber(value: string) {
-    this.halachaNumber.set(value);
-  }
-
-  copyToClipboard() {
-    if (this.summary()) {
-      navigator.clipboard.writeText(this.summary()).then(() => {
-        this.copied.set(true);
-        setTimeout(() => this.copied.set(false), 2000);
-      });
-    }
-  }
-
-  submit() {
-    if (!this.hebrewText() || !this.halachaNumber()) {
-      this.error.set('Bitte füllen Sie alle Felder aus.');
-      return;
+    updateHebrewText(value: string) {
+        this.hebrewText.set(value);
     }
 
-    this.isLoading.set(true);
-    this.error.set('');
-    this.summary.set('');
+    copyToClipboard() {
+        if (this.summary()) {
+            navigator.clipboard.writeText(this.summary()).then(() => {
+                this.copied.set(true);
+                setTimeout(() => this.copied.set(false), 2000);
+            });
+        }
+    }
 
-    this.api.getHalachaSummary({
-      hebrewText: this.hebrewText(),
-      halachaNumber: this.halachaNumber()
-    }).subscribe({
-      next: (response: HalachaSummaryResponse) => {
-        this.summary.set(response.summary);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        this.error.set('Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.');
-        this.isLoading.set(false);
-        console.error('API Error:', err);
-      }
-    });
-  }
-}
+    submit() {
+        if (!this.hebrewText()) {
+            this.error.set('Bitte füllen Sie das Textfeld aus.');
+            return;
+        }
+
+        this.isLoading.set(true);
+        this.error.set('');
+        this.summary.set('');
+
+        this.api.getHalachaSummary({
+            hebrewText: this.hebrewText()
+        }).subscribe({
+            next: (response: HalachaSummaryResponse) => {
+                this.summary.set(response.summary);
+                this.isLoading.set(false);
+            },
+            error: (err) => {
+                this.error.set('Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.');
+                this.isLoading.set(false);
+                console.error('API Error:', err);
+            }
+        });
+    }
+} 

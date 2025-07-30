@@ -11,6 +11,10 @@ main {
     align-items: center;
 }
 
+.spacer {
+    flex: 1 1 auto;
+}
+
 .bsd-text {
     font-size: 1.2rem;
     font-weight: 500;
@@ -20,6 +24,41 @@ main {
     text-align: right;
     margin-left: auto;
     padding-right: 16px;
+}
+
+.language-switcher {
+    display: flex;
+    gap: 8px;
+
+    button {
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: transparent;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+    }
+}
+
+.app-container {
+    min-height: 100vh;
+
+    &[dir="rtl"] {
+        .language-switcher {
+            flex-direction: row-reverse;
+        }
+    }
 }
 
 /* Responsive design for mobile */
