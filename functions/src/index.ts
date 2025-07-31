@@ -9,6 +9,7 @@ const geminiKey = defineString("GEMINI_KEY");
  * Erzeugt einen hochspezialisierten, mehrsprachigen Prompt für ein LLM.
  * @param hebrewText Der hebräische Originaltext der Halacha.
  * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
+ * @param halachaNumber Die extrahierte Nummer der Halacha.
  * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
  */
 const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
@@ -16,7 +17,7 @@ const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halacha
 Du bist ein hochpräziser Bot zur Analyse von Fachtexten. Deine Aufgabe ist es, hebräische halachische Texte zu verarbeiten und das Ergebnis ausschließlich in einem strukturierten JSON-Format zurückzugeben.
 
 ### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden. KEINE Code-Block-Markierungen (\`\`\`json oder \`\`\`)  
+Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden. KEINE Code-Block-Markierungen (\`\`\`json oder \`\`\`)
 Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
 
 ### JSON-Struktur:
@@ -27,7 +28,7 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
   "language": "TARGET_LANGUAGE_STRING"
 }
 -   \`id\`: Die Halacha-Nummer, die lautet: "${halachaNumber}".
--   \`summary\`: Ein einzelner String, der die vollständige, deutsche Analyse in Markdown-Formatierung enthält.
+-   \`summary\`: Ein einzelner String, der die vollständige Analyse in Markdown-Formatierung enthält.
 -   \`original\`: Der vollständige, unveränderte hebräische Originaltext.
 -   \`language\`: Die Sprache, in der die Zusammenfassung verfasst wurde (z.B. "Deutsch", "English").
 
@@ -39,14 +40,14 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
 -   **Struktur:** Gliedere die Zusammenfassung **logisch, linear und faktenbasiert**.
 -   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*[...]*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
 -   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-4 der wichtigsten). Markiere relevante Aussagen mit einer hochgestellten Fußnotenzahl (z.B. ¹). Erstelle am Ende einen Abschnitt \`**Quellen**\` mit einer einfachen Liste reiner Zitationen.
--   **Konzepte:** Erstelle ganz am Ende einen Abschnitt \`**relevante Halachische Konzepte**\`. Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten.
+-   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten. **Wichtig:** Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
 
 ### Stil- und Formatierungsrichtlinien (für den "summary"-String in Markdown):
--   **Titel:** Der Titel muss dem Format folgen: \`**Halachische Betrachtung ${halachaNumber}: Beschreibender Untertitel**\`.
+-   **Titel:** Der Titel muss dem Format folgen: \`**{Titel in Zielsprache} ${halachaNumber}: {Beschreibender Untertitel}**\`. Übersetze "Halachische Betrachtung" in die Zielsprache (z.B. Englisch: "Halachic Analysis", Französisch: "Analyse Halakhique"). Erstelle einen kurzen, passenden Untertitel.
 -   **Hervorhebung:**
     -   Verwende **Fettdruck** (\`**Wort**\`) für Titel, leitende Fragen sowie für mehrere **wichtige Momente, Kernaussagen und die finale praktische Schlussfolgerung**.
     -   Verwende *Kursivschrift* (\`*Wort*\`) für hebräische Fachbegriffe im Text, die gesamten Zitationen im Quellenverzeichnis sowie die Begriffe in der Konzeptliste.
--   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen lauten \`**Quellen**\` und \`**relevante Halachische Konzepte**\`.
+-   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen müssen ebenfalls in die Zielsprache übersetzt werden (z.B. "Quellen" -> "Sources", "Relevante Halachische Konzepte" -> "Relevant Halachic Concepts").
 
 ### Glossar für Einzelbegriffe und Transliteration:
 **Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen und in deiner Ausgabe zu verwenden.
@@ -73,8 +74,6 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
 ${hebrewText}
 `;
 
-// Die exportierte Cloud Function bleibt in ihrer Logik unverändert,
-// sie ruft lediglich die oben definierte, nun korrekte Prompt-Funktion auf.
 export const getHalachaSummary = onRequest(
   {
     cors: true,
@@ -121,8 +120,6 @@ export const getHalachaSummary = onRequest(
       try {
         const parsedResponse = JSON.parse(jsonResponseString);
 
-        // **ÄNDERUNG HIER: Sprache wird zur Antwort hinzugefügt**
-        // (Das Modell sollte dies bereits tun, aber wir stellen es hier sicher)
         if (!parsedResponse.language) {
           parsedResponse.language = targetLanguage;
         }
