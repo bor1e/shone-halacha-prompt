@@ -37,7 +37,7 @@
     "@angular/platform-browser-dynamic": "^20.1.3",
     "@angular/router": "^20.1.3",
     "@types/markdown-it": "^13.0.9",
-    "firebase": "^14.11.1",
+    "firebase": "^12.0.0",
     "markdown-it": "^14.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
