@@ -49,7 +49,9 @@ export class PromptFormComponent {
     halachaNumber = signal<number | null>(null);
 
     get textDirection(): 'rtl' | 'ltr' {
-        return ['he', 'ar', 'fa', 'ur'].includes(this.locale) ? 'rtl' : 'ltr';
+        // Determine text direction based on locale or content
+        // Here, we check if the locale starts with 'he' (Hebrew) for RTL, otherwise LTR
+        return this.locale.startsWith('he') ? 'rtl' : 'ltr';
     }
 
     updateHebrewText(value: string) {
