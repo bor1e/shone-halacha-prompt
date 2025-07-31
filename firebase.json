@@ -13,7 +13,7 @@
       ],
       "predeploy": [
         "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
+        "npm --prefix \"$RESOURCE_DIR\" run build:i18n"
       ],
       "secrets": [
         "GEMINI_KEY"
@@ -21,7 +21,7 @@
     }
   ],
   "hosting": {
-    "public": "dist/shone-halacha-prompting/",
+    "public": "dist/shone-halacha-prompting/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -29,24 +29,35 @@
     ],
     "rewrites": [
       {
-        "source": "/en/**",
-        "destination": "/en/browser/index.html"
-      },
-      {
         "source": "/fr/**",
-        "destination": "/fr/browser/index.html"
+        "destination": "/fr/index.html"
       },
       {
-        "source": "/he/**",
-        "destination": "/he/browser/index.html"
+        "source": "/en/**",
+        "destination": "/en/index.html"
       },
       {
         "source": "/ru/**",
-        "destination": "/ru/browser/index.html"
+        "destination": "/ru/index.html"
+      },
+      {
+        "source": "/he/**",
+        "destination": "/he/index.html"
       },
       {
         "source": "**",
-        "destination": "/de/browser/index.html"
+        "destination": "/de/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css|map|ico|woff2)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
       }
     ],
     "frameworksBackend": {
