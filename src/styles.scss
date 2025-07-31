@@ -66,3 +66,52 @@ h6 {
         margin: 8px;
     }
 }
+
+/* Global RTL support */
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .container,
+[dir="rtl"] .row {
+    direction: rtl;
+}
+
+/* Fix for flex layouts */
+[dir="rtl"] .d-flex {
+    flex-direction: row-reverse;
+}
+
+/* Margin and padding adjustments */
+[dir="rtl"] .me-2 {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+[dir="rtl"] .ms-2 {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+[dir="rtl"] .pe-2 {
+    padding-right: 0;
+    padding-left: 0.5rem;
+}
+
+[dir="rtl"] .ps-2 {
+    padding-left: 0;
+    padding-right: 0.5rem;
+}
+
+/* Form controls */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+    text-align: right;
+}
+
+/* Navigation adjustments */
+[dir="rtl"] .navbar-nav {
+    flex-direction: row-reverse;
+}

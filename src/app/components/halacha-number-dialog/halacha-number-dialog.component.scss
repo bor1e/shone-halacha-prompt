@@ -1,0 +1,68 @@
+.dialog-container {
+    min-width: 400px;
+    max-width: 600px;
+
+    [dir="rtl"] & {
+        text-align: right;
+    }
+}
+
+.text-preview {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    border-left: 4px solid #2196f3;
+
+    [dir="rtl"] & {
+        border-left: none;
+        border-right: 4px solid #2196f3;
+    }
+
+    h4 {
+        margin: 0 0 8px 0;
+        color: #333;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .preview-content {
+        font-family: 'Times New Roman', serif;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #666;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+}
+
+mat-dialog-actions {
+    margin-top: 16px;
+
+    [dir="rtl"] & {
+        flex-direction: row-reverse;
+    }
+}
+
+mat-form-field {
+    [dir="rtl"] & {
+        text-align: right;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .dialog-container {
+        min-width: 300px;
+        max-width: 100%;
+    }
+
+    .text-preview {
+        margin-top: 12px;
+        padding: 8px;
+
+        .preview-content {
+            font-size: 12px;
+        }
+    }
+}
