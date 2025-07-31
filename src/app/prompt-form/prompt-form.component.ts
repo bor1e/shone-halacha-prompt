@@ -48,7 +48,7 @@ export class PromptFormComponent {
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
 
-    get textDirection(): string {
+    get textDirection(): 'rtl' | 'ltr' {
         return ['he', 'ar', 'fa', 'ur'].includes(this.locale) ? 'rtl' : 'ltr';
     }
 
