@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -39,6 +39,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 export class PromptFormComponent {
     private api = inject(ApiService);
     private dialog = inject(MatDialog);
+    private locale = inject(LOCALE_ID);
 
     hebrewText = signal('');
     isLoading = signal(false);
@@ -46,6 +47,10 @@ export class PromptFormComponent {
     error = signal('');
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
+
+    get textDirection(): string {
+        return ['he', 'ar', 'fa', 'ur'].includes(this.locale) ? 'rtl' : 'ltr';
+    }
 
     updateHebrewText(value: string) {
         this.hebrewText.set(value);
