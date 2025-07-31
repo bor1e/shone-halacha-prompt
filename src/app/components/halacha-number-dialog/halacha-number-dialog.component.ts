@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -9,7 +9,6 @@ import { HalachaNumberExtractor } from '../../utils/halacha-number-extractor';
 
 export interface HalachaNumberDialogData {
   hebrewText: string;
-  currentLocale: string;
 }
 
 export interface HalachaNumberDialogResult {
@@ -35,17 +34,17 @@ export interface HalachaNumberDialogResult {
       
       <mat-dialog-content>
         <p i18n="@@dialog.halacha-number.message">
-          Die Halacha-Nummer konnte nicht automatisch aus dem Text extrahiert werden. 
+          Die Halacha-Nummer konnte nicht automatisch aus dem Text extrahiert werden.
           Bitte geben Sie die Nummer manuell ein.
         </p>
         
         <mat-form-field appearance="outline" style="width: 100%; margin-top: 16px;">
           <mat-label i18n="@@dialog.halacha-number.label">Halacha Nummer</mat-label>
-          <input 
-            matInput 
-            type="number" 
+          <input
+            matInput
+            type="number"
             [(ngModel)]="halachaNumber"
-            [placeholder]="'z.B. 872'"
+            [placeholder]="numberPlaceholder"
             min="100"
             max="9999"
             required
@@ -59,19 +58,19 @@ export interface HalachaNumberDialogResult {
         
         <div class="text-preview" *ngIf="hebrewTextPreview">
           <h4 i18n="@@dialog.halacha-number.preview">Textvorschau:</h4>
-          <div class="preview-content">
+          <div class="preview-content" [dir]="isHebrewText ? 'rtl' : 'ltr'">
             {{ hebrewTextPreview }}
           </div>
         </div>
       </mat-dialog-content>
       
-      <mat-dialog-actions align="end">
+      <mat-dialog-actions [align]="isRTL ? 'start' : 'end'">
         <button mat-button (click)="cancel()" i18n="@@dialog.cancel">
           Abbrechen
         </button>
-        <button 
-          mat-raised-button 
-          color="primary" 
+        <button
+          mat-raised-button
+          color="primary"
           (click)="confirm()"
           [disabled]="!isValidNumber"
           i18n="@@dialog.confirm"
@@ -86,6 +85,7 @@ export interface HalachaNumberDialogResult {
 export class HalachaNumberDialogComponent {
   private dialogRef = inject(MatDialogRef<HalachaNumberDialogComponent>);
   private data = inject(MAT_DIALOG_DATA) as HalachaNumberDialogData;
+  private locale = inject(LOCALE_ID);
 
   halachaNumber: number | null = null;
   hebrewTextPreview = '';
@@ -99,11 +99,28 @@ export class HalachaNumberDialogComponent {
   }
 
   get currentLocale(): string {
-    return this.data.currentLocale;
+    return this.locale;
   }
 
   get isRTL(): boolean {
-    return this.currentLocale === 'he';
+    return ['he', 'ar', 'fa', 'ur'].includes(this.locale);
+  }
+
+  get isHebrewText(): boolean {
+    // Check if the text contains Hebrew characters
+    return /[\u0590-\u05FF]/.test(this.hebrewTextPreview);
+  }
+
+  get numberPlaceholder(): string {
+    // Localized placeholder examples
+    const placeholders: Record<string, string> = {
+      'de': 'z.B. 872',
+      'en': 'e.g. 872',
+      'fr': 'p. ex. 872',
+      'he': 'למשל 872',
+      'ru': 'напр. 872'
+    };
+    return placeholders[this.locale] || 'e.g. 872';
   }
 
   get isValidNumber(): boolean {
@@ -123,4 +140,4 @@ export class HalachaNumberDialogComponent {
   cancel(): void {
     this.dialogRef.close();
   }
-} 
+}

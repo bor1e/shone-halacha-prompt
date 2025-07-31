@@ -87,7 +87,6 @@ export class PromptFormComponent {
                     width: '500px',
                     data: {
                         hebrewText: this.hebrewText(),
-                        currentLocale: this.languageService.getCurrentLanguage()
                     } as HalachaNumberDialogData
                 });
 
