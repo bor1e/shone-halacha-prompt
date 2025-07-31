@@ -9,6 +9,12 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+}
+
+.app-title {
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 
 .spacer {
@@ -22,8 +28,12 @@ main {
     font-family: 'Times New Roman', serif;
     direction: rtl;
     text-align: right;
-    margin-left: auto;
-    padding-right: 16px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    white-space: nowrap;
 }
 
 .language-switcher {
@@ -51,6 +61,39 @@ main {
     }
 }
 
+.mobile-language-button {
+    color: white !important;
+
+    mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.language-menu {
+    .menu-item-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .flag {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .name {
+            flex: 1;
+        }
+
+        .check-icon {
+            color: #1976d2;
+            margin-left: 8px;
+        }
+    }
+}
+
 .app-container {
     min-height: 100vh;
 
@@ -58,13 +101,60 @@ main {
         .language-switcher {
             flex-direction: row-reverse;
         }
+
+        .bsd-text {
+            right: auto;
+            left: 16px;
+        }
     }
 }
 
-/* Responsive design for mobile */
+/* Responsive design */
 @media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: block !important;
+    }
+
+    .app-title {
+        font-size: 1rem;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
     .bsd-text {
         font-size: 1rem;
-        padding-right: 8px;
+        right: 8px;
+    }
+
+    .mat-mdc-toolbar {
+        padding: 0 8px;
+    }
+}
+
+@media (min-width: 769px) {
+    .desktop-only {
+        display: flex !important;
+    }
+
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+/* Ensure בס״ד is always visible */
+@media (max-width: 480px) {
+    .app-title {
+        max-width: 120px;
+    }
+
+    .bsd-text {
+        font-size: 0.9rem;
+        right: 4px;
     }
 }

@@ -7,6 +7,16 @@
         </mat-card-header>
         <mat-card-content>
             <form (ngSubmit)="submit()" #form="ngForm">
+                <!-- Display extracted halacha number if available -->
+                @if (halachaNumber()) {
+                <div class="halacha-number-display">
+                    <mat-icon>info</mat-icon>
+                    <span i18n="@@form.extracted-halacha-number">
+                        Extrahierte Halacha-Nummer: {{ halachaNumber() }}
+                    </span>
+                </div>
+                }
+
                 <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
                     <mat-label i18n="@@form.hebrew-text">Hebräischer Text</mat-label>
                     <textarea matInput [value]="hebrewText()" (input)="updateHebrewText($any($event.target).value)"

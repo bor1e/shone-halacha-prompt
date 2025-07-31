@@ -71,6 +71,46 @@
         <source>Kopiert!</source>
         <target>Copié !</target>
       </trans-unit>
+      
+      <trans-unit id="form.extracted-halacha-number" datatype="html">
+        <source>Extrahierte Halacha-Nummer: {0}</source>
+        <target>Numéro de Halacha extrait : {0}</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.title" datatype="html">
+        <source>Halacha Nummer eingeben</source>
+        <target>Saisir le numéro de Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.message" datatype="html">
+        <source>Die Halacha-Nummer konnte nicht automatisch aus dem Text extrahiert werden. Bitte geben Sie die Nummer manuell ein.</source>
+        <target>Le numéro de Halacha n'a pas pu être extrait automatiquement du texte. Veuillez saisir le numéro manuellement.</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.label" datatype="html">
+        <source>Halacha Nummer</source>
+        <target>Numéro de Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.error" datatype="html">
+        <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
+        <target>Veuillez saisir un numéro de Halacha valide (100-9999).</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.preview" datatype="html">
+        <source>Textvorschau:</source>
+        <target>Aperçu du texte :</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.cancel" datatype="html">
+        <source>Abbrechen</source>
+        <target>Annuler</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.confirm" datatype="html">
+        <source>Bestätigen</source>
+        <target>Confirmer</target>
+      </trans-unit>
     </body>
   </file>
 </xliff> 

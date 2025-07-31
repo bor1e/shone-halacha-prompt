@@ -11,7 +11,7 @@ const geminiKey = defineString("GEMINI_KEY");
  * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
  * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
  */
-const createHalachaPrompt = (hebrewText: string, targetLanguage: string): string => `
+const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
 ### Rolle:
 Du bist ein hochpräziser Bot zur Analyse von Fachtexten. Deine Aufgabe ist es, hebräische halachische Texte zu verarbeiten und das Ergebnis ausschließlich in einem strukturierten JSON-Format zurückzugeben.
 
@@ -26,7 +26,7 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
   "original": "HEBREW_STRING",
   "language": "TARGET_LANGUAGE_STRING"
 }
--   \`id\`: Die Halacha-Nummer als String, extrahiert aus dem Eingabetext.
+-   \`id\`: Die Halacha-Nummer, die lautet: "${halachaNumber}".
 -   \`summary\`: Ein einzelner String, der die vollständige, deutsche Analyse in Markdown-Formatierung enthält.
 -   \`original\`: Der vollständige, unveränderte hebräische Originaltext.
 -   \`language\`: Die Sprache, in der die Zusammenfassung verfasst wurde (z.B. "Deutsch", "English").
@@ -42,7 +42,7 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
 -   **Konzepte:** Erstelle ganz am Ende einen Abschnitt \`**relevante Halachische Konzepte**\`. Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten.
 
 ### Stil- und Formatierungsrichtlinien (für den "summary"-String in Markdown):
--   **Titel:** Der Titel muss dem Format folgen: \`**Halachische Betrachtung {Nummer}: Beschreibender Untertitel**\`. Extrahiere die \`{Nummer}\` aus dem Eingabetext.
+-   **Titel:** Der Titel muss dem Format folgen: \`**Halachische Betrachtung ${halachaNumber}: Beschreibender Untertitel**\`.
 -   **Hervorhebung:**
     -   Verwende **Fettdruck** (\`**Wort**\`) für Titel, leitende Fragen sowie für mehrere **wichtige Momente, Kernaussagen und die finale praktische Schlussfolgerung**.
     -   Verwende *Kursivschrift* (\`*Wort*\`) für hebräische Fachbegriffe im Text, die gesamten Zitationen im Quellenverzeichnis sowie die Begriffe in der Konzeptliste.
@@ -89,26 +89,26 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    // **ÄNDERUNG HIER: `targetLanguage` wird aus dem Body ausgelesen**
-    const { hebrewText, targetLanguage = "Deutsch" } = request.body; // Setzt "Deutsch" als Standard
+    const { hebrewText, targetLanguage = "Deutsch", halachaNumber } = request.body;
 
-    if (!hebrewText) {
-      logger.error("Fehlender hebrewText im Request Body.", { body: request.body });
+    if (!hebrewText || !halachaNumber) {
+      logger.error("Fehlende Daten im Request Body.", { body: request.body });
       response.status(400).json({
-        error: "hebrewText ist ein erforderliches Feld."
+        error: "hebrewText und halachaNumber sind erforderliche Felder."
       });
       return;
     }
 
-    const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage);
-    
+    const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
+
     logger.info(`Starte Gemini API Anfrage für Sprache: ${targetLanguage}...`);
 
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-pro-latest",
+        model: "gemini-2.5-pro",
         generationConfig: {
+          responseMimeType: "application/json",
           temperature: 0.1,
           topP: 0.8,
           topK: 40,
@@ -117,10 +117,10 @@ export const getHalachaSummary = onRequest(
 
       const result = await model.generateContent(fullPrompt);
       const jsonResponseString = result.response.text();
-      
+
       try {
         const parsedResponse = JSON.parse(jsonResponseString);
-        
+
         // **ÄNDERUNG HIER: Sprache wird zur Antwort hinzugefügt**
         // (Das Modell sollte dies bereits tun, aber wir stellen es hier sicher)
         if (!parsedResponse.language) {

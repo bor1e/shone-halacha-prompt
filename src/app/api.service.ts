@@ -15,10 +15,11 @@ export class ApiService {
     private currentLocale = inject(LOCALE_ID);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
-    generateAnalysis(hebrewText: string): Observable<HalachaSummaryResponse> {
+    generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
         const request: HalachaSummaryRequest = {
             hebrewText,
-            targetLanguage: this.getTargetLanguage()
+            targetLanguage: this.getTargetLanguage(),
+            halachaNumber
         };
 
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
