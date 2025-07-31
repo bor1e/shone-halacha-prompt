@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -12,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
+import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
+import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-prompt-form',
@@ -27,6 +30,7 @@ import { MarkdownPipe } from '../markdown.pipe';
         MatToolbarModule,
         MatIconModule,
         MatTooltipModule,
+        MatDialogModule,
         MarkdownPipe
     ],
     templateUrl: './prompt-form.component.html',
@@ -34,15 +38,29 @@ import { MarkdownPipe } from '../markdown.pipe';
 })
 export class PromptFormComponent {
     private api = inject(ApiService);
+    private dialog = inject(MatDialog);
+    private locale = inject(LOCALE_ID);
 
     hebrewText = signal('');
     isLoading = signal(false);
     summary = signal('');
     error = signal('');
     copied = signal(false);
+    halachaNumber = signal<number | null>(null);
+
+    get textDirection(): 'rtl' | 'ltr' {
+        return ['he', 'ar', 'fa', 'ur'].includes(this.locale) ? 'rtl' : 'ltr';
+    }
 
     updateHebrewText(value: string) {
         this.hebrewText.set(value);
+        // Try to extract halacha number when text changes
+        this.extractHalachaNumber();
+    }
+
+    private extractHalachaNumber(): void {
+        const extractedNumber = HalachaNumberExtractor.extractHalachaNumber(this.hebrewText());
+        this.halachaNumber.set(extractedNumber);
     }
 
     copyToClipboard() {
@@ -54,22 +72,56 @@ export class PromptFormComponent {
         }
     }
 
-    submit() {
+    async submit() {
         if (!this.hebrewText()) {
             this.error.set('Bitte füllen Sie das Textfeld aus.');
             return;
+        }
+
+        // Check if we have a halacha number
+        let finalHalachaNumber = this.halachaNumber();
+
+        if (!finalHalachaNumber) {
+            // Try to extract again
+            this.extractHalachaNumber();
+            finalHalachaNumber = this.halachaNumber();
+
+            if (!finalHalachaNumber) {
+                // Show dialog for manual input
+                const dialogRef = this.dialog.open(HalachaNumberDialogComponent, {
+                    width: '500px',
+                    data: {
+                        hebrewText: this.hebrewText(),
+                    } as HalachaNumberDialogData
+                });
+
+                try {
+                    const result = await dialogRef.afterClosed().toPromise();
+                    if (result && result.halachaNumber) {
+                        finalHalachaNumber = result.halachaNumber;
+                        this.halachaNumber.set(finalHalachaNumber);
+                    } else {
+                        // User cancelled
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Dialog error:', error);
+                    return;
+                }
+            }
         }
 
         this.isLoading.set(true);
         this.error.set('');
         this.summary.set('');
 
-        this.api.generateAnalysis(this.hebrewText()).subscribe({
+        // Pass both Hebrew text and halacha number to the API
+        this.api.generateAnalysis(this.hebrewText(), finalHalachaNumber || undefined).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 this.summary.set(response.summary);
                 this.isLoading.set(false);
             },
-            error: (err) => {
+            error: (err: Error) => {
                 this.error.set('Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.');
                 this.isLoading.set(false);
                 console.error('API Error:', err);
