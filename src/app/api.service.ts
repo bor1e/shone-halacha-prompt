@@ -1,4 +1,4 @@
-import { Injectable, inject, LOCALE_ID } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -8,11 +8,9 @@ import {
     HalachaSummaryResponse
 } from './types/halacha.types';
 
-
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
-    private currentLocale = inject(LOCALE_ID);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
@@ -27,17 +25,26 @@ export class ApiService {
         );
     }
 
-
-
     private getTargetLanguage(): string {
+        // Get the current locale from URL path instead of LOCALE_ID
+        const currentLocale = this.getCurrentLocaleFromUrl();
+
         const languageMap: Record<string, string> = {
-            'de': 'German',
+            'de': 'Deutsch',     // Match your backend expectation
             'en': 'English',
-            'fr': 'French',
-            'he': 'Hebrew',
-            'ru': 'Russian'
+            'fr': 'Français',    // More accurate for your backend
+            'he': 'עברית',       // Hebrew in Hebrew
+            'ru': 'Русский'      // Russian in Russian
         };
-        return languageMap[this.currentLocale] || 'German';
+
+        return languageMap[currentLocale] || 'English';
+    }
+
+    private getCurrentLocaleFromUrl(): string {
+        // Extract locale from current URL path
+        const path = window.location.pathname;
+        const match = path.match(/^\/([a-z]{2})\//);
+        return match ? match[1] : 'en'; // Default to English
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
