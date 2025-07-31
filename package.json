@@ -18,7 +18,8 @@
     "build:fr": "ng build --configuration=production-fr",
     "build:he": "ng build --configuration=production-he",
     "build:ru": "ng build --configuration=production-ru",
-    "build:i18n": "ng build --configuration=production",
+    "build:i18n": "npm run build:de && npm run build:en && npm run build:fr && npm run build:he && npm run build:ru",
+    "build:all": "./scripts/build-all.sh",
     "deploy:firebase": "firebase deploy --only hosting"
   },
   "private": true,

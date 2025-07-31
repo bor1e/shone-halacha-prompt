@@ -29,20 +29,44 @@
     ],
     "rewrites": [
       {
-        "source": "/fr/**",
+        "source": "/",
+        "destination": "/de/index.html"
+      },
+      {
+        "source": "/en",
+        "destination": "/en/index.html"
+      },
+      {
+        "source": "/fr",
         "destination": "/fr/index.html"
+      },
+      {
+        "source": "/he",
+        "destination": "/he/index.html"
+      },
+      {
+        "source": "/ru",
+        "destination": "/ru/index.html"
       },
       {
         "source": "/en/**",
         "destination": "/en/index.html"
       },
       {
-        "source": "/ru/**",
-        "destination": "/ru/index.html"
+        "source": "/fr/**",
+        "destination": "/fr/index.html"
       },
       {
         "source": "/he/**",
         "destination": "/he/index.html"
+      },
+      {
+        "source": "/ru/**",
+        "destination": "/ru/index.html"
+      },
+      {
+        "source": "/de/**",
+        "destination": "/de/index.html"
       },
       {
         "source": "**",

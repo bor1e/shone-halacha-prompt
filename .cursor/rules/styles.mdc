@@ -1,0 +1,100 @@
+---
+globs: *.scss
+alwaysApply: false
+---
+# Style Guide: Thematic Cursor for Jewish Texts
+
+This document outlines the rules for creating and maintaining a custom "yad-style" cursor for this project. The cursor must be elegant, performant, and context-aware, enhancing the experience of reading Jewish texts without compromising usability.
+
+## Core Principles
+
+* **Thematic & Immersive:** The cursor should evoke the feeling of a "yad" (a traditional Torah pointer), connecting the user to the text.
+* **Responsive & Mobile-First:** The experience must be flawless on all devices. Custom cursors should **never** interfere with touch-based interactions.
+* **Context-Aware:** The cursor's appearance must change to provide clear, intuitive feedback based on the element it is hovering over (e.g., text, link, input field).
+* **Performant:** The implementation must be lightweight, avoiding extra HTTP requests and ensuring no performance degradation.
+* **Accessible:** The cursor must not hinder usability, especially for text selection and form interaction. It must be invisible in print media.
+
+---
+
+## Implementation Rules
+
+### 1. Apply Cursors Only to Pointer-Based Devices
+
+The entire set of custom cursor rules **must** be wrapped in a `@media (pointer: fine)` query. This is non-negotiable and ensures that touch-screen devices receive the default native experience.
+
+* **Good:**
+    ```css
+    @media (pointer: fine) {
+      /* All custom cursor rules go here */
+    }
+    ```
+
+### 2. Use Embedded SVG for Cursor Icons
+
+To avoid extra network requests, the cursor icons **must** be defined as SVG data URIs directly within the CSS. These should be stored in CSS Custom Properties (variables) for easy management.
+
+* **Good:**
+    ```css
+    :root {
+      --cursor-yad-default: url('data:image/svg+xml;utf8,<svg>...</svg>') 4 4, auto;
+      --cursor-yad-pointer: url('data:image/svg+xml;utf8,<svg>...</svg>') 4 4, pointer;
+    }
+    ```
+
+### 3. Define Contextual Cursor States
+
+The cursor **must** change its appearance based on context to provide clear user feedback.
+
+* **Default State:** For general browsing over non-interactive text, use a neutral, dark gray yad.
+    * **Good:**
+        ```css
+        html[dir="rtl"] {
+          cursor: var(--cursor-yad-default);
+        }
+        ```
+* **Pointer State:** For interactive elements (`a[href]`, `button`, `[role="button"]`, `label`), use a visually distinct, colored (e.g., Material blue) version of the yad.
+    * **Good:**
+        ```css
+        html[dir="rtl"] a[href],
+        html[dir="rtl"] button {
+          cursor: var(--cursor-yad-pointer);
+        }
+        ```
+* **Text Input State:** For text input fields (`input[type="text"]`, `textarea`), the cursor **must** revert to the standard `text` I-beam cursor for usability.
+    * **Good:**
+        ```css
+        html[dir="rtl"] textarea {
+          cursor: text;
+        }
+        ```
+
+### 4. Scope Styles for RTL and Thematic Content
+
+The primary trigger for the custom cursor should be the `dir="rtl"` attribute on the `<html>` element. Also, provide a fallback class like `.yad-cursor-enabled` for applying the theme on specific LTR pages if needed.
+
+* **Good:**
+    ```css
+    /* Primary rule for Hebrew/RTL pages */
+    html[dir="rtl"] {
+      /* ... */
+    }
+
+    /* Fallback class for manual application */
+    .yad-cursor-enabled {
+      /* ... */
+    }
+    ```
+
+### 5. Ensure Print-Friendliness
+
+All custom cursors **must** be hidden when the page is printed. Use a `@media print` block to reset the cursor on all elements.
+
+* **Good:**
+    ```css
+    @media print {
+      * {
+        cursor: auto !important;
+      }
+    }
+    ```
+

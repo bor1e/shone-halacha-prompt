@@ -1,10 +1,11 @@
-import { Component, LOCALE_ID, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PromptFormComponent } from './prompt-form/prompt-form.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -65,28 +66,21 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  currentLocale = inject(LOCALE_ID);
+  private languageService = inject(LanguageService);
 
-  languages = [
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'he', name: 'עברית', flag: '🇮🇱' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
-  ];
+  get languages() {
+    return this.languageService.languages;
+  }
+
+  get currentLocale(): string {
+    return this.languageService.getCurrentLanguage();
+  }
 
   get isRTL(): boolean {
-    return this.currentLocale === 'he';
+    return this.languageService.isRTL();
   }
 
   switchLanguage(locale: string): void {
-    // For production builds, redirect to language-specific URL
-    const baseUrl = window.location.origin;
-    if (locale === 'de') {
-      window.location.href = baseUrl;
-    } else {
-      const shortLocale = locale.split('-')[0];
-      window.location.href = `${baseUrl}/${shortLocale}`;
-    }
+    this.languageService.switchLanguage(locale);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, signal, inject, LOCALE_ID } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
+import { LanguageService } from '../services/language.service';
 
 @Component({
     selector: 'app-prompt-form',
@@ -38,7 +39,7 @@ import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../compon
 })
 export class PromptFormComponent {
     private api = inject(ApiService);
-    private localeId = inject(LOCALE_ID);
+    private languageService = inject(LanguageService);
     private dialog = inject(MatDialog);
 
     hebrewText = signal('');
@@ -53,7 +54,7 @@ export class PromptFormComponent {
      * @returns 'rtl' for Hebrew, 'ltr' for all others.
      */
     get textDirection(): 'rtl' | 'ltr' {
-        return this.localeId.startsWith('he') ? 'rtl' : 'ltr';
+        return this.languageService.getCurrentLanguage() === 'he' ? 'rtl' : 'ltr';
     }
 
     updateHebrewText(value: string) {
@@ -96,7 +97,7 @@ export class PromptFormComponent {
                     width: '500px',
                     data: {
                         hebrewText: this.hebrewText(),
-                        currentLocale: this.localeId
+                        currentLocale: this.languageService.getCurrentLanguage()
                     } as HalachaNumberDialogData
                 });
 
@@ -126,7 +127,7 @@ export class PromptFormComponent {
                 this.summary.set(response.summary);
                 this.isLoading.set(false);
             },
-            error: (err) => {
+            error: (err: Error) => {
                 this.error.set('Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.');
                 this.isLoading.set(false);
                 console.error('API Error:', err);

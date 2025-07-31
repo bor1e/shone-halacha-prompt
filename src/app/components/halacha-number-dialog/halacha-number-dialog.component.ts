@@ -8,26 +8,26 @@ import { MatButtonModule } from '@angular/material/button';
 import { HalachaNumberExtractor } from '../../utils/halacha-number-extractor';
 
 export interface HalachaNumberDialogData {
-    hebrewText: string;
-    currentLocale: string;
+  hebrewText: string;
+  currentLocale: string;
 }
 
 export interface HalachaNumberDialogResult {
-    halachaNumber: number;
+  halachaNumber: number;
 }
 
 @Component({
-    selector: 'app-halacha-number-dialog',
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'app-halacha-number-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
+  template: `
     <div class="dialog-container" [dir]="isRTL ? 'rtl' : 'ltr'">
       <h2 mat-dialog-title i18n="@@dialog.halacha-number.title">
         Halacha Nummer eingeben
@@ -81,46 +81,46 @@ export interface HalachaNumberDialogResult {
       </mat-dialog-actions>
     </div>
   `,
-    styleUrls: ['./halacha-number-dialog.component.scss']
+  styleUrls: ['./halacha-number-dialog.component.scss']
 })
 export class HalachaNumberDialogComponent {
-    private dialogRef = inject(MatDialogRef<HalachaNumberDialogComponent>);
-    private data = inject(MAT_DIALOG_DATA) as HalachaNumberDialogData;
+  private dialogRef = inject(MatDialogRef<HalachaNumberDialogComponent>);
+  private data = inject(MAT_DIALOG_DATA) as HalachaNumberDialogData;
 
-    halachaNumber: number | null = null;
-    hebrewTextPreview: string = '';
+  halachaNumber: number | null = null;
+  hebrewTextPreview = '';
 
-    constructor() {
-        // Show first 200 characters of the Hebrew text as preview
-        this.hebrewTextPreview = this.data.hebrewText.substring(0, 200);
-        if (this.data.hebrewText.length > 200) {
-            this.hebrewTextPreview += '...';
-        }
+  constructor() {
+    // Show first 200 characters of the Hebrew text as preview
+    this.hebrewTextPreview = this.data.hebrewText.substring(0, 200);
+    if (this.data.hebrewText.length > 200) {
+      this.hebrewTextPreview += '...';
     }
+  }
 
-    get currentLocale(): string {
-        return this.data.currentLocale;
-    }
+  get currentLocale(): string {
+    return this.data.currentLocale;
+  }
 
-    get isRTL(): boolean {
-        return this.currentLocale === 'he';
-    }
+  get isRTL(): boolean {
+    return this.currentLocale === 'he';
+  }
 
-    get isValidNumber(): boolean {
-        if (!this.halachaNumber) return false;
-        return HalachaNumberExtractor.isValidHalachaNumber(this.halachaNumber);
-    }
+  get isValidNumber(): boolean {
+    if (!this.halachaNumber) return false;
+    return HalachaNumberExtractor.isValidHalachaNumber(this.halachaNumber);
+  }
 
-    confirm(): void {
-        if (this.isValidNumber && this.halachaNumber) {
-            const result: HalachaNumberDialogResult = {
-                halachaNumber: this.halachaNumber
-            };
-            this.dialogRef.close(result);
-        }
+  confirm(): void {
+    if (this.isValidNumber && this.halachaNumber) {
+      const result: HalachaNumberDialogResult = {
+        halachaNumber: this.halachaNumber
+      };
+      this.dialogRef.close(result);
     }
+  }
 
-    cancel(): void {
-        this.dialogRef.close();
-    }
+  cancel(): void {
+    this.dialogRef.close();
+  }
 } 

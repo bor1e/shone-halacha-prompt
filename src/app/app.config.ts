@@ -6,6 +6,7 @@ import { LOCALE_ID } from '@angular/core';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { LanguageService } from './services/language.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,13 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
-    { provide: LOCALE_ID, useValue: 'de' }
+    {
+      provide: LOCALE_ID,
+      useFactory: (languageService: LanguageService) => {
+        return languageService.getCurrentLanguage();
+      },
+      deps: [LanguageService]
+    },
+    LanguageService
   ]
 };

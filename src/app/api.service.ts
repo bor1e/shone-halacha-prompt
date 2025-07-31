@@ -1,4 +1,4 @@
-import { Injectable, LOCALE_ID, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -7,12 +7,13 @@ import {
     HalachaSummaryRequest,
     HalachaSummaryResponse
 } from './types/halacha.types';
+import { LanguageService } from './services/language.service';
 
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
-    private currentLocale = inject(LOCALE_ID);
+    private languageService = inject(LanguageService);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
@@ -37,7 +38,7 @@ export class ApiService {
             'he': 'Hebrew',
             'ru': 'Russian'
         };
-        return languageMap[this.currentLocale] || 'German';
+        return languageMap[this.languageService.getCurrentLanguage()] || 'German';
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
