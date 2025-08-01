@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, LOCALE_ID } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -11,12 +11,17 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
+    private locale = inject(LOCALE_ID);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
+        const targetLanguage = this.getTargetLanguage();
+        console.log('Current locale:', this.locale);
+        console.log('Target language:', targetLanguage);
+
         const request: HalachaSummaryRequest = {
             hebrewText,
-            targetLanguage: this.getTargetLanguage(),
+            targetLanguage,
             halachaNumber
         };
 
@@ -26,8 +31,8 @@ export class ApiService {
     }
 
     private getTargetLanguage(): string {
-        // Get the current locale from URL path instead of LOCALE_ID
-        const currentLocale = this.getCurrentLocaleFromUrl();
+        // Use the injected LOCALE_ID instead of URL extraction
+        const currentLocale = this.locale;
 
         const languageMap: Record<string, string> = {
             'de': 'Deutsch',     // Match your backend expectation
@@ -37,14 +42,7 @@ export class ApiService {
             'ru': 'Русский'      // Russian in Russian
         };
 
-        return languageMap[currentLocale] || 'English';
-    }
-
-    private getCurrentLocaleFromUrl(): string {
-        // Extract locale from current URL path
-        const path = window.location.pathname;
-        const match = path.match(/^\/([a-z]{2})\//);
-        return match ? match[1] : 'en'; // Default to English
+        return languageMap[currentLocale] || 'Deutsch'; // Default to German
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {

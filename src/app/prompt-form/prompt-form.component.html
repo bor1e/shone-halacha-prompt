@@ -56,6 +56,10 @@
                         [matTooltip]="copied() ? 'Kopiert!' : 'In Zwischenablage kopieren'" [disabled]="!summary()">
                         <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
                     </button>
+                    <button mat-icon-button [color]="'primary'" (click)="shareWhatsApp()"
+                        [matTooltip]="'Share via WhatsApp'" [disabled]="!summary()">
+                        <mat-icon>send</mat-icon>
+                    </button>
                 </div>
                 <div class="summary-content" [innerHTML]="summary() | markdown"></div>
             </div>
