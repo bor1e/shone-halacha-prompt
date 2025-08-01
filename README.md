@@ -94,8 +94,13 @@ This table tracks the curated set of functional requirements for this project.
    ```bash
    npm install
    ```
+
+3. **Set up Git hooks (optional but recommended):**
+   ```bash
+   npm run setup-hooks
+   ```
    
-   > **Note:** Git hooks are automatically installed during `npm install` to ensure code quality.
+   > **Note:** Git hooks ensure code quality but are not automatically installed to avoid CI conflicts.
 
 3. **Set up Firebase (for backend functions):**
    ```bash
@@ -182,10 +187,13 @@ npm run build      # Build only
 ```
 
 #### Setup for New Developers
-Git hooks are automatically installed during `npm install`. If you need to reinstall them:
+Git hooks are not automatically installed to avoid conflicts with CI/CD pipelines. To install them:
 ```bash
-./scripts/setup-hooks.sh
+npm run setup-hooks
 ```
+
+**CI/CD Compatibility:**
+The pre-push hook automatically detects CI environments (GitHub Actions, Travis CI, CircleCI, GitLab CI) and skips execution to avoid interfering with automated builds.
 
 ### Technology Highlights
 

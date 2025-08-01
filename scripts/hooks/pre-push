@@ -21,6 +21,12 @@ print_warning() {
     echo -e "${YELLOW}⚠️  $1${NC}"
 }
 
+# Check if we're in a CI environment
+if [ -n "$CI" ] || [ -n "$GITHUB_ACTIONS" ] || [ -n "$TRAVIS" ] || [ -n "$CIRCLECI" ] || [ -n "$GITLAB_CI" ]; then
+    echo "🚀 CI environment detected, skipping pre-push hook"
+    exit 0
+fi
+
 # Check if we're in the right directory
 if [ ! -f "package.json" ]; then
     print_error "Not in the project root directory"
