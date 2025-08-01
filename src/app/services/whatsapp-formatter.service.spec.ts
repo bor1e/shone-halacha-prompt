@@ -23,11 +23,11 @@ describe('WhatsAppFormatterService', () => {
 
     describe('formatForWhatsApp', () => {
         it('should return empty string for null input', () => {
-            expect(service.formatForWhatsApp(null as any)).toBe('');
+            expect(service.formatForWhatsApp(null)).toBe('');
         });
 
         it('should return empty string for undefined input', () => {
-            expect(service.formatForWhatsApp(undefined as any)).toBe('');
+            expect(service.formatForWhatsApp(undefined)).toBe('');
         });
 
         it('should return empty string for empty string input', () => {

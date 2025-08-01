@@ -14,7 +14,7 @@ export class WhatsAppFormatterService {
      * @param markdown The markdown text to convert
      * @returns WhatsApp-formatted text
      */
-    formatForWhatsApp(markdown: string): string {
+    formatForWhatsApp(markdown: string | null | undefined): string {
         if (!markdown) return '';
 
         let formatted = markdown;
