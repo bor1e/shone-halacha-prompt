@@ -30,13 +30,22 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/de/index.html"
       }
     ],
     "i18n": {
       "root": "/de"
     },
     "headers": [
+      {
+        "source": "**/index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, max-age=0, must-revalidate"
+          }
+        ]
+      },
       {
         "source": "**/*.@(js|css|map|ico|woff2)",
         "headers": [

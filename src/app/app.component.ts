@@ -21,7 +21,7 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
         <div class="language-switcher desktop-only">
           <button 
             *ngFor="let lang of languages" 
-            [class.active]="lang.code === currentLocale"
+            [class.active]="lang.code === activeAnalysisLanguage"
             (click)="switchLanguage(lang.code)"
             [attr.aria-label]="lang.name"
             mat-button
@@ -43,13 +43,13 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
             <button 
               mat-menu-item 
               *ngFor="let lang of languages" 
-              [class.active]="lang.code === currentLocale"
+              [class.active]="lang.code === activeAnalysisLanguage"
               (click)="switchLanguage(lang.code)"
             >
               <span class="menu-item-content">
                 <span class="flag">{{ lang.flag }}</span>
                 <span class="name">{{ lang.name }}</span>
-                <mat-icon *ngIf="lang.code === currentLocale" class="check-icon">check</mat-icon>
+                <mat-icon *ngIf="lang.code === activeAnalysisLanguage" class="check-icon">check</mat-icon>
               </span>
             </button>
           </mat-menu>
@@ -84,6 +84,13 @@ export class AppComponent {
 
   get isRTL(): boolean {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
+  }
+
+  /**
+   * Get the currently active analysis language
+   */
+  get activeAnalysisLanguage(): string {
+    return this.analysisLanguageService.currentLanguage;
   }
 
   switchLanguage(locale: string): void {
