@@ -8,6 +8,7 @@ import {
     HalachaSummaryResponse
 } from './types/halacha.types';
 import { AnalysisLanguageService } from './services/analysis-language.service';
+import { HalachaNumberExtractor } from './utils/halacha-number-extractor';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -22,18 +23,22 @@ export class ApiService {
 
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
+
+        // Replace double quotes with Hebrew gershayim before sending to API
+        const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText) || hebrewText;
+
         console.info('[ApiService] generateAnalysis called:', {
             locale: this.locale,
             analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,
             halachaNumber,
-            textLength: hebrewText.length,
+            textLength: processedHebrewText.length,
             endpoint: this.endpoint,
             hasOverride: this.analysisLanguageService.hasOverride
         });
 
         const request: HalachaSummaryRequest = {
-            hebrewText,
+            hebrewText: processedHebrewText,
             targetLanguage,
             halachaNumber
         };

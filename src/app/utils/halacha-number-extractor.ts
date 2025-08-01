@@ -65,4 +65,19 @@ export class HalachaNumberExtractor {
     static formatHalachaNumber(number: number): string {
         return `הלכה מספר ${number}`;
     }
+
+    /**
+     * Replaces double quotes with Hebrew gershayim (״) in Hebrew text
+     * Only replaces quotes that are within Hebrew words or surrounded by Hebrew characters
+     * @param text The text to process
+     * @returns Text with double quotes replaced by Hebrew gershayim where appropriate
+     */
+    static replaceQuotesWithGershayim(text: string | null | undefined): string | null | undefined {
+        if (!text) return text;
+
+        // Hebrew character range: \u0590-\u05FF (Hebrew Unicode block)
+        // Only replace quotes that are between Hebrew characters (like ב"ה -> ב״ה)
+        // Don't replace quotes at the beginning or end of phrases
+        return text.replace(/(?<=[\u0590-\u05FF])"(?=[\u0590-\u05FF])/g, '״');
+    }
 } 
