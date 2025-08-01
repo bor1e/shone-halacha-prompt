@@ -28,13 +28,9 @@ main {
     font-family: 'Times New Roman', serif;
     direction: rtl;
     text-align: right;
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
     white-space: nowrap;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin-left: 16px;
 }
 
 .language-switcher {
@@ -107,12 +103,13 @@ main {
         .language-switcher {
             flex-direction: row-reverse;
         }
-
-        .bsd-text {
-            right: auto;
-            left: 16px;
-        }
     }
+}
+
+// RTL support for bsd-text in toolbar
+[dir="rtl"] .bsd-text {
+    margin-left: 0;
+    margin-right: 16px;
 }
 
 /* Responsive design */
@@ -137,7 +134,7 @@ main {
 
     .bsd-text {
         font-size: 1rem;
-        right: 8px;
+        margin-left: 12px;
         color: #ffffff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
@@ -167,8 +164,9 @@ main {
 
     .bsd-text {
         font-size: 0.9rem;
-        right: 4px;
+        margin-left: 8px;
         color: #ffffff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 }
+

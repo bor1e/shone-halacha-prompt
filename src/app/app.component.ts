@@ -11,13 +11,12 @@ import { MatMenuModule } from '@angular/material/menu';
   standalone: true,
   imports: [CommonModule, PromptFormComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
-    <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
+  <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
         <span i18n="@@app.title">Schone Halacha Analyse</span>
-        <span class="bsd-text">בס״ד</span>
+        
         <span class="spacer"></span>
         
-        <!-- Desktop language switcher -->
         <div class="language-switcher desktop-only">
           <button 
             *ngFor="let lang of languages" 
@@ -30,7 +29,6 @@ import { MatMenuModule } from '@angular/material/menu';
           </button>
         </div>
         
-        <!-- Mobile language dropdown -->
         <div class="mobile-only">
           <button 
             mat-icon-button 
@@ -55,6 +53,9 @@ import { MatMenuModule } from '@angular/material/menu';
             </button>
           </mat-menu>
         </div>
+        
+        <span class="bsd-text">בס״ד</span>
+
       </mat-toolbar>
       
       <main>
