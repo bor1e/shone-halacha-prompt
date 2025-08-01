@@ -19,19 +19,19 @@ export class WhatsAppFormatterService {
 
         let formatted = markdown;
 
-        // --- CORRECTED DEFINITIVE ORDER OF OPERATIONS ---
+        // 1. Convert lists FIRST to remove list markers (*) so they don't
+        //    interfere with the italic conversion. This is the key fix.
+        formatted = this.convertLists(formatted);
 
-        // 1. Convert ITALIC first to avoid conflicts with the '*' character.
+        // 2. Convert Markdown italic (*text*) to WhatsApp italic (_text_) FIRST
+        //    to avoid conflicts with bold conversion
         formatted = this.convertItalic(formatted);
 
-        // 2. Convert inline BOLD.
-        formatted = this.convertBold(formatted);
-        
-        // 3. Convert HEADERS to BOLD.
+        // 3. Convert headers to BOLD (after italic to avoid conflicts)
         formatted = this.convertHeadersToBold(formatted);
 
-        // 4. Convert lists.
-        formatted = this.convertLists(formatted);
+        // 4. Now convert Markdown bold (**text**) to WhatsApp bold (*text*)
+        formatted = this.convertBold(formatted);
 
         // 5. Final cleanup.
         formatted = this.cleanupWhitespace(formatted);
@@ -44,8 +44,8 @@ export class WhatsAppFormatterService {
      * Converts markdown headers (e.g. # Title or a line that is only bold) to WhatsApp BOLD.
      */
     private convertHeadersToBold(text: string): string {
-        // Converts # Title, ## Title, etc. to *Title*
-        text = text.replace(/^#{1,6}\s+(.+)$/gm, '*$1*');
+        // Converts # Title, ## Title, etc. to *Title* (trimmed)
+        text = text.replace(/^#{1,6}\s+(.+)$/gm, (match, title) => `*${title.trim()}*`);
         // Converts lines that are only bolded (e.g., **Sources**) to *Sources*
         text = text.replace(/^\*\*(.*?)\*\*$/gm, '*$1*');
         return text;
@@ -65,11 +65,12 @@ export class WhatsAppFormatterService {
      * and avoid interfering with any other formatting.
      */
     private convertItalic(text: string): string {
-        // (?<!\*) - Negative Lookbehind: Ensures the character before the asterisk is not another asterisk.
-        // (?!\*)  - Negative Lookahead: Ensures the character after the asterisk is not another asterisk.
+        // Convert single asterisks to underscores, but avoid:
+        // 1. Asterisks that are part of bold markers (**)
+        // 2. Asterisks that are already part of WhatsApp bold (*text*)
         return text.replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '_$1_');
     }
-    
+
     /**
      * Converts markdown lists to use a consistent bullet point.
      */
