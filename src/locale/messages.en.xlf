@@ -97,6 +97,11 @@
         <target>Halacha Number</target>
       </trans-unit>
       
+      <trans-unit id="analysis.language.label" datatype="html">
+        <source>Analysis Language</source>
+        <target>Analysis Language</target>
+      </trans-unit>
+      
       <trans-unit id="dialog.halacha-number.error" datatype="html">
         <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
         <target>Please enter a valid Halacha number (100-9999).</target>

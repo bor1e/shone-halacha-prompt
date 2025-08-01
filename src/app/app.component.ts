@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { AnalysisLanguageService } from './services/analysis-language.service';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +68,7 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class AppComponent {
   currentLocale = inject(LOCALE_ID);
+  private analysisLanguageService = inject(AnalysisLanguageService);
 
   languages = [
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
@@ -90,6 +92,12 @@ export class AppComponent {
       to: locale,
       currentUrl: window.location.href
     });
+
+    // Reset analysis language to default when switching routes
+    if (this.analysisLanguageService.hasOverride) {
+      console.info('[AppComponent] Resetting analysis language due to route change');
+      this.analysisLanguageService.resetToDefault();
+    }
 
     // This logic correctly reloads the page to the new language path.
     const baseUrl = window.location.origin;

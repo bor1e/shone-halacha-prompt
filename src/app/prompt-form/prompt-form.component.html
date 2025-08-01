@@ -24,6 +24,11 @@
                         required></textarea>
                 </mat-form-field>
 
+                <!-- Analysis Language Selector -->
+                <div class="analysis-language-section">
+                    <app-analysis-language-selector></app-analysis-language-selector>
+                </div>
+
                 <div class="button-container">
                     <button mat-raised-button color="primary" type="submit" [disabled]="isLoading() || !hebrewText()"
                         i18n="@@form.submit-button">

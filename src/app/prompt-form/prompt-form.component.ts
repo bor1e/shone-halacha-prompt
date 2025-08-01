@@ -16,6 +16,8 @@ import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WhatsAppFormatterService } from '../services/whatsapp-formatter.service';
+import { AnalysisLanguageService } from '../services/analysis-language.service';
+import { AnalysisLanguageSelectorComponent } from '../components/analysis-language-selector/analysis-language-selector.component';
 
 @Component({
     selector: 'app-prompt-form',
@@ -32,7 +34,8 @@ import { WhatsAppFormatterService } from '../services/whatsapp-formatter.service
         MatIconModule,
         MatTooltipModule,
         MatDialogModule,
-        MarkdownPipe
+        MarkdownPipe,
+        AnalysisLanguageSelectorComponent
     ],
     templateUrl: './prompt-form.component.html',
     styleUrls: ['./prompt-form.component.scss']
@@ -42,6 +45,7 @@ export class PromptFormComponent {
     private dialog = inject(MatDialog);
     private locale = inject(LOCALE_ID);
     private whatsappFormatter = inject(WhatsAppFormatterService);
+    private analysisLanguageService = inject(AnalysisLanguageService);
 
     hebrewText = signal('');
     isLoading = signal(false);
@@ -49,9 +53,16 @@ export class PromptFormComponent {
     error = signal('');
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
+    currentAnalysisLanguage = signal(this.analysisLanguageService.currentLanguage);
 
     constructor() {
         console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
+
+        // Subscribe to analysis language changes
+        this.analysisLanguageService.currentLanguage$.subscribe(lang => {
+            this.currentAnalysisLanguage.set(lang);
+            console.info('[PromptFormComponent] Analysis language changed to:', lang);
+        });
     }
 
     get textDirection(): 'rtl' | 'ltr' {
@@ -136,6 +147,7 @@ export class PromptFormComponent {
 
         console.info('[PromptFormComponent] Calling API with:', {
             locale: this.locale,
+            analysisLanguage: this.currentAnalysisLanguage(),
             halachaNumber: finalHalachaNumber,
             textLength: this.hebrewText().length
         });
@@ -149,6 +161,7 @@ export class PromptFormComponent {
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,
+                    analysisLanguage: this.currentAnalysisLanguage(),
                     responseLanguage: response.language,
                     summaryLength: response.summary.length
                 });

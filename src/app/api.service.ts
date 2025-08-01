@@ -7,11 +7,13 @@ import {
     HalachaSummaryRequest,
     HalachaSummaryResponse
 } from './types/halacha.types';
+import { AnalysisLanguageService } from './services/analysis-language.service';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
     private locale = inject(LOCALE_ID);
+    private analysisLanguageService = inject(AnalysisLanguageService);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
     constructor() {
@@ -19,13 +21,15 @@ export class ApiService {
     }
 
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
-        const targetLanguage = this.getTargetLanguage();
+        const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
         console.info('[ApiService] generateAnalysis called:', {
             locale: this.locale,
+            analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,
             halachaNumber,
             textLength: hebrewText.length,
-            endpoint: this.endpoint
+            endpoint: this.endpoint,
+            hasOverride: this.analysisLanguageService.hasOverride
         });
 
         const request: HalachaSummaryRequest = {
@@ -39,28 +43,6 @@ export class ApiService {
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)
         );
-    }
-
-    private getTargetLanguage(): string {
-        // Use the injected LOCALE_ID instead of URL extraction
-        const currentLocale = this.locale;
-
-        const languageMap: Record<string, string> = {
-            'de': 'Deutsch',     // Match your backend expectation
-            'en': 'English',
-            'fr': 'Français',    // More accurate for your backend
-            'he': 'עברית',       // Hebrew in Hebrew
-            'ru': 'Русский'      // Russian in Russian
-        };
-
-        const targetLanguage = languageMap[currentLocale] || 'Deutsch'; // Default to German
-        console.info('[ApiService] getTargetLanguage mapping:', {
-            currentLocale,
-            targetLanguage,
-            availableLanguages: Object.keys(languageMap)
-        });
-
-        return targetLanguage;
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
