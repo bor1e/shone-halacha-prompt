@@ -94,6 +94,8 @@ This table tracks the curated set of functional requirements for this project.
    ```bash
    npm install
    ```
+   
+   > **Note:** Git hooks are automatically installed during `npm install` to ensure code quality.
 
 3. **Set up Firebase (for backend functions):**
    ```bash
@@ -159,6 +161,31 @@ The application supports 5 languages with URL-based routing:
 * **Real-time Processing:** Immediate feedback and loading states with error handling
 * **Copy to Clipboard:** One-click copying of generated analysis for external use
 * **Religious Compliance:** Displays בס״ד (B'siyata D'shmaya - "With the help of Heaven") in the upper right corner of the toolbar as required by Jewish tradition
+
+### Quality Assurance
+
+This project maintains high code quality through automated checks:
+
+#### Git Hooks
+- **pre-push**: Automatically runs before `git push` to ensure code quality
+  - 📝 **ESLint**: Code style and quality checks
+  - 🔧 **TypeScript**: Type checking and compilation
+  - 🧪 **Unit Tests**: All tests must pass (34/34)
+  - 🏗️ **Build**: Production build must succeed
+
+#### Manual Quality Checks
+```bash
+npm run pre-push    # Run all quality checks manually
+npm run lint        # ESLint only
+npm test           # Tests only
+npm run build      # Build only
+```
+
+#### Setup for New Developers
+Git hooks are automatically installed during `npm install`. If you need to reinstall them:
+```bash
+./scripts/setup-hooks.sh
+```
 
 ### Technology Highlights
 

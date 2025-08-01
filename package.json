@@ -11,6 +11,7 @@
     "lint": "ng lint",
     "extract-i18n": "ng extract-i18n --output-path src/locale",
     "pre-push": "npm run lint && npx tsc --noEmit && npm test -- --watch=false && npm run build",
+    "postinstall": "chmod +x scripts/setup-hooks.sh && ./scripts/setup-hooks.sh",
     "serve:en": "ng serve --configuration=en",
     "serve:fr": "ng serve --configuration=fr",
     "serve:he": "ng serve --configuration=he",
