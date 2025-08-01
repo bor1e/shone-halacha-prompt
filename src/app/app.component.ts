@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PromptFormComponent } from './prompt-form/prompt-form.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -66,7 +66,7 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  currentLocale: string;
+  currentLocale = inject(LOCALE_ID);
 
   languages = [
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
@@ -76,24 +76,14 @@ export class AppComponent {
     { code: 'ru', name: 'Русский', flag: '🇷🇺' }
   ];
 
-  constructor() {
-    const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    const langCode = pathSegments[0];
-
-    if (langCode && this.languages.some(lang => lang.code === langCode)) {
-      this.currentLocale = langCode;
-    } else {
-      // Default to German if no valid language code is found in the URL path.
-      this.currentLocale = 'de';
-    }
-  }
+  // The constructor is no longer needed for language detection.
 
   get isRTL(): boolean {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
 
   switchLanguage(locale: string): void {
-    // For production builds, redirect to language-specific URL
+    // This logic correctly reloads the page to the new language path.
     const baseUrl = window.location.origin;
     if (locale === 'de') {
       // German is the base URL
