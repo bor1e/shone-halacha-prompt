@@ -77,6 +77,11 @@
         <target>מספר הלכה שחולץ: {0}</target>
       </trans-unit>
       
+      <trans-unit id="form.extracted-halacha-number-label" datatype="html">
+        <source>Extrahierte Halacha-Nummer:</source>
+        <target>מספר הלכה שחולץ:</target>
+      </trans-unit>
+      
       <trans-unit id="dialog.halacha-number.title" datatype="html">
         <source>Halacha Nummer eingeben</source>
         <target>הזן מספר הלכה</target>

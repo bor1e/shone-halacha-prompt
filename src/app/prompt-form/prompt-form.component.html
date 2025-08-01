@@ -11,9 +11,8 @@
                 @if (halachaNumber()) {
                 <div class="halacha-number-display">
                     <mat-icon>info</mat-icon>
-                    <span i18n="@@form.extracted-halacha-number">
-                        Extrahierte Halacha-Nummer: {{ halachaNumber() }}
-                    </span>
+                    <span i18n="@@form.extracted-halacha-number-label">Extrahierte Halacha-Nummer:</span>
+                    <span>&nbsp;{{ halachaNumber() }}</span>
                 </div>
                 }
 

@@ -14,6 +14,11 @@ This application addresses the challenge of converting complex Hebrew halachic t
     * **Goal:** Reduce manual halachic text analysis time by 80% through automated AI processing.
     * **Goal:** Achieve consistent formatting and structure across all generated analyses.
     * **Goal:** Provide accessible halachic content to German-speaking Jewish communities.
+    * **Goal:** Maintain religious compliance by displaying בס״ד (B'siyata D'shmaya) as required by Jewish tradition.
+
+### Religious Requirements
+
+This application follows Jewish religious requirements by prominently displaying בס״ד (B'siyata D'shmaya - "With the help of Heaven") in the upper right corner of the application toolbar. This acknowledgment is a traditional Jewish practice when creating religious or scholarly content, recognizing that all wisdom comes from divine assistance.
 
 ---
 
@@ -90,6 +95,13 @@ This table tracks the curated set of functional requirements for this project.
    npm install
    ```
 
+3. **Set up Git hooks (optional but recommended):**
+   ```bash
+   npm run setup-hooks
+   ```
+   
+   > **Note:** Git hooks ensure code quality but are not automatically installed to avoid CI conflicts.
+
 3. **Set up Firebase (for backend functions):**
    ```bash
    npm install -g firebase-tools
@@ -153,6 +165,35 @@ The application supports 5 languages with URL-based routing:
 * **Modern UI:** Clean, professional interface using Angular Material with Azure Blue theme
 * **Real-time Processing:** Immediate feedback and loading states with error handling
 * **Copy to Clipboard:** One-click copying of generated analysis for external use
+* **Religious Compliance:** Displays בס״ד (B'siyata D'shmaya - "With the help of Heaven") in the upper right corner of the toolbar as required by Jewish tradition
+
+### Quality Assurance
+
+This project maintains high code quality through automated checks:
+
+#### Git Hooks
+- **pre-push**: Automatically runs before `git push` to ensure code quality
+  - 📝 **ESLint**: Code style and quality checks
+  - 🔧 **TypeScript**: Type checking and compilation
+  - 🧪 **Unit Tests**: All tests must pass (34/34)
+  - 🏗️ **Build**: Production build must succeed
+
+#### Manual Quality Checks
+```bash
+npm run pre-push    # Run all quality checks manually
+npm run lint        # ESLint only
+npm test           # Tests only
+npm run build      # Build only
+```
+
+#### Setup for New Developers
+Git hooks are not automatically installed to avoid conflicts with CI/CD pipelines. To install them:
+```bash
+npm run setup-hooks
+```
+
+**CI/CD Compatibility:**
+The pre-push hook automatically detects CI environments (GitHub Actions, Travis CI, CircleCI, GitLab CI) and skips execution to avoid interfering with automated builds.
 
 ### Technology Highlights
 

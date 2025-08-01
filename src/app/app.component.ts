@@ -11,13 +11,12 @@ import { MatMenuModule } from '@angular/material/menu';
   standalone: true,
   imports: [CommonModule, PromptFormComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
-    <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
+  <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
         <span i18n="@@app.title">Schone Halacha Analyse</span>
-        <span class="bsd-text">בס״ד</span>
+        
         <span class="spacer"></span>
         
-        <!-- Desktop language switcher -->
         <div class="language-switcher desktop-only">
           <button 
             *ngFor="let lang of languages" 
@@ -30,7 +29,6 @@ import { MatMenuModule } from '@angular/material/menu';
           </button>
         </div>
         
-        <!-- Mobile language dropdown -->
         <div class="mobile-only">
           <button 
             mat-icon-button 
@@ -55,6 +53,9 @@ import { MatMenuModule } from '@angular/material/menu';
             </button>
           </mat-menu>
         </div>
+        
+        <span class="bsd-text">בס״ד</span>
+
       </mat-toolbar>
       
       <main>
@@ -75,14 +76,17 @@ export class AppComponent {
     { code: 'ru', name: 'Русский', flag: '🇷🇺' }
   ];
 
+  // The constructor is no longer needed for language detection.
+
   get isRTL(): boolean {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
 
   switchLanguage(locale: string): void {
-    // For production builds, redirect to language-specific URL
+    // This logic correctly reloads the page to the new language path.
     const baseUrl = window.location.origin;
     if (locale === 'de') {
+      // German is the base URL
       window.location.href = baseUrl;
     } else {
       const shortLocale = locale.split('-')[0];
