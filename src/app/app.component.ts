@@ -76,7 +76,7 @@ export class AppComponent {
   ];
 
   get isRTL(): boolean {
-    return this.currentLocale === 'he';
+    return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
 
   switchLanguage(locale: string): void {

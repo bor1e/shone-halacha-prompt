@@ -15,6 +15,7 @@ import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { WhatsAppFormatterService } from '../services/whatsapp-formatter.service';
 
 @Component({
     selector: 'app-prompt-form',
@@ -40,6 +41,7 @@ export class PromptFormComponent {
     private api = inject(ApiService);
     private dialog = inject(MatDialog);
     private locale = inject(LOCALE_ID);
+    private whatsappFormatter = inject(WhatsAppFormatterService);
 
     hebrewText = signal('');
     isLoading = signal(false);
@@ -49,9 +51,8 @@ export class PromptFormComponent {
     halachaNumber = signal<number | null>(null);
 
     get textDirection(): 'rtl' | 'ltr' {
-        // Determine text direction based on locale or content
-        // Here, we check if the locale starts with 'he' (Hebrew) for RTL, otherwise LTR
-        return this.locale.startsWith('he') ? 'rtl' : 'ltr';
+        // Determine text direction based on locale
+        return this.locale === 'he' ? 'rtl' : 'ltr';
     }
 
     updateHebrewText(value: string) {
@@ -72,6 +73,20 @@ export class PromptFormComponent {
                 setTimeout(() => this.copied.set(false), 2000);
             });
         }
+    }
+
+    async shareWhatsApp() {
+        const summary = this.summary();
+        if (!summary) return;
+        const formatted = this.whatsappFormatter.formatForWhatsApp(summary);
+        // Copy to clipboard
+        await navigator.clipboard.writeText(formatted);
+        // Open WhatsApp share URL
+        const url = this.whatsappFormatter.createWhatsAppShareUrl(formatted);
+        window.open(url, '_blank');
+        // Visual feedback
+        this.copied.set(true);
+        setTimeout(() => this.copied.set(false), 2000);
     }
 
     async submit() {
