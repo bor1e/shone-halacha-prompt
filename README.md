@@ -14,6 +14,11 @@ This application addresses the challenge of converting complex Hebrew halachic t
     * **Goal:** Reduce manual halachic text analysis time by 80% through automated AI processing.
     * **Goal:** Achieve consistent formatting and structure across all generated analyses.
     * **Goal:** Provide accessible halachic content to German-speaking Jewish communities.
+    * **Goal:** Maintain religious compliance by displaying בס״ד (B'siyata D'shmaya) as required by Jewish tradition.
+
+### Religious Requirements
+
+This application follows Jewish religious requirements by prominently displaying בס״ד (B'siyata D'shmaya - "With the help of Heaven") in the upper right corner of the application toolbar. This acknowledgment is a traditional Jewish practice when creating religious or scholarly content, recognizing that all wisdom comes from divine assistance.
 
 ---
 
@@ -153,6 +158,7 @@ The application supports 5 languages with URL-based routing:
 * **Modern UI:** Clean, professional interface using Angular Material with Azure Blue theme
 * **Real-time Processing:** Immediate feedback and loading states with error handling
 * **Copy to Clipboard:** One-click copying of generated analysis for external use
+* **Religious Compliance:** Displays בס״ד (B'siyata D'shmaya - "With the help of Heaven") in the upper right corner of the toolbar as required by Jewish tradition
 
 ### Technology Highlights
 
