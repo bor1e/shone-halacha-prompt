@@ -66,7 +66,7 @@ import { MatMenuModule } from '@angular/material/menu';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  currentLocale = inject(LOCALE_ID);
+  currentLocale: string;
 
   languages = [
     { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
@@ -76,6 +76,18 @@ export class AppComponent {
     { code: 'ru', name: 'Русский', flag: '🇷🇺' }
   ];
 
+  constructor() {
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const langCode = pathSegments[0];
+
+    if (langCode && this.languages.some(lang => lang.code === langCode)) {
+      this.currentLocale = langCode;
+    } else {
+      // Default to German if no valid language code is found in the URL path.
+      this.currentLocale = 'de';
+    }
+  }
+
   get isRTL(): boolean {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
@@ -84,6 +96,7 @@ export class AppComponent {
     // For production builds, redirect to language-specific URL
     const baseUrl = window.location.origin;
     if (locale === 'de') {
+      // German is the base URL
       window.location.href = baseUrl;
     } else {
       const shortLocale = locale.split('-')[0];
