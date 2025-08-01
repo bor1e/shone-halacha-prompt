@@ -50,6 +50,10 @@ export class PromptFormComponent {
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
 
+    constructor() {
+        console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
+    }
+
     get textDirection(): 'rtl' | 'ltr' {
         // Determine text direction based on locale
         return this.locale === 'he' ? 'rtl' : 'ltr';
@@ -90,6 +94,8 @@ export class PromptFormComponent {
     }
 
     async submit() {
+        console.info('[PromptFormComponent] Submit called with locale_ID:', this.locale);
+
         if (!this.hebrewText()) {
             this.error.set('Bitte füllen Sie das Textfeld aus.');
             return;
@@ -128,6 +134,12 @@ export class PromptFormComponent {
             }
         }
 
+        console.info('[PromptFormComponent] Calling API with:', {
+            locale: this.locale,
+            halachaNumber: finalHalachaNumber,
+            textLength: this.hebrewText().length
+        });
+
         this.isLoading.set(true);
         this.error.set('');
         this.summary.set('');
@@ -135,13 +147,18 @@ export class PromptFormComponent {
         // Pass both Hebrew text and halacha number to the API
         this.api.generateAnalysis(this.hebrewText(), finalHalachaNumber || undefined).subscribe({
             next: (response: HalachaSummaryResponse) => {
+                console.info('[PromptFormComponent] API response received:', {
+                    locale: this.locale,
+                    responseLanguage: response.language,
+                    summaryLength: response.summary.length
+                });
                 this.summary.set(response.summary);
                 this.isLoading.set(false);
             },
             error: (err: Error) => {
+                console.error('[PromptFormComponent] API Error:', err);
                 this.error.set('Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.');
                 this.isLoading.set(false);
-                console.error('API Error:', err);
             }
         });
     }

@@ -76,21 +76,33 @@ export class AppComponent {
     { code: 'ru', name: 'Русский', flag: '🇷🇺' }
   ];
 
-  // The constructor is no longer needed for language detection.
+  constructor() {
+    console.info('[AppComponent] Initialized with locale_ID:', this.currentLocale);
+  }
 
   get isRTL(): boolean {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
 
   switchLanguage(locale: string): void {
+    console.info('[AppComponent] Language switch requested:', {
+      from: this.currentLocale,
+      to: locale,
+      currentUrl: window.location.href
+    });
+
     // This logic correctly reloads the page to the new language path.
     const baseUrl = window.location.origin;
     if (locale === 'de') {
       // German is the base URL
-      window.location.href = baseUrl;
+      const newUrl = baseUrl;
+      console.info('[AppComponent] Redirecting to German (base URL):', newUrl);
+      window.location.href = newUrl;
     } else {
       const shortLocale = locale.split('-')[0];
-      window.location.href = `${baseUrl}/${shortLocale}`;
+      const newUrl = `${baseUrl}/${shortLocale}`;
+      console.info('[AppComponent] Redirecting to localized URL:', newUrl);
+      window.location.href = newUrl;
     }
   }
 }

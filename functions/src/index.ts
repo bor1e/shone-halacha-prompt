@@ -36,7 +36,7 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
 -   **Einleitung und Start:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel. Schreibe **keinen** separaten Einleitungsabsatz.
 -   **Tonalität und Perspektive:**
     -   Verwende durchgehend eine **direkte, inhaltliche Tonalität**. Berichte *über die halachischen Argumente*, nicht *über den Text, der die Argumente enthält*.
-    -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...“, „Diese Analyse zeigt...“, „Der Autor schreibt...“.
+    -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...", „Diese Analyse zeigt...", „Der Autor schreibt...".
 -   **Struktur:** Gliedere die Zusammenfassung **logisch, linear und faktenbasiert**.
 -   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*[...]*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
 -   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-4 der wichtigsten). Markiere relevante Aussagen mit einer hochgestellten Fußnotenzahl (z.B. ¹). Erstelle am Ende einen Abschnitt \`**Quellen**\` mit einer einfachen Liste reiner Zitationen.
@@ -52,13 +52,13 @@ Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sei
 ### Glossar für Einzelbegriffe und Transliteration:
 **Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen und in deiner Ausgabe zu verwenden.
 -   **Transliteration:** Nutze eine passende Transkription für die Zielsprache (z.B. deutsch: sch, z, j).
--   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren“.
+-   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren".
 -   \`פסולת\` (Pesolet) → *das Unbrauchbare*
 -   \`חייב\` (Chajaw) → *schuldig*
 -   \`בהיתר\` (b'Heter) → *in zulässiger Weise*
 -   \`חומרא\` (Chumra) → **die Strenge / die Schwere**
 -   \`לא מיירי אלא\` (lo mairi ella) → *Dies bezieht sich nur auf...*
--   **Gott →** Schreibe den Namen G-ttes immer als „G-tt“.
+-   **Gott →** Schreibe den Namen G-ttes immer als „G-tt".
 
 ### Glossar für wiederkehrende Phrasen:
 -   \`ארבעה צריכין להודות\` → Vier sind zum Danken verpflichtet
@@ -90,6 +90,13 @@ export const getHalachaSummary = onRequest(
 
     const { hebrewText, targetLanguage = "Deutsch", halachaNumber } = request.body;
 
+    logger.info("[Firebase Function] Request received:", {
+      targetLanguage,
+      halachaNumber,
+      textLength: hebrewText?.length || 0,
+      requestBody: request.body
+    });
+
     if (!hebrewText || !halachaNumber) {
       logger.error("Fehlende Daten im Request Body.", { body: request.body });
       response.status(400).json({
@@ -100,7 +107,7 @@ export const getHalachaSummary = onRequest(
 
     const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
 
-    logger.info(`Starte Gemini API Anfrage für Sprache: ${targetLanguage}...`);
+    logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage}...`);
 
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
@@ -124,15 +131,20 @@ export const getHalachaSummary = onRequest(
           parsedResponse.language = targetLanguage;
         }
 
-        logger.info(`Erfolgreich eine valide JSON-Antwort erhalten für Sprache: ${targetLanguage}.`);
+        logger.info(`[Firebase Function] Successfully received valid JSON response for language: ${targetLanguage}.`, {
+          responseLanguage: parsedResponse.language,
+          summaryLength: parsedResponse.summary?.length || 0,
+          id: parsedResponse.id
+        });
+
         response.status(200).json(parsedResponse);
       } catch (parseError) {
-        logger.error("Modell hat eine ungültige JSON-Zeichenkette zurückgegeben.", { rawResponse: jsonResponseString });
+        logger.error("[Firebase Function] Model returned invalid JSON string.", { rawResponse: jsonResponseString });
         response.status(500).json({ error: "Die Antwort des Modells konnte nicht verarbeitet werden." });
       }
 
     } catch (apiError) {
-      logger.error("Fehler bei der Kommunikation mit der Gemini API.", { errorMessage: (apiError as Error).message });
+      logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: (apiError as Error).message });
       response.status(500).json({ error: "Die Zusammenfassung konnte nicht generiert werden." });
     }
   }

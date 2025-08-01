@@ -14,16 +14,27 @@ export class ApiService {
     private locale = inject(LOCALE_ID);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
+    constructor() {
+        console.info('[ApiService] Initialized with locale_ID:', this.locale);
+    }
+
     generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.getTargetLanguage();
-        console.log('Current locale:', this.locale);
-        console.log('Target language:', targetLanguage);
+        console.info('[ApiService] generateAnalysis called:', {
+            locale: this.locale,
+            targetLanguage,
+            halachaNumber,
+            textLength: hebrewText.length,
+            endpoint: this.endpoint
+        });
 
         const request: HalachaSummaryRequest = {
             hebrewText,
             targetLanguage,
             halachaNumber
         };
+
+        console.info('[ApiService] Sending request to function:', request);
 
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)
@@ -42,7 +53,14 @@ export class ApiService {
             'ru': 'Русский'      // Russian in Russian
         };
 
-        return languageMap[currentLocale] || 'Deutsch'; // Default to German
+        const targetLanguage = languageMap[currentLocale] || 'Deutsch'; // Default to German
+        console.info('[ApiService] getTargetLanguage mapping:', {
+            currentLocale,
+            targetLanguage,
+            availableLanguages: Object.keys(languageMap)
+        });
+
+        return targetLanguage;
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
@@ -57,7 +75,7 @@ export class ApiService {
             errorMessage = serverError?.error || `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
 
-        console.error('API Error:', errorMessage);
+        console.error('[ApiService] API Error:', errorMessage);
         return throwError(() => new Error(errorMessage));
     }
 }
