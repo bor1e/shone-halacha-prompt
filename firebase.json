@@ -29,6 +29,22 @@
     ],
     "rewrites": [
       {
+        "source": "/fr/**",
+        "destination": "/fr/index.html"
+      },
+      {
+        "source": "/en/**",
+        "destination": "/en/index.html"
+      },
+      {
+        "source": "/ru/**",
+        "destination": "/ru/index.html"
+      },
+      {
+        "source": "/he/**",
+        "destination": "/he/index.html"
+      },
+      {
         "source": "**",
         "destination": "/de/index.html"
       }
