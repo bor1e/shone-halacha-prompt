@@ -1,4 +1,4 @@
-import { Component, inject, LOCALE_ID } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PromptFormComponent } from './prompt-form/prompt-form.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
