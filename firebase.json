@@ -13,7 +13,7 @@
       ],
       "predeploy": [
         "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build:i18n"
+        "npm --prefix \"$RESOURCE_DIR\" run build"
       ],
       "secrets": [
         "GEMINI_KEY"

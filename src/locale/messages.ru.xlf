@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="app.title" datatype="html">
         <source>Schone Halacha Analyse</source>
-        <target>Анализ Шёне Галаха</target>
+        <target>Анализ Шоне Галаха</target>
       </trans-unit>
       
       <trans-unit id="prompt.title" datatype="html">
