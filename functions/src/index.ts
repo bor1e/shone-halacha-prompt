@@ -2,77 +2,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
+import { createHalachaPrompt } from "./prompts";
 
 const geminiKey = defineString("GEMINI_KEY");
 
-/**
- * Erzeugt einen hochspezialisierten, mehrsprachigen Prompt für ein LLM.
- * @param hebrewText Der hebräische Originaltext der Halacha.
- * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
- * @param halachaNumber Die extrahierte Nummer der Halacha.
- * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
- */
-const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
-### Rolle:
-Du bist ein hochpräziser Bot zur Analyse von Fachtexten. Deine Aufgabe ist es, hebräische halachische Texte zu verarbeiten und das Ergebnis ausschließlich in einem strukturierten JSON-Format zurückzugeben.
-
-### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis **ausschließlich als einzelnes, valides JSON-Objekt** zurück. Die Antwort darf **keine** Markdown-Code-Block-Markierungen wie \`\`\`json oder \`\`\` enthalten, sondern muss direkt mit \`{\` beginnen und mit \`}\` enden. KEINE Code-Block-Markierungen (\`\`\`json oder \`\`\`)
-Die gesamte Analyse im "summary"-Feld muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
-
-### JSON-Struktur:
-{
-  "id": "NUMBER_STRING",
-  "summary": "MARKDOWN_STRING",
-  "original": "HEBREW_STRING",
-  "language": "TARGET_LANGUAGE_STRING"
-}
--   \`id\`: Die Halacha-Nummer, die lautet: "${halachaNumber}".
--   \`summary\`: Ein einzelner String, der die vollständige Analyse in Markdown-Formatierung enthält.
--   \`original\`: Der vollständige, unveränderte hebräische Originaltext.
--   \`language\`: Die Sprache, in der die Zusammenfassung verfasst wurde (z.B. "Deutsch", "English").
-
-### Anweisungen für den Inhalt des "summary"-Feldes:
--   **Einleitung und Start:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel. Schreibe **keinen** separaten Einleitungsabsatz.
--   **Tonalität und Perspektive:**
-    -   Verwende durchgehend eine **direkte, inhaltliche Tonalität**. Berichte *über die halachischen Argumente*, nicht *über den Text, der die Argumente enthält*.
-    -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...", „Diese Analyse zeigt...", „Der Autor schreibt...".
--   **Struktur:** Gliedere die Zusammenfassung **logisch, linear und faktenbasiert**.
--   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*[...]*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
--   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-4 der wichtigsten). Markiere relevante Aussagen mit einer hochgestellten Fußnotenzahl (z.B. ¹). Erstelle am Ende einen Abschnitt \`**Quellen**\` mit einer einfachen Liste reiner Zitationen.
--   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten. **Wichtig:** Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
-
-### Stil- und Formatierungsrichtlinien (für den "summary"-String in Markdown):
--   **Titel:** Der Titel muss dem Format folgen: \`**{Titel in Zielsprache} ${halachaNumber}: {Beschreibender Untertitel}**\`. Übersetze "Halachische Betrachtung" in die Zielsprache (z.B. Englisch: "Halachic Analysis", Französisch: "Analyse Halakhique"). Erstelle einen kurzen, passenden Untertitel.
--   **Hervorhebung:**
-    -   Verwende **Fettdruck** (\`**Wort**\`) für Titel, leitende Fragen sowie für mehrere **wichtige Momente, Kernaussagen und die finale praktische Schlussfolgerung**.
-    -   Verwende *Kursivschrift* (\`*Wort*\`) für hebräische Fachbegriffe im Text, die gesamten Zitationen im Quellenverzeichnis sowie die Begriffe in der Konzeptliste.
--   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen müssen ebenfalls in die Zielsprache übersetzt werden (z.B. "Quellen" -> "Sources", "Relevante Halachische Konzepte" -> "Relevant Halachic Concepts").
-
-### Glossar für Einzelbegriffe und Transliteration:
-**Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen und in deiner Ausgabe zu verwenden.
--   **Transliteration:** Nutze eine passende Transkription für die Zielsprache (z.B. deutsch: sch, z, j).
--   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren".
--   \`פסולת\` (Pesolet) → *das Unbrauchbare*
--   \`חייב\` (Chajaw) → *schuldig*
--   \`בהיתר\` (b'Heter) → *in zulässiger Weise*
--   \`חומרא\` (Chumra) → **die Strenge / die Schwere**
--   \`לא מיירי אלא\` (lo mairi ella) → *Dies bezieht sich nur auf...*
--   **Gott →** Schreibe den Namen G-ttes immer als „G-tt".
-
-### Glossar für wiederkehrende Phrasen:
--   \`ארבעה צריכין להודות\` → Vier sind zum Danken verpflichtet
--   \`חולה שנתרפא\` → Ein Kranker, der geheilt wurde
--   \`חולה שנפל למטה / מוטל במטה\` → Ein Kranker, der ans Bett gefesselt war
--   \`עלה למטה וירד\` → Ans Bett gefesselt wurde und wieder aufstand
--   \`חולי שיש בו סכנה\` → Eine Krankheit, die mit Lebensgefahr verbunden ist
--   \`מכה של חלל\` → Eine lebensbedrohliche Wunde/Krankheit
--   \`כל החולים בחזקת סכנה\` → Alle Kranken haben den Status potenzieller Gefahr
--   \`מוטל במטה יותר מג' ימים\` → Mehr als drei Tage ans Bett gefesselt sein
-
-### EINGABE (Hebräischer Text):
-${hebrewText}
-`;
 
 export const getHalachaSummary = onRequest(
   {
@@ -114,7 +47,7 @@ export const getHalachaSummary = onRequest(
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-pro",
         generationConfig: {
-          responseMimeType: "application/json",
+          responseMimeType: "text/plain",
           temperature: 0.1,
           topP: 0.8,
           topK: 40,
@@ -122,26 +55,13 @@ export const getHalachaSummary = onRequest(
       });
 
       const result = await model.generateContent(fullPrompt);
-      const jsonResponseString = result.response.text();
+      const summary = result.response.text();
 
-      try {
-        const parsedResponse = JSON.parse(jsonResponseString);
+      logger.info(`[Firebase Function] Successfully received summary for language: ${targetLanguage}.`, {
+        summaryLength: summary?.length || 0
+      });
 
-        if (!parsedResponse.language) {
-          parsedResponse.language = targetLanguage;
-        }
-
-        logger.info(`[Firebase Function] Successfully received valid JSON response for language: ${targetLanguage}.`, {
-          responseLanguage: parsedResponse.language,
-          summaryLength: parsedResponse.summary?.length || 0,
-          id: parsedResponse.id
-        });
-
-        response.status(200).json(parsedResponse);
-      } catch (parseError) {
-        logger.error("[Firebase Function] Model returned invalid JSON string.", { rawResponse: jsonResponseString });
-        response.status(500).json({ error: "Die Antwort des Modells konnte nicht verarbeitet werden." });
-      }
+      response.status(200).json({ summary });
 
     } catch (apiError) {
       logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: (apiError as Error).message });

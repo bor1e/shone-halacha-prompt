@@ -162,7 +162,6 @@ export class PromptFormComponent {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,
                     analysisLanguage: this.currentAnalysisLanguage(),
-                    responseLanguage: response.language,
                     summaryLength: response.summary.length
                 });
                 this.summary.set(response.summary);
