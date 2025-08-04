@@ -10,19 +10,15 @@ export const createHalachaPrompt = (hebrewText: string, targetLanguage: string, 
 ### Aufgabe:
 Analysiere den folgenden hebräischen halachischen Text. Deine einzige Aufgabe ist es, eine umfassende, gut strukturierte Zusammenfassung als reinen Markdown-Text zu erstellen. Die gesamte Analyse muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
 
-### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text und gib das Ergebnis als strukturierten Markdown-Text zurück.
-Die gesamte Analyse muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
-
 ### Anweisungen für den Inhalt der Zusammenfassung:
 -   **Einleitung und Start:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel. Schreibe **keinen** separaten Einleitungsabsatz.
 -   **Tonalität und Perspektive:**
     -   Verwende durchgehend eine **direkte, inhaltliche Tonalität**. Berichte *über die halachischen Argumente*, nicht *über den Text, der die Argumente enthält*.
     -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...", „Diese Analyse zeigt...", „Der Autor schreibt...".
 -   **Struktur:** Gliedere die Zusammenfassung **logisch, linear und faktenbasiert**.
--   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*[...]*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
--   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-4 der wichtigsten). Markiere relevante Aussagen mit einer hochgestellten Fußnotenzahl (z.B. ¹). Erstelle am Ende einen Abschnitt \`**Quellen**\` mit einer einfachen Liste reiner Zitationen.
--   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten. **Wichtig:** Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
+-   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*...*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
+-   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-5 der wichtigsten). Markiere relevante Aussagen im Text mit einer **hochgestellten Ziffer** (z.B. so¹). Erstelle am Ende einen Abschnitt \`**Quellen**\`, in dem die Zitationen als **nummerierte Liste** formatiert sind (z.B. \`1. *Zitation...*\`).
+-   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). **Formatiere diesen Abschnitt als Aufzählungsliste (bullet list)**, wobei jeder Begriff ein eigener Listenpunkt ist. Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten. **Wichtig:** Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
 -   **Verwende hebräsische Translitaraion entsprechend der Zielsprache ${targetLanguage}**
 
 ### Stil- und Formatierungsrichtlinien (Markdown):
