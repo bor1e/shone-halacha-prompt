@@ -11,7 +11,7 @@ export interface LanguageOption {
 export class AnalysisLanguageService {
     private locale = inject(LOCALE_ID);
 
-    // Available languages for analysis
+    // Available languages for summary
     private readonly availableLanguages: LanguageOption[] = [
         { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
         { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -32,7 +32,7 @@ export class AnalysisLanguageService {
     // User override (null means use default)
     private userOverride = signal<string | null>(null);
 
-    // Current analysis language (computed from override or default)
+    // Current summary language (computed from override or default)
     private currentAnalysisLanguage = computed(() => {
         return this.userOverride() || this.locale;
     });
@@ -47,19 +47,19 @@ export class AnalysisLanguageService {
         effect(() => {
             const lang = this.currentAnalysisLanguage();
             this.currentLanguageSubject.next(lang);
-            console.info('[AnalysisLanguageService] Analysis language changed to:', lang);
+            console.info('[AnalysisLanguageService] Summary language changed to:', lang);
         });
     }
 
     /**
-     * Get the current analysis language as an Observable
+     * Get the current summary language as an Observable
      */
     get currentLanguage$(): Observable<string> {
         return this.currentLanguageSubject.asObservable();
     }
 
     /**
-     * Get the current analysis language synchronously
+     * Get the current summary language synchronously
      */
     get currentLanguage(): string {
         return this.currentAnalysisLanguage();
@@ -88,7 +88,7 @@ export class AnalysisLanguageService {
     }
 
     /**
-     * Set a user override for analysis language
+     * Set a user override for summary language
      */
     setOverride(locale: string): void {
         if (!this.availableLanguages.find(lang => lang.code === locale)) {
@@ -145,7 +145,7 @@ export class AnalysisLanguageService {
     }
 
     /**
-     * Check if a language is the current analysis language
+     * Check if a language is the current summary language
      */
     isCurrentLanguage(code: string): boolean {
         return this.currentAnalysisLanguage() === code;

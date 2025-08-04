@@ -14,7 +14,7 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
   template: `
   <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
-        <span i18n="@@app.title">Schone Halacha Analyse</span>
+        <span i18n="@@app.title">AI Schone Halacha</span>
         
         <span class="spacer"></span>
         
@@ -87,8 +87,8 @@ export class AppComponent {
   }
 
   /**
-   * Get the currently active analysis language
-   */
+ * Get the currently active summary language
+ */
   get activeAnalysisLanguage(): string {
     return this.analysisLanguageService.currentLanguage;
   }
@@ -100,9 +100,9 @@ export class AppComponent {
       currentUrl: window.location.href
     });
 
-    // Reset analysis language to default when switching routes
+    // Reset summary language to default when switching routes
     if (this.analysisLanguageService.hasOverride) {
-      console.info('[AppComponent] Resetting analysis language due to route change');
+      console.info('[AppComponent] Resetting summary language due to route change');
       this.analysisLanguageService.resetToDefault();
     }
 

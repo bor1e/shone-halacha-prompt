@@ -1,7 +1,7 @@
 <div class="form-container" [dir]="textDirection">
     <mat-card>
         <mat-card-header>
-            <mat-card-title i18n="@@prompt.title">Halacha Prompt Zusammenfassung</mat-card-title>
+            <mat-card-title i18n="@@prompt.title">Gesteuerte AI Halacha Zusammenfassung</mat-card-title>
             <mat-card-subtitle i18n="@@prompt.subtitle">Geben Sie unten Ihren hebräischen Text ein. Die Halacha-Nummer
                 wird automatisch aus dem Text extrahiert.</mat-card-subtitle>
         </mat-card-header>
@@ -24,7 +24,7 @@
                         required></textarea>
                 </mat-form-field>
 
-                <!-- Analysis Language Selector -->
+                <!-- Summary Language Selector -->
                 <div class="analysis-language-section">
                     <app-analysis-language-selector></app-analysis-language-selector>
                 </div>

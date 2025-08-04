@@ -9,25 +9,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AnalysisLanguageService } from '../../services/analysis-language.service';
 
 @Component({
-    selector: 'app-analysis-language-selector',
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule
-    ],
-    template: `
+  selector: 'app-analysis-language-selector',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
+  ],
+  template: `
     <div class="analysis-language-selector">
       <mat-form-field appearance="outline" class="language-field">
         <mat-label i18n="@@analysis.language.label">Sprache auswählen</mat-label>
         <mat-select 
           [value]="currentLanguage()"
           (selectionChange)="onLanguageChange($event.value)"
-          [attr.aria-label]="'Select analysis language'"
+          [attr.aria-label]="'Select summary language'"
         >
           <mat-option 
             *ngFor="let lang of availableLanguages()" 
@@ -58,57 +58,57 @@ import { AnalysisLanguageService } from '../../services/analysis-language.servic
       </button>
     </div>
   `,
-    styleUrls: ['./analysis-language-selector.component.scss']
+  styleUrls: ['./analysis-language-selector.component.scss']
 })
 export class AnalysisLanguageSelectorComponent {
-    private analysisLanguageService = inject(AnalysisLanguageService);
+  private analysisLanguageService = inject(AnalysisLanguageService);
 
-    // Reactive properties
-    currentLanguage = signal(this.analysisLanguageService.currentLanguage);
-    availableLanguages = signal(this.analysisLanguageService.availableLanguageOptions);
-    hasOverride = signal(this.analysisLanguageService.hasOverride);
+  // Reactive properties
+  currentLanguage = signal(this.analysisLanguageService.currentLanguage);
+  availableLanguages = signal(this.analysisLanguageService.availableLanguageOptions);
+  hasOverride = signal(this.analysisLanguageService.hasOverride);
 
-    // Computed properties
-    isDefaultLanguage = (code: string) => this.analysisLanguageService.isDefaultLanguage(code);
+  // Computed properties
+  isDefaultLanguage = (code: string) => this.analysisLanguageService.isDefaultLanguage(code);
 
-    constructor() {
-        console.info('[AnalysisLanguageSelectorComponent] Initialized');
+  constructor() {
+    console.info('[AnalysisLanguageSelectorComponent] Initialized');
 
-        // Subscribe to language changes
-        this.analysisLanguageService.currentLanguage$.subscribe(lang => {
-            this.currentLanguage.set(lang);
-            console.info('[AnalysisLanguageSelectorComponent] Language updated to:', lang);
-        });
+    // Subscribe to language changes
+    this.analysisLanguageService.currentLanguage$.subscribe(lang => {
+      this.currentLanguage.set(lang);
+      console.info('[AnalysisLanguageSelectorComponent] Language updated to:', lang);
+    });
+  }
+
+  /**
+   * Handle language selection change
+   */
+  onLanguageChange(locale: string): void {
+    console.info('[AnalysisLanguageSelectorComponent] Language selection changed:', {
+      from: this.currentLanguage(),
+      to: locale,
+      isDefault: this.analysisLanguageService.isDefaultLanguage(locale)
+    });
+
+    if (this.analysisLanguageService.isDefaultLanguage(locale)) {
+      // If user selects the default language, clear the override
+      this.analysisLanguageService.clearOverride();
+    } else {
+      // Set the override
+      this.analysisLanguageService.setOverride(locale);
     }
 
-    /**
-     * Handle language selection change
-     */
-    onLanguageChange(locale: string): void {
-        console.info('[AnalysisLanguageSelectorComponent] Language selection changed:', {
-            from: this.currentLanguage(),
-            to: locale,
-            isDefault: this.analysisLanguageService.isDefaultLanguage(locale)
-        });
+    // Update local state
+    this.hasOverride.set(this.analysisLanguageService.hasOverride);
+  }
 
-        if (this.analysisLanguageService.isDefaultLanguage(locale)) {
-            // If user selects the default language, clear the override
-            this.analysisLanguageService.clearOverride();
-        } else {
-            // Set the override
-            this.analysisLanguageService.setOverride(locale);
-        }
-
-        // Update local state
-        this.hasOverride.set(this.analysisLanguageService.hasOverride);
-    }
-
-    /**
-     * Reset to the default language
-     */
-    resetToDefault(): void {
-        console.info('[AnalysisLanguageSelectorComponent] Resetting to default language');
-        this.analysisLanguageService.resetToDefault();
-        this.hasOverride.set(this.analysisLanguageService.hasOverride);
-    }
+  /**
+   * Reset to the default language
+   */
+  resetToDefault(): void {
+    console.info('[AnalysisLanguageSelectorComponent] Resetting to default language');
+    this.analysisLanguageService.resetToDefault();
+    this.hasOverride.set(this.analysisLanguageService.hasOverride);
+  }
 } 

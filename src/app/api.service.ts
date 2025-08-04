@@ -21,13 +21,13 @@ export class ApiService {
         console.info('[ApiService] Initialized with locale_ID:', this.locale);
     }
 
-    generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
+    generateSummary(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
 
         // Replace double quotes with Hebrew gershayim before sending to API
         const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText) || hebrewText;
 
-        console.info('[ApiService] generateAnalysis called:', {
+        console.info('[ApiService] generateSummary called:', {
             locale: this.locale,
             analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,

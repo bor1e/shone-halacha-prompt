@@ -43,8 +43,8 @@
       </trans-unit>
       
       <trans-unit id="form.loading" datatype="html">
-        <source>Analyse wird generiert...</source>
-        <target>Analysis is being generated...</target>
+        <source>Zusammenfassung wird generiert...</source>
+        <target>Summary is being generated...</target>
       </trans-unit>
       
       <trans-unit id="error.required" datatype="html">
@@ -98,8 +98,8 @@
       </trans-unit>
       
       <trans-unit id="analysis.language.label" datatype="html">
-        <source>Analysis Language</source>
-        <target>Analysis Language</target>
+        <source>Summary Language</source>
+        <target>Summary Language</target>
       </trans-unit>
       
       <trans-unit id="dialog.halacha-number.error" datatype="html">

@@ -58,10 +58,10 @@ export class PromptFormComponent {
     constructor() {
         console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
 
-        // Subscribe to analysis language changes
+        // Subscribe to summary language changes
         this.analysisLanguageService.currentLanguage$.subscribe(lang => {
             this.currentAnalysisLanguage.set(lang);
-            console.info('[PromptFormComponent] Analysis language changed to:', lang);
+            console.info('[PromptFormComponent] Summary language changed to:', lang);
         });
     }
 
@@ -157,7 +157,7 @@ export class PromptFormComponent {
         this.summary.set('');
 
         // Pass both Hebrew text and halacha number to the API
-        this.api.generateAnalysis(this.hebrewText(), finalHalachaNumber || undefined).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,

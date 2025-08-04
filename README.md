@@ -11,7 +11,7 @@ This application addresses the challenge of converting complex Hebrew halachic t
 * **Problem:** Traditional halachic texts are often inaccessible to non-Hebrew speakers, and manual translation/analysis is time-consuming and inconsistent.
 * **Solution:** An AI-powered application that automatically generates structured, well-formatted halachic analyses in German with proper markdown formatting and scholarly citations.
 * **Key Goals:**
-    * **Goal:** Reduce manual halachic text analysis time by 80% through automated AI processing.
+    * **Goal:** Reduce manual halachic text summary time by 80% through automated AI processing.
     * **Goal:** Achieve consistent formatting and structure across all generated analyses.
     * **Goal:** Provide accessible halachic content to German-speaking Jewish communities.
     * **Goal:** Maintain religious compliance by displaying בס״ד (B'siyata D'shmaya) as required by Jewish tradition.
@@ -36,7 +36,7 @@ This diagram shows how the Schone Halacha system integrates with users and exter
          | Uses                   | Generates              | Processes
          v                        v                        v
 +------------------+     +------------------+     +------------------+
-|   Hebrew Text    |     |  Markdown       |     |  AI Analysis     |
+|   Hebrew Text    |     |  Markdown       |     |  AI Summary     |
 |   Input          |     |  Output         |     |  & Translation   |
 +------------------+     +------------------+     +------------------+
 ```
@@ -64,9 +64,9 @@ This table tracks the curated set of functional requirements for this project.
 | ID      | Status      | Feature                | Requirement Description                                                                | Rationale                                           |
 | :------ | :---------- | :--------------------- | :------------------------------------------------------------------------------------- | :-------------------------------------------------- |
 | REQ-001 | `Done`      | Hebrew Text Input      | As a user, I can input Hebrew halachic text and the halacha number is automatically extracted.              | To provide the source material for AI analysis.     |
-| REQ-002 | `Done`      | AI Analysis            | As a user, I can generate structured analysis in multiple languages using Google Gemini API.          | To automate the translation and analysis process.    |
+| REQ-002 | `Done`      | AI Summary            | As a user, I can generate structured summary in multiple languages using Google Gemini API.          | To automate the translation and summary process.    |
 | REQ-003 | `Done`      | Markdown Rendering     | As a user, I can view beautifully formatted markdown output with proper styling.        | To ensure readability and professional presentation. |
-| REQ-004 | `Done`      | Copy to Clipboard      | As a user, I can copy the generated analysis to clipboard for external use.            | To enable easy sharing and integration with other tools. |
+| REQ-004 | `Done`      | Copy to Clipboard      | As a user, I can copy the generated summary to clipboard for external use.            | To enable easy sharing and integration with other tools. |
 | REQ-005 | `Done`      | Responsive Design      | As a user, I can use the application on desktop and mobile devices.                   | To ensure accessibility across different devices.     |
 | REQ-006 | `Done`      | Error Handling         | As a user, I receive clear error messages when the API fails or input is invalid.      | To provide a robust user experience.                |
 | REQ-007 | `Done`      | Multi-language Support | As a user, I can access the application in German, English, French, Hebrew, and Russian via URL-based routing.         | To make the application accessible to diverse users. |
@@ -146,17 +146,17 @@ The application supports 5 languages with URL-based routing:
 - **Hebrew**: `http://localhost:4203/` or `/he/` in production
 - **Russian**: `http://localhost:4204/` or `/ru/` in production
 
-#### Analysis Process
+#### Summary Process
 1. Navigate to your preferred language version using the URL or language switcher
 2. Paste or type Hebrew halachic text in the input field (the halacha number will be automatically extracted)
 3. If automatic extraction fails, a dialog will prompt you to enter the halacha number manually
-4. Click the "Create Summary" button to generate the analysis in your selected language
+4. Click the "Create Summary" button to generate the summary in your selected language
 5. View the beautifully formatted markdown output
 6. Use the copy button to copy the result to clipboard
 
 ### Features
 
-* **AI-Powered Analysis:** Uses Google Gemini 2.5 Pro for intelligent text processing via Firebase Functions
+* **AI-Powered Summary:** Uses Google Gemini 2.5 Pro for intelligent text processing via Firebase Functions
 * **Multi-language Support:** Full i18n support with URL-based routing for German, English, French, Hebrew, and Russian
 * **Automatic Halacha Number Extraction:** Intelligently extracts halacha numbers from Hebrew text
 * **Manual Number Input:** Fallback dialog for manual halacha number entry when automatic extraction fails
