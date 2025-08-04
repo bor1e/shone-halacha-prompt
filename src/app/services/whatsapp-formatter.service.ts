@@ -1,12 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { AnalysisLanguageService } from './analysis-language.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WhatsAppFormatterService {
+    private analysisLanguageService = inject(AnalysisLanguageService);
 
     private readonly prefix = 'ב״ה';
-    private readonly suffix = 'הרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק';
+
+    /**
+     * Gets the language-specific suffix for WhatsApp sharing
+     */
+    private getSuffix(): string {
+        const currentLanguage = this.analysisLanguageService.currentLanguage;
+
+        const suffixes: Record<string, string> = {
+            'de': 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI',
+            'en': 'Halachic Insights – Chabad Customs\nQ&A on Practical Halacha According to Chabad Tradition\nRabbi Menachem Mendel Nachshon and Rabbi Chaim Eliezer Chitrik\n\nAI-based translation',
+            'fr': 'Études halakhiques – Coutumes Habad\nQuestions-réponses sur la Halakha pratique selon la tradition Habad\nRav Menahem Mendel Nachshon et Rav Haïm Eliezer Chitrik\n\nTraduction basée sur l\'IA',
+            'he': 'שונה הלכה - מנהגי חב"ד\nשו"ת הלכה למעשה עפ"י מנהגי חב"ד\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק\n\nתרגום מבוסס בינה מלאכותית',
+            'ru': 'Галахические размышления – Обычаи Хабада\nВопросы и ответы по практической Галахе по традиции Хабада\nРав Менахем Мендель Нахшон и рав Хаим Элиезер Хитрик\n\nПеревод на основе ИИ'
+        };
+
+        return suffixes[currentLanguage] || suffixes['de']; // Default to German
+    }
 
     /**
      * Converts markdown text to WhatsApp-compatible formatting with both BOLD and ITALIC.
@@ -36,7 +54,7 @@ export class WhatsAppFormatterService {
         // 5. Final cleanup.
         formatted = this.cleanupWhitespace(formatted);
 
-        return `${this.prefix}\n\n${formatted}\n\n${this.suffix}`;
+        return `${this.prefix}\n\n${formatted}\n\n${this.getSuffix()}`;
     }
 
 

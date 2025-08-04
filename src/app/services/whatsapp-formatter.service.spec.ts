@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { WhatsAppFormatterService } from './whatsapp-formatter.service';
 
-// Helper to wrap expected content
+// Helper to wrap expected content with language-specific suffix
 function withPrefixSuffix(content: string): string {
     if (!content) return '';
     const prefix = 'ב״ה';
-    const suffix = 'הרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק';
+    const suffix = 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI';
     return `${prefix}\n\n${content}\n\n${suffix}`;
 }
 
@@ -35,7 +35,7 @@ describe('WhatsAppFormatterService', () => {
         });
 
         it('should return prefix and suffix for whitespace-only input', () => {
-            const expected = 'ב״ה\n\n\n\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק';
+            const expected = 'ב״ה\n\n\n\nHalachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI';
             expect(service.formatForWhatsApp('   \n\t  ')).toBe(expected);
         });
     });
@@ -293,7 +293,7 @@ This is *important* text with _emphasis_.
             const longText = 'A'.repeat(1000);
             const result = service.formatForWhatsApp(longText);
             expect(result).toContain('ב״ה');
-            expect(result).toContain('הרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק');
+            expect(result).toContain('Rabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik');
             expect(result).toContain(longText);
         });
 
