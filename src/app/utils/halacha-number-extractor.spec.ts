@@ -92,4 +92,64 @@ describe('HalachaNumberExtractor', () => {
             expect(result).toBe('הלכה מספר 872');
         });
     });
+
+    describe('replaceQuotesWithGershayim', () => {
+
+        it('should replace double quotes within Hebrew words', () => {
+            const text = 'ב"ה {הלכה מספר 872}';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('ב״ה {הלכה מספר 872}');
+        });
+
+        it('should not replace standalone quotes', () => {
+            const text = '"ב"ה" "הלכה מספר 872"';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('"ב״ה" "הלכה מספר 872"');
+        });
+
+        it('should not replace quotes at the beginning of text', () => {
+            const text = '"ב"ה" הלכה מספר 872';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('"ב״ה" הלכה מספר 872');
+        });
+
+        it('should not replace quotes at the end of text', () => {
+            const text = 'ב"ה הלכה מספר 872"';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('ב״ה הלכה מספר 872"');
+        });
+
+        it('should not replace quotes in mixed context', () => {
+            const text = 'ב"ה "הלכה מספר 872" some "text"';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('ב״ה "הלכה מספר 872" some "text"');
+        });
+
+        it('should not replace quotes in Hebrew phrases', () => {
+            const text = 'ב"ה "הלכה מספר 872" עם "טקסט עברי"';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('ב״ה "הלכה מספר 872" עם "טקסט עברי"');
+        });
+
+        it('should return empty string for empty input', () => {
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim('');
+            expect(result).toBe('');
+        });
+
+        it('should handle null input gracefully', () => {
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(null);
+            expect(result).toBe(null);
+        });
+
+        it('should handle undefined input gracefully', () => {
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(undefined);
+            expect(result).toBe(undefined);
+        });
+
+        it('should not replace existing gershayim', () => {
+            const text = 'ב״ה {הלכה מספר 872} with ״existing״ gershayim';
+            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
+            expect(result).toBe('ב״ה {הלכה מספר 872} with ״existing״ gershayim');
+        });
+    });
 }); 

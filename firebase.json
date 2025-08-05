@@ -13,7 +13,7 @@
       ],
       "predeploy": [
         "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build:i18n"
+        "npm --prefix \"$RESOURCE_DIR\" run build"
       ],
       "secrets": [
         "GEMINI_KEY"
@@ -53,6 +53,15 @@
       "root": "/de"
     },
     "headers": [
+      {
+        "source": "**/index.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, max-age=0, must-revalidate"
+          }
+        ]
+      },
       {
         "source": "**/*.@(js|css|map|ico|woff2)",
         "headers": [

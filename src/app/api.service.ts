@@ -7,42 +7,47 @@ import {
     HalachaSummaryRequest,
     HalachaSummaryResponse
 } from './types/halacha.types';
+import { AnalysisLanguageService } from './services/analysis-language.service';
+import { HalachaNumberExtractor } from './utils/halacha-number-extractor';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
     private locale = inject(LOCALE_ID);
+    private analysisLanguageService = inject(AnalysisLanguageService);
     private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
 
-    generateAnalysis(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
-        const targetLanguage = this.getTargetLanguage();
-        console.log('Current locale:', this.locale);
-        console.log('Target language:', targetLanguage);
+    constructor() {
+        console.info('[ApiService] Initialized with locale_ID:', this.locale);
+    }
+
+    generateSummary(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
+        const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
+
+        // Replace double quotes with Hebrew gershayim before sending to API
+        const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText) || hebrewText;
+
+        console.info('[ApiService] generateSummary called:', {
+            locale: this.locale,
+            analysisLanguage: this.analysisLanguageService.currentLanguage,
+            targetLanguage,
+            halachaNumber,
+            textLength: processedHebrewText.length,
+            endpoint: this.endpoint,
+            hasOverride: this.analysisLanguageService.hasOverride
+        });
 
         const request: HalachaSummaryRequest = {
-            hebrewText,
+            hebrewText: processedHebrewText,
             targetLanguage,
             halachaNumber
         };
 
+        console.info('[ApiService] Sending request to function:', request);
+
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)
         );
-    }
-
-    private getTargetLanguage(): string {
-        // Use the injected LOCALE_ID instead of URL extraction
-        const currentLocale = this.locale;
-
-        const languageMap: Record<string, string> = {
-            'de': 'Deutsch',     // Match your backend expectation
-            'en': 'English',
-            'fr': 'Français',    // More accurate for your backend
-            'he': 'עברית',       // Hebrew in Hebrew
-            'ru': 'Русский'      // Russian in Russian
-        };
-
-        return languageMap[currentLocale] || 'Deutsch'; // Default to German
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
@@ -57,7 +62,7 @@ export class ApiService {
             errorMessage = serverError?.error || `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
 
-        console.error('API Error:', errorMessage);
+        console.error('[ApiService] API Error:', errorMessage);
         return throwError(() => new Error(errorMessage));
     }
 }

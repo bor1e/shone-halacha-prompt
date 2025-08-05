@@ -43,8 +43,8 @@
       </trans-unit>
       
       <trans-unit id="form.loading" datatype="html">
-        <source>Analyse wird generiert...</source>
-        <target>ניתוח נוצר...</target>
+        <source>Zusammenfassung wird generiert...</source>
+        <target>סיכום נוצר...</target>
       </trans-unit>
       
       <trans-unit id="error.required" datatype="html">
@@ -95,6 +95,11 @@
       <trans-unit id="dialog.halacha-number.label" datatype="html">
         <source>Halacha Nummer</source>
         <target>מספר הלכה</target>
+      </trans-unit>
+      
+      <trans-unit id="analysis.language.label" datatype="html">
+        <source>Summary Language</source>
+        <target>שפת הסיכום</target>
       </trans-unit>
       
       <trans-unit id="dialog.halacha-number.error" datatype="html">
