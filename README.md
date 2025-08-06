@@ -141,7 +141,19 @@ The project uses GitHub Actions for automated CI/CD with two main workflows:
   - Test execution
   - Preview deployment to Firebase
 
-#### **3. Conditional Release System**
+#### **3. Manual Deployment Workflows**
+- **Quick Deploy** (`.github/workflows/quick-deploy.yml`): Simple manual deployment
+  - **Trigger**: Manual workflow dispatch
+  - **Options**: Deploy all, frontend only, or functions only
+  - **Use Case**: Quick deployments without releases
+
+- **Manual Deploy** (`.github/workflows/manual-deploy.yml`): Full deployment with releases
+  - **Trigger**: Manual workflow dispatch
+  - **Options**: Deploy type, environment, force release
+  - **Features**: Conditional releases, staging/production environments
+  - **Use Case**: Full deployment with versioning
+
+#### **4. Conditional Release System**
 - **Change Detection**: Automatically detects changes in `functions/` vs `src/` directories
 - **Selective Releases**: Only releases functions when function files are modified
 - **Independent Versioning**: Functions and frontend can have different version numbers
@@ -202,6 +214,12 @@ git commit -m "docs: update README [skip ci]"
 
 # Manual release (if needed)
 npm run semantic-release
+
+# Manual deployments (via GitHub Actions)
+# 1. Go to Actions tab in GitHub
+# 2. Select "Quick Deploy" or "Manual Deploy"
+# 3. Click "Run workflow"
+# 4. Choose deployment options
 ```
 
 ### 🔧 **Environment Configuration**
