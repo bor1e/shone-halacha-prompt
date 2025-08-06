@@ -17,13 +17,13 @@ import { environment } from '../../../environments/environment';
             <mat-icon class="version-icon">info</mat-icon>
             <span i18n="@@footer.version">Version</span>: {{ version }}
           </span>
-          @if (buildDate) {
+          @if (buildDate && environment !== 'production') {
             <span class="build-info">
               <mat-icon class="build-icon">schedule</mat-icon>
               <span i18n="@@footer.build">Build</span>: {{ buildDate }}
             </span>
           }
-          @if (commitHash) {
+          @if (commitHash && environment !== 'production') {
             <span class="commit-info">
               <mat-icon class="commit-icon">code</mat-icon>
               <span i18n="@@footer.commit">Commit</span>: {{ commitHash }}
