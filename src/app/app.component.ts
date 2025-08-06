@@ -1,5 +1,6 @@
 import { Component, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { PromptFormComponent } from './prompt-form/prompt-form.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,17 +8,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { AnalysisLanguageService } from './services/analysis-language.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, PromptFormComponent, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [CommonModule, RouterModule, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
   <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
         <span i18n="@@app.title">AI Schone Halacha</span>
         
         <span class="spacer"></span>
+        
+        @if (!environment.production) {
+          <button 
+            mat-button 
+            routerLink="/design-library"
+            class="design-library-link"
+            [attr.aria-label]="'Design Library'"
+          >
+            <mat-icon>palette</mat-icon>
+            Design Library
+          </button>
+        }
         
         <div class="language-switcher desktop-only">
           @for (lang of languages; track lang.code) {
@@ -65,7 +79,7 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
       </mat-toolbar>
       
       <main>
-        <app-prompt-form></app-prompt-form>
+        <router-outlet></router-outlet>
       </main>
 
       <app-footer></app-footer>
@@ -99,6 +113,10 @@ export class AppComponent {
  */
   get activeAnalysisLanguage(): string {
     return this.analysisLanguageService.currentLanguage;
+  }
+
+  get environment() {
+    return environment;
   }
 
   switchLanguage(locale: string): void {

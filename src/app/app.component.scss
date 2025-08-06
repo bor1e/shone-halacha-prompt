@@ -2,7 +2,8 @@ main {
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
-    min-height: calc(100vh - 64px - 80px); /* Subtract toolbar and footer heights */
+    min-height: calc(100vh - 64px - 80px);
+    /* Subtract toolbar and footer heights */
 }
 
 .mat-mdc-toolbar {
@@ -146,7 +147,8 @@ main {
     }
 
     main {
-        min-height: calc(100vh - 64px - 120px); /* Adjust for mobile footer */
+        min-height: calc(100vh - 64px - 120px);
+        /* Adjust for mobile footer */
     }
 }
 
@@ -176,3 +178,30 @@ main {
     }
 }
 
+/* Design Library Link Styles */
+.design-library-link {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    margin-right: 16px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        margin-right: 4px;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+}
+
+/* RTL support for design library link */
+[dir="rtl"] .design-library-link {
+    margin-right: 0;
+    margin-left: 16px;
+}
