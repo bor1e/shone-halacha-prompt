@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/bor1e/shone-halacha-prompt/compare/v1.1.0...v1.2.0) (2025-08-06)
+
+
+### Features
+
+* add summary level toggle for concise and advanced modes ([d556130](https://github.com/bor1e/shone-halacha-prompt/commit/d55613047441b6b73547863fd76addcd76c21d91))
+* enhance CI/CD workflow and versioning for functions ([4a439da](https://github.com/bor1e/shone-halacha-prompt/commit/4a439da5a6eabe069b33230ce0e296fe761bb315))
+* enhance handling of isAdvancedLevel in API requests ([0eeef29](https://github.com/bor1e/shone-halacha-prompt/commit/0eeef297631efe81fef8b43ba2ac1a33dbaed203))
+
 # [1.1.0](https://github.com/bor1e/shone-halacha-prompt/compare/v1.0.1...v1.1.0) (2025-08-06)
 
 
