@@ -1,6 +1,7 @@
 import { Component, inject, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PromptFormComponent } from './prompt-form/prompt-form.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +11,7 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, PromptFormComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [CommonModule, PromptFormComponent, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
   <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">
@@ -62,6 +63,8 @@ import { AnalysisLanguageService } from './services/analysis-language.service';
       <main>
         <app-prompt-form></app-prompt-form>
       </main>
+
+      <app-footer></app-footer>
     </div>
   `,
   styleUrls: ['./app.component.scss']

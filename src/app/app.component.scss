@@ -2,7 +2,7 @@ main {
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 64px - 80px); /* Subtract toolbar and footer heights */
 }
 
 .mat-mdc-toolbar {
@@ -98,6 +98,8 @@ main {
 
 .app-container {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 
     &[dir="rtl"] {
         .language-switcher {
@@ -141,6 +143,10 @@ main {
 
     .mat-mdc-toolbar {
         padding: 0 8px;
+    }
+
+    main {
+        min-height: calc(100vh - 64px - 120px); /* Adjust for mobile footer */
     }
 }
 
