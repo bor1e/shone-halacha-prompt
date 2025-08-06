@@ -56,3 +56,4 @@ ui-debug.log
 
 # Auto-generated files
 src/app/version.ts
+src/environments/version.ts

@@ -121,6 +121,31 @@
         <source>Bestätigen</source>
         <target>Bestätigen</target>
       </trans-unit>
+      
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <target>Version</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <target>Build</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <target>Commit</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <target>Umgebung</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <target>Quellcode</target>
+      </trans-unit>
     </body>
   </file>
 </xliff> 

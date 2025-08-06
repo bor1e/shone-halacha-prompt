@@ -1,4 +1,4 @@
-import { Component, signal, inject, LOCALE_ID } from '@angular/core';
+import { Component, signal, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -38,7 +38,8 @@ import { AnalysisLanguageSelectorComponent } from '../components/analysis-langua
         AnalysisLanguageSelectorComponent
     ],
     templateUrl: './prompt-form.component.html',
-    styleUrls: ['./prompt-form.component.scss']
+    styleUrls: ['./prompt-form.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PromptFormComponent {
     private api = inject(ApiService);

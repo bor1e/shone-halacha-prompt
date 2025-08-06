@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { VersionService } from '../../services/version.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -16,21 +17,27 @@ import { VersionService } from '../../services/version.service';
             <mat-icon class="version-icon">info</mat-icon>
             <span i18n="@@footer.version">Version</span>: {{ version }}
           </span>
-          <span class="build-info" *ngIf="buildDate">
-            <mat-icon class="build-icon">schedule</mat-icon>
-            <span i18n="@@footer.build">Build</span>: {{ buildDate }}
-          </span>
-          <span class="commit-info" *ngIf="commitHash">
-            <mat-icon class="commit-icon">code</mat-icon>
-            <span i18n="@@footer.commit">Commit</span>: {{ commitHash }}
-          </span>
-          <span class="environment-info" *ngIf="environment !== 'production'">
-            <mat-icon class="environment-icon">developer_mode</mat-icon>
-            <span i18n="@@footer.environment">Environment</span>: {{ environment }}
-          </span>
+          @if (buildDate) {
+            <span class="build-info">
+              <mat-icon class="build-icon">schedule</mat-icon>
+              <span i18n="@@footer.build">Build</span>: {{ buildDate }}
+            </span>
+          }
+          @if (commitHash) {
+            <span class="commit-info">
+              <mat-icon class="commit-icon">code</mat-icon>
+              <span i18n="@@footer.commit">Commit</span>: {{ commitHash }}
+            </span>
+          }
+          @if (environment !== 'production') {
+            <span class="environment-info">
+              <mat-icon class="environment-icon">developer_mode</mat-icon>
+              <span i18n="@@footer.environment">Environment</span>: {{ environment }}
+            </span>
+          }
         </div>
         <div class="footer-links">
-          <a href="https://github.com/your-username/shone-halacha-prompting" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/bor1e/shone-halacha-prompting" target="_blank" rel="noopener noreferrer">
             <mat-icon>code</mat-icon>
             <span i18n="@@footer.source">Source</span>
           </a>
@@ -129,7 +136,8 @@ import { VersionService } from '../../services/version.service';
         justify-content: center;
       }
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
   private versionService = inject(VersionService);
@@ -142,11 +150,11 @@ export class FooterComponent {
     return this.versionService.getBuildDate();
   }
 
-  get environment(): string {
-    return this.versionService.getEnvironment();
-  }
-
   get commitHash(): string | undefined {
     return this.versionService.getCommitHash();
+  }
+
+  get environment(): string {
+    return environment.production ? 'production' : 'development';
   }
 } 

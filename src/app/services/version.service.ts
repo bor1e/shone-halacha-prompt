@@ -1,66 +1,31 @@
 import { Injectable } from '@angular/core';
+import { VERSION_INFO } from '../../environments/version';
 
 export interface VersionInfo {
-  version: string;
-  buildDate: string | null;
-  commitHash?: string;
-  environment: string;
+    version: string;
+    buildDate: string | null;
+    commitHash?: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class VersionService {
-  private versionInfo: VersionInfo = {
-    version: '0.0.0',
-    buildDate: null,
-    environment: 'development'
-  };
+    private versionInfo: VersionInfo = VERSION_INFO;
 
-  constructor() {
-    this.loadVersionInfo();
-  }
-
-  getVersionInfo(): VersionInfo {
-    return { ...this.versionInfo };
-  }
-
-  getVersion(): string {
-    return this.versionInfo.version;
-  }
-
-  getBuildDate(): string | null {
-    return this.versionInfo.buildDate;
-  }
-
-  getEnvironment(): string {
-    return this.versionInfo.environment;
-  }
-
-  getCommitHash(): string | undefined {
-    return this.versionInfo.commitHash;
-  }
-
-  private loadVersionInfo(): void {
-    try {
-      // Try to import the generated version file
-      import('../../version').then(module => {
-        this.versionInfo = module.VERSION_INFO;
-      }).catch(() => {
-        // Fallback to development values if version file doesn't exist
-        this.setDevelopmentVersion();
-      });
-    } catch (error) {
-      // Fallback to development values
-      this.setDevelopmentVersion();
+    getVersionInfo(): VersionInfo {
+        return { ...this.versionInfo };
     }
-  }
 
-  private setDevelopmentVersion(): void {
-    this.versionInfo = {
-      version: '0.0.0',
-      buildDate: new Date().toISOString().split('T')[0],
-      environment: 'development'
-    };
-  }
+    getVersion(): string {
+        return this.versionInfo.version;
+    }
+
+    getBuildDate(): string | null {
+        return this.versionInfo.buildDate;
+    }
+
+    getCommitHash(): string | undefined {
+        return this.versionInfo.commitHash;
+    }
 } 

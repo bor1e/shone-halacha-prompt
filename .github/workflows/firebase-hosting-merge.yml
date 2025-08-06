@@ -36,7 +36,7 @@ jobs:
         run: npm test -- --watch=false
 
       - name: Build project
-        run: npm run build:i18n
+        run: npm run build:prod
 
       - name: Release
         env:
@@ -68,7 +68,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build:i18n
+        run: npm run build:prod
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

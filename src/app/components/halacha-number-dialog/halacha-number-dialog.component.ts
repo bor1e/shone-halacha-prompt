@@ -1,4 +1,4 @@
-import { Component, inject, LOCALE_ID } from '@angular/core';
+import { Component, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -51,17 +51,21 @@ export interface HalachaNumberDialogResult {
             #halachaInput
             (keyup.enter)="confirm()"
           >
-          <mat-error *ngIf="!isValidNumber" i18n="@@dialog.halacha-number.error">
-            Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).
-          </mat-error>
+          @if (!isValidNumber) {
+            <mat-error i18n="@@dialog.halacha-number.error">
+              Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).
+            </mat-error>
+          }
         </mat-form-field>
         
-        <div class="text-preview" *ngIf="hebrewTextPreview">
-          <h4 i18n="@@dialog.halacha-number.preview">Textvorschau:</h4>
-          <div class="preview-content" [dir]="isHebrewText ? 'rtl' : 'ltr'">
-            {{ hebrewTextPreview }}
+        @if (hebrewTextPreview) {
+          <div class="text-preview">
+            <h4 i18n="@@dialog.halacha-number.preview">Textvorschau:</h4>
+            <div class="preview-content" [dir]="isHebrewText ? 'rtl' : 'ltr'">
+              {{ hebrewTextPreview }}
+            </div>
           </div>
-        </div>
+        }
       </mat-dialog-content>
       
       <mat-dialog-actions [align]="isRTL ? 'start' : 'end'">
@@ -80,7 +84,8 @@ export interface HalachaNumberDialogResult {
       </mat-dialog-actions>
     </div>
   `,
-  styleUrls: ['./halacha-number-dialog.component.scss']
+  styleUrls: ['./halacha-number-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HalachaNumberDialogComponent {
   private dialogRef = inject(MatDialogRef<HalachaNumberDialogComponent>);
