@@ -16,11 +16,11 @@ export class WhatsAppFormatterService {
         const currentLanguage = this.analysisLanguageService.currentLanguage;
 
         const suffixes: Record<string, string> = {
-            'de': 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\n⚠️ Zusammenfassung mit KI erstellt, kann Fehler und Ungenauigkeiten enthalten.',
-            'en': 'Halachic Insights – Chabad Customs\nQ&A on Practical Halacha According to Chabad Tradition\nRabbi Menachem Mendel Nachshon and Rabbi Chaim Eliezer Chitrik\n\n⚠️ Summary created with AI, may contain errors and inaccuracies.',
-            'fr': 'Études halakhiques – Coutumes Habad\nQuestions-réponses sur la Halakha pratique selon la tradition Habad\nRav Menahem Mendel Nachshon et Rav Haïm Eliezer Chitrik\n\n⚠️ Résumé créé avec l\'IA, peut contenir des erreurs et des inexactitudes.',
-            'he': 'שונה הלכה - מנהגי חב"ד\nשו"ת הלכה למעשה עפ"י מנהגי חב"ד\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק\n\n⚠️ סיכום נוצר עם בינה מלאכותית, עלול להכיל שגיאות וחוסר דיוק.',
-            'ru': 'Галахические размышления – Обычаи Хабада\nВопросы и ответы по практической Галахе по традиции Хабада\nРав Менахем Мендель Нахшон и рав Хаим Элиезер Хитрик\n\n⚠️ Резюме создано с помощью ИИ, может содержать ошибки и неточности.'
+            'de': 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\n_Zusammenfassung mit KI erstellt, kann Fehler und Ungenauigkeiten enthalten._',
+            'en': 'Halachic Insights – Chabad Customs\nQ&A on Practical Halacha According to Chabad Tradition\nRabbi Menachem Mendel Nachshon and Rabbi Chaim Eliezer Chitrik\n\n_Summary created with AI, may contain errors and inaccuracies._',
+            'fr': 'Études halakhiques – Coutumes Habad\nQuestions-réponses sur la Halakha pratique selon la tradition Habad\nRav Menahem Mendel Nachshon et Rav Haïm Eliezer Chitrik\n\n_Résumé créé avec l\'IA, peut contenir des erreurs et des inexactitudes._',
+            'he': 'שונה הלכה - מנהגי חב"ד\nשו"ת הלכה למעשה עפ"י מנהגי חב"ד\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק\n\n_סיכום נוצר עם בינה מלאכותית, עלול להכיל שגיאות וחוסר דיוק._',
+            'ru': 'Галахические размышления – Обычаи Хабада\nВопросы и ответы по практической Галахе по традиции Хабада\nРав Менахем Мендель Нахшон и рав Хаим Элиезер Хитрик\n\n_Резюме создано с помощью ИИ, может содержать ошибки и неточности._'
         };
 
         return suffixes[currentLanguage] || suffixes['de']; // Default to German
