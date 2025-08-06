@@ -37,7 +37,7 @@ import { environment } from '../../../environments/environment';
           }
         </div>
         <div class="footer-links">
-          <a href="https://github.com/bor1e/shone-halacha-prompting" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/bor1e/shone-halacha-prompt" target="_blank" rel="noopener noreferrer">
             <mat-icon>code</mat-icon>
             <span i18n="@@footer.source">Source</span>
           </a>
