@@ -1,7 +1,46 @@
-main {
-    padding: 20px;
-    max-width: 800px;
+/* 1. Define the main header container style */
+.app-header {
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+    border-bottom: 1px solid #c3e6c3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #2e7d32;
+    /* Set the default text color here */
+}
+
+/* 2. Override mat-toolbar to be transparent */
+.app-header mat-toolbar {
+    // Make the toolbar transparent to let the parent .app-header background show through.
+    background: transparent !important;
+
+    // The text color will be inherited from .app-header, so !important may not be needed.
+    // If you still have issues, you can use it.
+    color: inherit;
+}
+
+.app-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.header-container {
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 24px;
+}
+
+.app-main {
+    flex: 1;
+    background-color: #fafafa;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
     min-height: calc(100vh - 64px - 80px);
     /* Subtract toolbar and footer heights */
 }
@@ -11,6 +50,9 @@ main {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%) !important;
+    color: #2e7d32 !important;
+    border-bottom: 1px solid #c3e6c3;
 }
 
 .app-title {
@@ -25,12 +67,12 @@ main {
 .bsd-text {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #ffffff;
+    color: #2e7d32;
     font-family: 'Times New Roman', serif;
     direction: rtl;
     text-align: right;
     white-space: nowrap;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     margin-left: 16px;
 }
 
@@ -39,38 +81,38 @@ main {
     gap: 8px;
 
     button {
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        background: rgba(255, 255, 255, 0.1);
+        color: #2e7d32;
+        border: 1px solid rgba(46, 125, 50, 0.3);
+        background: rgba(255, 255, 255, 0.7);
         padding: 6px 12px;
         border-radius: 4px;
         font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
         &:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(46, 125, 50, 0.5);
         }
 
         &.active {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(46, 125, 50, 0.7);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     }
 }
 
 .mobile-language-button {
-    color: #ffffff !important;
+    color: #2e7d32 !important;
 
     mat-icon {
         font-size: 24px;
         width: 24px;
         height: 24px;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
 }
 
@@ -131,15 +173,15 @@ main {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #2e7d32;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .bsd-text {
         font-size: 1rem;
         margin-left: 12px;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #2e7d32;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .mat-mdc-toolbar {
@@ -166,29 +208,29 @@ main {
 @media (max-width: 480px) {
     .app-title {
         max-width: 120px;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #2e7d32;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .bsd-text {
         font-size: 0.9rem;
         margin-left: 8px;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        color: #2e7d32;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 }
 
 /* Design Library Link Styles */
 .design-library-link {
-    color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    background: rgba(255, 255, 255, 0.1) !important;
+    color: #2e7d32 !important;
+    border: 1px solid rgba(46, 125, 50, 0.3) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
     margin-right: 16px;
     transition: all 0.2s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-color: rgba(255, 255, 255, 0.5) !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-color: rgba(46, 125, 50, 0.5) !important;
     }
 
     mat-icon {
@@ -196,7 +238,7 @@ main {
         width: 18px;
         height: 18px;
         margin-right: 4px;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
     }
 }
 

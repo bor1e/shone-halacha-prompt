@@ -47,16 +47,17 @@ import { environment } from '../../../environments/environment';
   `,
   styles: [`
     .footer {
-      background-color: #f5f5f5;
-      border-top: 1px solid #e0e0e0;
+      background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+      border-top: 1px solid #c3e6c3;
       padding: 16px 0;
       margin-top: auto;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .footer-content {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
