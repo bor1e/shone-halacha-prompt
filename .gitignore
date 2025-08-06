@@ -53,7 +53,3 @@ firebase-debug.*.log
 .firebaserc
 firestore-debug.log
 ui-debug.log
-
-# Auto-generated files
-src/app/version.ts
-src/environments/version.ts
