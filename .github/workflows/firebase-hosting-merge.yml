@@ -16,6 +16,7 @@ jobs:
     outputs:
       functions-changed: ${{ steps.check.outputs.functions }}
       frontend-changed: ${{ steps.check.outputs.frontend }}
+      any-changed: ${{ steps.check.outputs.any }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,54 +29,25 @@ jobs:
           CONFIG_FILES="angular.json|package.json|package-lock.json|tsconfig.json"
           CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} || echo "")
           
+          FUNCTIONS_CHANGED=false
+          FRONTEND_CHANGED=false
+          
           if echo "$CHANGES" | grep -q "^functions/"; then
-            echo "functions=true" >> $GITHUB_OUTPUT
-          else
-            echo "functions=false" >> $GITHUB_OUTPUT
+            FUNCTIONS_CHANGED=true
           fi
           
           if echo "$CHANGES" | grep -q -E "^src/|($CONFIG_FILES)"; then
-            echo "frontend=true" >> $GITHUB_OUTPUT
-          else
-            echo "frontend=false" >> $GITHUB_OUTPUT
+            FRONTEND_CHANGED=true
           fi
+          
+          echo "functions=$FUNCTIONS_CHANGED" >> $GITHUB_OUTPUT
+          echo "frontend=$FRONTEND_CHANGED" >> $GITHUB_OUTPUT
+          echo "any=$([[ $FUNCTIONS_CHANGED == true || $FRONTEND_CHANGED == true ]] && echo true || echo false)" >> $GITHUB_OUTPUT
 
-  release-functions:
-    name: Release Functions
+  release:
+    name: Release
     needs: detect-changes
-    if: needs.detect-changes.outputs.functions-changed == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: functions/package-lock.json
-
-      - name: Install function dependencies
-        run: cd functions && npm ci
-
-      - name: Build functions
-        run: cd functions && npm run build
-
-      - name: Release Functions
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_ENV: production
-        run: |
-          cd functions
-          npx semantic-release
-
-  release-frontend:
-    name: Release Frontend
-    needs: detect-changes
-    if: needs.detect-changes.outputs.frontend-changed == 'true'
+    if: needs.detect-changes.outputs.any-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -99,7 +71,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Release Frontend
+      - name: Install function dependencies
+        if: needs.detect-changes.outputs.functions-changed == 'true'
+        run: cd functions && npm ci
+
+      - name: Build functions
+        if: needs.detect-changes.outputs.functions-changed == 'true'
+        run: cd functions && npm run build
+
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
@@ -107,8 +87,8 @@ jobs:
 
   deploy:
     name: Deploy to Firebase
-    needs: [detect-changes, release-functions, release-frontend]
-    if: always() && (needs.detect-changes.outputs.functions-changed == 'true' || needs.detect-changes.outputs.frontend-changed == 'true')
+    needs: [detect-changes, release]
+    if: needs.detect-changes.outputs.any-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
