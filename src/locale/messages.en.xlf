@@ -102,6 +102,16 @@
         <target>Analysis Language</target>
       </trans-unit>
       
+      <trans-unit id="toggle.advanced-summary" datatype="html">
+        <source>Fortgeschritte Zusammenfassung</source>
+        <target>Advanced Summary</target>
+      </trans-unit>
+      
+      <trans-unit id="toggle.concise-summary" datatype="html">
+        <source>Kurze Zusammenfassung</source>
+        <target>Concise Summary</target>
+      </trans-unit>
+      
       <trans-unit id="footer.version" datatype="html">
         <source>Version</source>
         <target>Version</target>

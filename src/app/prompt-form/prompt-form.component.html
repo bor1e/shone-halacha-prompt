@@ -24,9 +24,26 @@
                         required></textarea>
                 </mat-form-field>
 
-                <!-- Summary Language Selector -->
-                <div class="analysis-language-section">
-                    <app-analysis-language-selector></app-analysis-language-selector>
+                <!-- Summary Language Selector and Level Toggle -->
+                <div class="controls-section">
+                    <div class="analysis-language-section">
+                        <app-analysis-language-selector></app-analysis-language-selector>
+                    </div>
+
+                    <div class="summary-level-section">
+                        <div class="toggle-container">
+                            <mat-slide-toggle [checked]="isAdvancedLevel()"
+                                (change)="isAdvancedLevel.set($event.checked)" color="primary"
+                                [matTooltip]="isAdvancedLevel() ? 'Switch to concise summary mode' : 'Switch to advanced detailed mode'"
+                                [attr.aria-label]="'Toggle summary level'" class="level-toggle">
+                                @if (isAdvancedLevel()) {
+                                <span i18n="@@toggle.advanced-summary">Fortgeschritte Zusammenfassung</span>
+                                } @else {
+                                <span i18n="@@toggle.concise-summary">Kurze Zusammenfassung</span>
+                                }
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="button-container">

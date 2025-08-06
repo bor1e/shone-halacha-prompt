@@ -21,7 +21,7 @@ export class ApiService {
         console.info('[ApiService] Initialized with locale_ID:', this.locale);
     }
 
-    generateSummary(hebrewText: string, halachaNumber?: number): Observable<HalachaSummaryResponse> {
+    generateSummary(hebrewText: string, halachaNumber?: number, isAdvancedLevel = true): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
 
         // Replace double quotes with Hebrew gershayim before sending to API
@@ -40,7 +40,8 @@ export class ApiService {
         const request: HalachaSummaryRequest = {
             hebrewText: processedHebrewText,
             targetLanguage,
-            halachaNumber
+            halachaNumber,
+            isAdvancedLevel
         };
 
         console.info('[ApiService] Sending request to function:', request);

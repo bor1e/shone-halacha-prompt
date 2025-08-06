@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
-import { createHalachaPrompt } from "./prompts";
+import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
 
 const geminiKey = defineString("GEMINI_KEY");
 
@@ -21,7 +21,7 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const { hebrewText, targetLanguage = "Deutsch", halachaNumber } = request.body;
+    const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel = true } = request.body;
 
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
@@ -38,7 +38,9 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
+    const fullPrompt = isAdvancedLevel
+      ? createHalachaPrompt(hebrewText, targetLanguage, halachaNumber)
+      : createConciseHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
 
     logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage}...`);
 
