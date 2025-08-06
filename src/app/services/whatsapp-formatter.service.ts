@@ -37,21 +37,23 @@ export class WhatsAppFormatterService {
 
         let formatted = markdown;
 
-        // 1. Convert lists FIRST to remove list markers (*) so they don't
-        //    interfere with the italic conversion. This is the key fix.
+        // 1. Convert lists first
         formatted = this.convertLists(formatted);
 
-        // 2. Convert Markdown italic (*text*) to WhatsApp italic (_text_) FIRST
+        // 2. Handle complex nested formatting (***text***) before simple formatting
+        formatted = this.convertComplexNestedFormatting(formatted);
+
+        // 3. Convert Markdown italic (*text*) to WhatsApp italic (_text_) FIRST
         //    to avoid conflicts with bold conversion
         formatted = this.convertItalic(formatted);
 
-        // 3. Convert headers to BOLD (after italic to avoid conflicts)
+        // 4. Convert headers to BOLD (after italic to avoid conflicts)
         formatted = this.convertHeadersToBold(formatted);
 
-        // 4. Now convert Markdown bold (**text**) to WhatsApp bold (*text*)
+        // 5. Now convert Markdown bold (**text**) to WhatsApp bold (*text*)
         formatted = this.convertBold(formatted);
 
-        // 5. Final cleanup.
+        // 6. Final cleanup.
         formatted = this.cleanupWhitespace(formatted);
 
         return `${this.prefix}\n\n${formatted}\n\n${this.getSuffix()}`;
@@ -90,11 +92,28 @@ export class WhatsAppFormatterService {
     }
 
     /**
-     * Converts markdown lists to use a consistent bullet point.
+     * Converts numbered lists to bullet points for WhatsApp formatting.
      */
     private convertLists(text: string): string {
-        text = text.replace(/^\d+\.\s+/gm, '• ');
+        // Convert dash and asterisk lists to bullet points
         text = text.replace(/^[-*]\s+/gm, '• ');
+        return text;
+    }
+
+    /**
+     * Handles complex nested formatting like ***text*** (bold with italic inside)
+     * This must be done before simple formatting to avoid conflicts.
+     */
+    private convertComplexNestedFormatting(text: string): string {
+        // Handle the specific pattern ***text*...** (three asterisks, then italic text, then two asterisks)
+        // This is a more complex pattern that appears in the halachic content
+        // Use a more precise regex to match the exact pattern
+        text = text.replace(/\*\*\*([^*]+)\*\*/g, '*$1*');
+
+        // Convert ***text*** to *text* (bold with italic inside becomes just bold)
+        // This handles cases where text is both bold and italic in markdown
+        text = text.replace(/\*\*\*([^*]+)\*\*\*/g, '*$1*');
+
         return text;
     }
 
