@@ -16,11 +16,11 @@ export class WhatsAppFormatterService {
         const currentLanguage = this.analysisLanguageService.currentLanguage;
 
         const suffixes: Record<string, string> = {
-            'de': 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI',
-            'en': 'Halachic Insights – Chabad Customs\nQ&A on Practical Halacha According to Chabad Tradition\nRabbi Menachem Mendel Nachshon and Rabbi Chaim Eliezer Chitrik\n\nAI-based translation',
-            'fr': 'Études halakhiques – Coutumes Habad\nQuestions-réponses sur la Halakha pratique selon la tradition Habad\nRav Menahem Mendel Nachshon et Rav Haïm Eliezer Chitrik\n\nTraduction basée sur l\'IA',
-            'he': 'שונה הלכה - מנהגי חב"ד\nשו"ת הלכה למעשה עפ"י מנהגי חב"ד\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק\n\nתרגום מבוסס בינה מלאכותית',
-            'ru': 'Галахические размышления – Обычаи Хабада\nВопросы и ответы по практической Галахе по традиции Хабада\nРав Менахем Мендель Нахшон и рав Хаим Элиезер Хитрик\n\nПеревод на основе ИИ'
+            'de': 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\n⚠️ Zusammenfassung mit KI erstellt, kann Fehler und Ungenauigkeiten enthalten.',
+            'en': 'Halachic Insights – Chabad Customs\nQ&A on Practical Halacha According to Chabad Tradition\nRabbi Menachem Mendel Nachshon and Rabbi Chaim Eliezer Chitrik\n\n⚠️ Summary created with AI, may contain errors and inaccuracies.',
+            'fr': 'Études halakhiques – Coutumes Habad\nQuestions-réponses sur la Halakha pratique selon la tradition Habad\nRav Menahem Mendel Nachshon et Rav Haïm Eliezer Chitrik\n\n⚠️ Résumé créé avec l\'IA, peut contenir des erreurs et des inexactitudes.',
+            'he': 'שונה הלכה - מנהגי חב"ד\nשו"ת הלכה למעשה עפ"י מנהגי חב"ד\nהרב מנחם מענדל נחשון והרב חיים אליעזר חיטריק\n\n⚠️ סיכום נוצר עם בינה מלאכותית, עלול להכיל שגיאות וחוסר דיוק.',
+            'ru': 'Галахические размышления – Обычаи Хабада\nВопросы и ответы по практической Галахе по традиции Хабада\nРав Менахем Мендель Нахшон и рав Хаим Элиезер Хитрик\n\n⚠️ Резюме создано с помощью ИИ, может содержать ошибки и неточности.'
         };
 
         return suffixes[currentLanguage] || suffixes['de']; // Default to German
@@ -93,8 +93,13 @@ export class WhatsAppFormatterService {
      * Converts markdown lists to use a consistent bullet point.
      */
     private convertLists(text: string): string {
-        text = text.replace(/^\d+\.\s+/gm, '• ');
+        // Remove blockquotes
+        text = text.replace(/^>\s+/gm, '');
+        // Convert dash and asterisk lists to bullet points
         text = text.replace(/^[-*]\s+/gm, '• ');
+        // Clean up extra spaces in numbered lists
+        text = text.replace(/^(\d+\.)\s+/gm, '$1 ');
+        // Preserve numbered lists (no conversion)
         return text;
     }
 

@@ -5,7 +5,7 @@ import { WhatsAppFormatterService } from './whatsapp-formatter.service';
 function withPrefixSuffix(content: string): string {
     if (!content) return '';
     const prefix = 'ב״ה';
-    const suffix = 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI';
+    const suffix = 'Halachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\n⚠️ Zusammenfassung mit KI erstellt, kann Fehler und Ungenauigkeiten enthalten.';
     return `${prefix}\n\n${content}\n\n${suffix}`;
 }
 
@@ -35,19 +35,19 @@ describe('WhatsAppFormatterService', () => {
         });
 
         it('should return prefix and suffix for whitespace-only input', () => {
-            const expected = 'ב״ה\n\n\n\nHalachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\nÜbersetzung basierend auf KI';
+            const expected = 'ב״ה\n\n\n\nHalachische Betrachtungen – Chabad-Bräuche\nFragen & Antworten zur praktischen Halacha gemäß Chabad-Tradition\nRabbi Menachem Mendel Nachshon und Rabbi Chaim Eliezer Chitrik\n\n⚠️ Zusammenfassung mit KI erstellt, kann Fehler und Ungenauigkeiten enthalten.';
             expect(service.formatForWhatsApp('   \n\t  ')).toBe(expected);
         });
     });
 
     describe('List conversion', () => {
-        it('should convert numbered lists to bullet points', () => {
+        it('should preserve numbered lists', () => {
             const input = `1. First item
 2. Second item
 3. Third item`;
-            const expected = `• First item
-• Second item
-• Third item`;
+            const expected = `1. First item
+2. Second item
+3. Third item`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
         });
 
@@ -75,7 +75,7 @@ describe('WhatsAppFormatterService', () => {
             const input = `1. Numbered item
 - Dash item
 * Asterisk item`;
-            const expected = `• Numbered item
+            const expected = `1. Numbered item
 • Dash item
 • Asterisk item`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
@@ -84,8 +84,8 @@ describe('WhatsAppFormatterService', () => {
         it('should handle lists with extra spaces', () => {
             const input = `1.   Item with spaces
 2.    Another item`;
-            const expected = `• Item with spaces
-• Another item`;
+            const expected = `1. Item with spaces
+2. Another item`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
         });
 
@@ -94,7 +94,7 @@ describe('WhatsAppFormatterService', () => {
 1. But this is a list.
 This is also not a list.`;
             const expected = `This is not a list.
-• But this is a list.
+1. But this is a list.
 This is also not a list.`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
         });
@@ -214,9 +214,9 @@ This is *important* text with _emphasis_.
 
 *Sources*
 
-• *Shu"t Arugot Moseh*
-• _Minchat Yitzchak_
-• *Rambam* with _commentary_`;
+1. *Shu"t Arugot Moseh*
+2. _Minchat Yitzchak_
+3. *Rambam* with _commentary_`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
         });
 
@@ -224,9 +224,9 @@ This is *important* text with _emphasis_.
             const input = `1. **Bold item**
 2. *Italic item*
 3. **Bold with *italic***`;
-            const expected = `• *Bold item*
-• _Italic item_
-• *Bold with *italic**`;
+            const expected = `1. *Bold item*
+2. _Italic item_
+3. *Bold with *italic**`;
             expect(service.formatForWhatsApp(input)).toBe(withPrefixSuffix(expected));
         });
     });
