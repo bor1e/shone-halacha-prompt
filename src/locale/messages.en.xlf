@@ -98,8 +98,33 @@
       </trans-unit>
       
       <trans-unit id="analysis.language.label" datatype="html">
-        <source>Summary Language</source>
-        <target>Summary Language</target>
+        <source>Analyse Sprache</source>
+        <target>Analysis Language</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <target>Version</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <target>Build</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <target>Commit</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <target>Environment</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <target>Source</target>
       </trans-unit>
       
       <trans-unit id="dialog.halacha-number.error" datatype="html">

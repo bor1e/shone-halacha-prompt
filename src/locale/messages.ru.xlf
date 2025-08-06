@@ -121,6 +121,31 @@
         <source>Bestätigen</source>
         <target>Подтвердить</target>
       </trans-unit>
+      
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <target>Версия</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <target>Сборка</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <target>Коммит</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <target>Окружение</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <target>Исходный код</target>
+      </trans-unit>
     </body>
   </file>
 </xliff> 

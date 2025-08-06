@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,36 +29,41 @@ import { AnalysisLanguageService } from '../../services/analysis-language.servic
           (selectionChange)="onLanguageChange($event.value)"
           [attr.aria-label]="'Select summary language'"
         >
-          <mat-option 
-            *ngFor="let lang of availableLanguages()" 
-            [value]="lang.code"
-            [class.default-option]="isDefaultLanguage(lang.code)"
-          >
-            <span class="option-content">
-              <span class="flag">{{ lang.flag }}</span>
-              <span class="name">{{ lang.name }}</span>
-              <span *ngIf="isDefaultLanguage(lang.code)" class="default-indicator">
-                (Default)
+          @for (lang of availableLanguages(); track lang.code) {
+            <mat-option 
+              [value]="lang.code"
+              [class.default-option]="isDefaultLanguage(lang.code)"
+            >
+              <span class="option-content">
+                <span class="flag">{{ lang.flag }}</span>
+                <span class="name">{{ lang.name }}</span>
+                @if (isDefaultLanguage(lang.code)) {
+                  <span class="default-indicator">
+                    (Default)
+                  </span>
+                }
               </span>
-            </span>
-          </mat-option>
+            </mat-option>
+          }
         </mat-select>
         <mat-icon matSuffix>translate</mat-icon>
       </mat-form-field>
 
-      <button 
-        *ngIf="hasOverride()"
-        mat-icon-button 
-        (click)="resetToDefault()"
-        [matTooltip]="'Reset to default language'"
-        class="reset-button"
-        [attr.aria-label]="'Reset to default language'"
-      >
-        <mat-icon>refresh</mat-icon>
-      </button>
+      @if (hasOverride()) {
+        <button 
+          mat-icon-button 
+          (click)="resetToDefault()"
+          [matTooltip]="'Reset to default language'"
+          class="reset-button"
+          [attr.aria-label]="'Reset to default language'"
+        >
+          <mat-icon>refresh</mat-icon>
+        </button>
+      }
     </div>
   `,
-  styleUrls: ['./analysis-language-selector.component.scss']
+  styleUrls: ['./analysis-language-selector.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnalysisLanguageSelectorComponent {
   private analysisLanguageService = inject(AnalysisLanguageService);

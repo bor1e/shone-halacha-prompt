@@ -121,6 +121,31 @@
         <source>Bestätigen</source>
         <target>אישור</target>
       </trans-unit>
+      
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <target>גרסה</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <target>בנייה</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <target>קומיט</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <target>סביבה</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <target>קוד מקור</target>
+      </trans-unit>
     </body>
   </file>
 </xliff> 

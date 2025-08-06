@@ -74,6 +74,149 @@ This table tracks the curated set of functional requirements for this project.
 
 ---
 
+## 5. DevOps & CI/CD
+
+This project implements a comprehensive DevOps pipeline with automated versioning, testing, and deployment.
+
+### 🚀 **Auto-Versioning with Conventional Commits**
+
+The project uses [semantic-release](https://semantic-release.gitbook.io/) to automatically version and release based on conventional commits.
+
+#### **How It Works:**
+1. **Conventional Commits**: All commits follow the [Conventional Commits](https://www.conventionalcommits.org/) specification
+2. **Automatic Versioning**: When merged to `main`, semantic-release analyzes commit messages and determines the next version
+3. **Automatic Releases**: Creates GitHub releases with changelogs and tags
+
+#### **Commit Types & Version Impact:**
+
+| Type | Description | Version Impact |
+|------|-------------|----------------|
+| `feat` | New features | Minor version bump |
+| `fix` | Bug fixes | Patch version bump |
+| `docs` | Documentation changes | No version bump |
+| `style` | Code style changes | No version bump |
+| `refactor` | Code refactoring | No version bump |
+| `perf` | Performance improvements | Patch version bump |
+| `test` | Adding or updating tests | No version bump |
+| `build` | Build system changes | No version bump |
+| `ci` | CI/CD changes | No version bump |
+| `chore` | Maintenance tasks | No version bump |
+| `revert` | Reverting previous commits | Patch version bump |
+
+#### **Breaking Changes:**
+Add `!:` after type to trigger major version bump:
+```bash
+git commit -m "feat!: breaking change description"
+```
+
+### 🔄 **GitHub Actions Workflow**
+
+The project uses GitHub Actions for automated CI/CD with two main workflows:
+
+#### **1. Release & Deploy Workflow** (`.github/workflows/firebase-hosting-merge.yml`)
+- **Trigger**: Push to `main` branch
+- **Jobs**:
+  - **Release**: Runs semantic-release to create versions and GitHub releases
+  - **Deploy**: Deploys to Firebase Hosting after successful release
+- **Features**:
+  - Automatic versioning based on conventional commits
+  - GitHub release creation with changelogs
+  - Firebase deployment with multi-language support
+  - Node.js caching for faster builds
+
+#### **2. Pull Request Workflow** (`.github/workflows/firebase-hosting-pull-request.yml`)
+- **Trigger**: Pull requests to `main`
+- **Purpose**: Preview deployments for PR validation
+- **Features**:
+  - Build validation
+  - Test execution
+  - Preview deployment to Firebase
+
+### 🛡️ **Code Quality & Validation**
+
+#### **Git Hooks (Husky)**
+- **Pre-commit**: Fast validation (linting + TypeScript)
+- **Commit-msg**: Conventional commit format validation
+- **Pre-push**: Comprehensive validation (linting + TypeScript + tests + build)
+
+#### **Validation Tools**
+- **ESLint**: Code style and quality enforcement
+- **TypeScript**: Strict type checking
+- **Jasmine/Karma**: Unit testing framework
+- **Commitlint**: Conventional commit validation
+
+### 📋 **Quality Assurance Pipeline**
+
+```mermaid
+graph LR
+    A[Developer] --> B[Pre-commit Hook]
+    B --> C[Lint + TypeScript]
+    C --> D[Commit]
+    D --> E[Pre-push Hook]
+    E --> F[Lint + TypeScript + Tests + Build]
+    F --> G[Push to Remote]
+    G --> H[GitHub Actions]
+    H --> I[Release Job]
+    I --> J[Semantic Release]
+    J --> K[Create GitHub Release]
+    K --> L[Deploy Job]
+    L --> M[Firebase Deployment]
+```
+
+### 🛠️ **DevOps Commands**
+
+```bash
+# Setup development environment
+npm install
+npm run setup-husky
+
+# Quality checks
+npm run lint              # ESLint validation
+npm test                  # Run tests
+npm run build            # Production build
+npm run pre-push         # All quality checks
+
+# Conventional commits
+git commit -m "feat: add new feature"
+git commit -m "fix: resolve bug"
+git commit -m "docs: update documentation"
+
+# Skip validation (emergency only)
+git commit --no-verify -m "emergency fix"
+git commit -m "docs: update README [skip ci]"
+
+# Manual release (if needed)
+npm run semantic-release
+```
+
+### 🔧 **Environment Configuration**
+
+#### **Required Secrets (GitHub)**
+- `GITHUB_TOKEN`: For GitHub API access
+- `FIREBASE_SERVICE_ACCOUNT_SHONE_HALACHOT`: Firebase deployment credentials
+
+#### **Firebase Configuration**
+- **Project ID**: `fir-prompting`
+- **Hosting**: Multi-language deployment
+- **Functions**: AI processing backend
+- **Environment**: Production-ready with proper security
+
+### 📊 **Monitoring & Observability**
+
+- **GitHub Releases**: Automatic changelog generation
+- **Firebase Analytics**: User behavior tracking
+- **Error Monitoring**: Firebase Crashlytics integration
+- **Performance**: Lighthouse CI integration
+
+### 🚨 **Security & Compliance**
+
+- **Dependency Scanning**: Automated vulnerability detection
+- **Code Scanning**: GitHub CodeQL integration
+- **Secret Scanning**: Automatic secret detection
+- **Branch Protection**: Required reviews and status checks
+
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -98,22 +241,23 @@ This table tracks the curated set of functional requirements for this project.
 3. **Set up Git hooks (optional but recommended):**
    ```bash
    npm run setup-hooks
+   npm run setup-husky
    ```
    
    > **Note:** Git hooks ensure code quality but are not automatically installed to avoid CI conflicts.
 
-3. **Set up Firebase (for backend functions):**
+4. **Set up Firebase (for backend functions):**
    ```bash
    npm install -g firebase-tools
    firebase login
    firebase init functions
    ```
 
-4. **Configure environment variables:**
+5. **Configure environment variables:**
    - Set `GEMINI_KEY` in Firebase Functions environment
    - Configure Firebase project settings
 
-5. **Run the application:**
+6. **Run the application:**
    ```bash
    # Development (German - default)
    npm start
@@ -172,11 +316,9 @@ The application supports 5 languages with URL-based routing:
 This project maintains high code quality through automated checks:
 
 #### Git Hooks
-- **pre-push**: Automatically runs before `git push` to ensure code quality
-  - 📝 **ESLint**: Code style and quality checks
-  - 🔧 **TypeScript**: Type checking and compilation
-  - 🧪 **Unit Tests**: All tests must pass (34/34)
-  - 🏗️ **Build**: Production build must succeed
+- **pre-commit**: Fast validation (linting + TypeScript)
+- **commit-msg**: Conventional commit format validation
+- **pre-push**: Comprehensive validation (linting + TypeScript + tests + build)
 
 #### Manual Quality Checks
 ```bash
@@ -190,6 +332,7 @@ npm run build      # Build only
 Git hooks are not automatically installed to avoid conflicts with CI/CD pipelines. To install them:
 ```bash
 npm run setup-hooks
+npm run setup-husky
 ```
 
 **CI/CD Compatibility:**
@@ -205,3 +348,6 @@ The pre-push hook automatically detects CI environments (GitHub Actions, Travis 
 * **SCSS:** Advanced styling with responsive design and RTL support
 * **Modern Testing:** Comprehensive test suite with modern Angular testing patterns
 * **ESLint:** Code quality enforcement with Angular-specific rules
+* **Semantic Release:** Automated versioning and release management
+* **GitHub Actions:** Comprehensive CI/CD pipeline
+* **Firebase Hosting:** Multi-language deployment with automatic scaling
