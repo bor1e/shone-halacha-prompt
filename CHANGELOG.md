@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/bor1e/shone-halacha-prompt/compare/v1.0.0...v1.0.1) (2025-08-06)
+
+
+### Bug Fixes
+
+* update WhatsAppFormatterService to enhance list formatting and suffix translations ([9036647](https://github.com/bor1e/shone-halacha-prompt/commit/9036647c9d3b7581254e1296bf328d86d4be49df))
+
 # 1.0.0 (2025-08-06)
 
 
