@@ -53,3 +53,4 @@ firebase-debug.*.log
 .firebaserc
 firestore-debug.log
 ui-debug.log
+src/environments/version.ts
