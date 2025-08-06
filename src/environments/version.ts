@@ -1,5 +1,6 @@
+// This file is auto-generated during build. Do not edit manually.
 export const VERSION_INFO = {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "buildDate": "2025-08-06",
-  "commitHash": "1668b97"
+  "commitHash": "d750a3f"
 };
