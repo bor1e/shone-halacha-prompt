@@ -32,20 +32,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Prebuild version
-        run: npm run prebuild-version
-
       - name: Run tests
         run: npm test -- --watch=false
-
-      - name: Build project
-        run: npm run build:prod
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
         run: npx semantic-release
+
+      - name: Prebuild version with semantic version
+        run: |
+          # Get the latest version from git tags (set by semantic-release)
+          VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          echo "Using semantic version: $VERSION"
+          SEMANTIC_RELEASE_VERSION=$VERSION npm run prebuild-version
+
+      - name: Build project
+        run: npm run build:prod
 
   deploy:
     name: Deploy to Firebase
@@ -69,6 +73,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Prebuild version with semantic version
+        run: |
+          # Get the latest version from git tags (set by semantic-release)
+          VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+          echo "Using semantic version: $VERSION"
+          SEMANTIC_RELEASE_VERSION=$VERSION npm run prebuild-version
 
       - name: Build project
         run: npm run build:prod
