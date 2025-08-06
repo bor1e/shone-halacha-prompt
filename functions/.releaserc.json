@@ -1,4 +1,5 @@
 {
+    "tagFormat": "functions-v${version}",
     "branches": [
         "main"
     ],
