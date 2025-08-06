@@ -3,6 +3,7 @@ export interface HalachaSummaryRequest {
     hebrewText: string;
     targetLanguage?: string;
     halachaNumber?: number;
+    isAdvancedLevel?: boolean;
 }
 
 // Response interface matching your Firebase function

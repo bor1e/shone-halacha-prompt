@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
@@ -33,6 +34,7 @@ import { AnalysisLanguageSelectorComponent } from '../components/analysis-langua
         MatToolbarModule,
         MatIconModule,
         MatTooltipModule,
+        MatSlideToggleModule,
         MatDialogModule,
         MarkdownPipe,
         AnalysisLanguageSelectorComponent
@@ -55,14 +57,20 @@ export class PromptFormComponent {
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
     currentAnalysisLanguage = signal(this.analysisLanguageService.currentLanguage);
+    isAdvancedLevel = signal(true);
 
     constructor() {
         console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
 
         // Subscribe to summary language changes
-        this.analysisLanguageService.currentLanguage$.subscribe(lang => {
-            this.currentAnalysisLanguage.set(lang);
-            console.info('[PromptFormComponent] Summary language changed to:', lang);
+        this.analysisLanguageService.currentLanguage$.subscribe({
+            next: (lang) => {
+                this.currentAnalysisLanguage.set(lang);
+                console.info('[PromptFormComponent] Summary language changed to:', lang);
+            },
+            error: (error) => {
+                console.error('[PromptFormComponent] Error in language subscription:', error);
+            }
         });
     }
 
@@ -150,6 +158,7 @@ export class PromptFormComponent {
             locale: this.locale,
             analysisLanguage: this.currentAnalysisLanguage(),
             halachaNumber: finalHalachaNumber,
+            isAdvancedLevel: this.isAdvancedLevel(),
             textLength: this.hebrewText().length
         });
 
@@ -158,7 +167,7 @@ export class PromptFormComponent {
         this.summary.set('');
 
         // Pass both Hebrew text and halacha number to the API
-        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined, this.isAdvancedLevel()).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,

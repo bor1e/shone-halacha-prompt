@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
-import { createHalachaPrompt } from "./prompts";
+import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
 
 const geminiKey = defineString("GEMINI_KEY");
 
@@ -21,12 +21,15 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const { hebrewText, targetLanguage = "Deutsch", halachaNumber } = request.body;
+    const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel } = request.body;
 
+    // Debug the isAdvancedLevel value
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
       halachaNumber,
       textLength: hebrewText?.length || 0,
+      isAdvancedLevel: isAdvancedLevel,
+      isAdvancedLevelType: typeof isAdvancedLevel,
       requestBody: request.body
     });
 
@@ -38,9 +41,20 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const fullPrompt = createHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
+    // Determine which prompt to use with proper fallback
+    const useAdvancedLevel = isAdvancedLevel === undefined ? true : Boolean(isAdvancedLevel);
 
-    logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage}...`);
+    logger.info("[Firebase Function] Prompt level decision:", {
+      isAdvancedLevel: isAdvancedLevel,
+      useAdvancedLevel: useAdvancedLevel,
+      promptType: useAdvancedLevel ? "ADVANCED" : "CONCISE"
+    });
+
+    const fullPrompt = useAdvancedLevel
+      ? createHalachaPrompt(hebrewText, targetLanguage, halachaNumber)
+      : createConciseHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
+
+    logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage} with ${useAdvancedLevel ? "ADVANCED" : "CONCISE"} prompt...`);
 
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());

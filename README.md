@@ -71,6 +71,7 @@ This table tracks the curated set of functional requirements for this project.
 | REQ-006 | `Done`      | Error Handling         | As a user, I receive clear error messages when the API fails or input is invalid.      | To provide a robust user experience.                |
 | REQ-007 | `Done`      | Multi-language Support | As a user, I can access the application in German, English, French, Hebrew, and Russian via URL-based routing.         | To make the application accessible to diverse users. |
 | REQ-008 | `Done`      | Halacha Number Dialog  | As a user, I can manually enter a halacha number when automatic extraction fails.       | To ensure all texts can be processed even without clear number patterns. |
+| REQ-009 | `Done`      | Summary Level Toggle   | As a user, I can choose between advanced (detailed) and concise (key points) summary modes. | To provide flexibility in summary depth based on user needs and preferences. |
 
 ---
 
@@ -86,6 +87,7 @@ The project uses [semantic-release](https://semantic-release.gitbook.io/) to aut
 1. **Conventional Commits**: All commits follow the [Conventional Commits](https://www.conventionalcommits.org/) specification
 2. **Automatic Versioning**: When merged to `main`, semantic-release analyzes commit messages and determines the next version
 3. **Automatic Releases**: Creates GitHub releases with changelogs and tags
+4. **Separate Function Versioning**: Functions have their own versioning system that only triggers when `functions/` files change
 
 #### **Commit Types & Version Impact:**
 
@@ -107,6 +109,13 @@ The project uses [semantic-release](https://semantic-release.gitbook.io/) to aut
 Add `!:` after type to trigger major version bump:
 ```bash
 git commit -m "feat!: breaking change description"
+```
+
+#### **Function-Specific Commits:**
+Use `(functions)` scope to trigger function-only releases:
+```bash
+git commit -m "feat(functions): add new API endpoint"
+git commit -m "fix(functions): resolve timeout issue"
 ```
 
 ### 🔄 **GitHub Actions Workflow**
@@ -131,6 +140,12 @@ The project uses GitHub Actions for automated CI/CD with two main workflows:
   - Build validation
   - Test execution
   - Preview deployment to Firebase
+
+#### **3. Conditional Release System**
+- **Change Detection**: Automatically detects changes in `functions/` vs `src/` directories
+- **Selective Releases**: Only releases functions when function files are modified
+- **Independent Versioning**: Functions and frontend can have different version numbers
+- **Efficient CI/CD**: Avoids unnecessary builds and releases
 
 ### 🛡️ **Code Quality & Validation**
 
@@ -293,10 +308,11 @@ The application supports 5 languages with URL-based routing:
 #### Summary Process
 1. Navigate to your preferred language version using the URL or language switcher
 2. Paste or type Hebrew halachic text in the input field (the halacha number will be automatically extracted)
-3. If automatic extraction fails, a dialog will prompt you to enter the halacha number manually
-4. Click the "Create Summary" button to generate the summary in your selected language
-5. View the beautifully formatted markdown output
-6. Use the copy button to copy the result to clipboard
+3. Choose your preferred summary level using the toggle (Advanced for detailed analysis or Concise for key points)
+4. If automatic extraction fails, a dialog will prompt you to enter the halacha number manually
+5. Click the "Create Summary" button to generate the summary in your selected language
+6. View the beautifully formatted markdown output
+7. Use the copy button to copy the result to clipboard
 
 ### Features
 
@@ -304,6 +320,7 @@ The application supports 5 languages with URL-based routing:
 * **Multi-language Support:** Full i18n support with URL-based routing for German, English, French, Hebrew, and Russian
 * **Automatic Halacha Number Extraction:** Intelligently extracts halacha numbers from Hebrew text
 * **Manual Number Input:** Fallback dialog for manual halacha number entry when automatic extraction fails
+* **Summary Level Toggle:** Choose between advanced (detailed analysis with sources) and concise (key points) summary modes
 * **Structured Output:** Generates well-formatted markdown with proper citations and formatting
 * **Responsive Design:** Works seamlessly on desktop and mobile devices with RTL support for Hebrew
 * **Modern UI:** Clean, professional interface using Angular Material with Azure Blue theme

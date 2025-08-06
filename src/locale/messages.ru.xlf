@@ -102,6 +102,16 @@
         <target>Язык резюме</target>
       </trans-unit>
       
+      <trans-unit id="toggle.advanced-summary" datatype="html">
+        <source>Fortgeschritte Zusammenfassung</source>
+        <target>Подробное резюме</target>
+      </trans-unit>
+      
+      <trans-unit id="toggle.concise-summary" datatype="html">
+        <source>Kurze Zusammenfassung</source>
+        <target>Краткое резюме</target>
+      </trans-unit>
+      
       <trans-unit id="dialog.halacha-number.error" datatype="html">
         <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
         <target>Пожалуйста, введите действительный номер Галахи (100-9999).</target>
