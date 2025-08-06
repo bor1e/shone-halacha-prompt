@@ -5,7 +5,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { environment } from '../../../environments/environment';
 
 // Import all components for showcase
 import { AnalysisLanguageSelectorComponent } from '../analysis-language-selector/analysis-language-selector.component';
@@ -28,12 +27,11 @@ import { MockPromptFormComponent } from './mock-prompt-form.component';
         MockPromptFormComponent
     ],
     template: `
-    @if (!environment.production) {
-      <div class="design-library">
-        <div class="design-library-header">
-          <h1>🎨 Design Library</h1>
-          <p>Component showcase for development and design review</p>
-        </div>
+    <div class="design-library">
+      <div class="design-library-header">
+        <h1>🎨 Design Library</h1>
+        <p>Component showcase for development and design review</p>
+      </div>
 
         <!-- Icon Library -->
         <section class="component-section">
@@ -161,13 +159,7 @@ import { MockPromptFormComponent } from './mock-prompt-form.component';
           </div>
         </section>
       </div>
-    } @else {
-      <div class="production-warning">
-        <mat-icon>warning</mat-icon>
-        <p>Design Library is only available in development mode.</p>
-      </div>
-    }
-  `,
+    `,
     styles: [`
     .design-library {
       max-width: 1800px;
@@ -235,28 +227,7 @@ import { MockPromptFormComponent } from './mock-prompt-form.component';
       margin: 32px 0;
     }
 
-    .production-warning {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-      color: white;
-      text-align: center;
-    }
 
-    .production-warning mat-icon {
-      font-size: 4rem;
-      width: 4rem;
-      height: 4rem;
-      margin-bottom: 16px;
-    }
-
-    .production-warning p {
-      font-size: 1.2rem;
-      margin: 0;
-    }
 
     /* Icon Grid Styles */
     .icon-grid {
@@ -342,10 +313,6 @@ import { MockPromptFormComponent } from './mock-prompt-form.component';
 })
 export class DesignLibraryComponent {
     private dialog = inject(MatDialog);
-
-    get environment() {
-        return environment;
-    }
 
     openHalachaDialog(): void {
         const mockData = {
