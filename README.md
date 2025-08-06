@@ -87,6 +87,7 @@ The project uses [semantic-release](https://semantic-release.gitbook.io/) to aut
 1. **Conventional Commits**: All commits follow the [Conventional Commits](https://www.conventionalcommits.org/) specification
 2. **Automatic Versioning**: When merged to `main`, semantic-release analyzes commit messages and determines the next version
 3. **Automatic Releases**: Creates GitHub releases with changelogs and tags
+4. **Separate Function Versioning**: Functions have their own versioning system that only triggers when `functions/` files change
 
 #### **Commit Types & Version Impact:**
 
@@ -108,6 +109,13 @@ The project uses [semantic-release](https://semantic-release.gitbook.io/) to aut
 Add `!:` after type to trigger major version bump:
 ```bash
 git commit -m "feat!: breaking change description"
+```
+
+#### **Function-Specific Commits:**
+Use `(functions)` scope to trigger function-only releases:
+```bash
+git commit -m "feat(functions): add new API endpoint"
+git commit -m "fix(functions): resolve timeout issue"
 ```
 
 ### 🔄 **GitHub Actions Workflow**
@@ -132,6 +140,12 @@ The project uses GitHub Actions for automated CI/CD with two main workflows:
   - Build validation
   - Test execution
   - Preview deployment to Firebase
+
+#### **3. Conditional Release System**
+- **Change Detection**: Automatically detects changes in `functions/` vs `src/` directories
+- **Selective Releases**: Only releases functions when function files are modified
+- **Independent Versioning**: Functions and frontend can have different version numbers
+- **Efficient CI/CD**: Avoids unnecessary builds and releases
 
 ### 🛡️ **Code Quality & Validation**
 
