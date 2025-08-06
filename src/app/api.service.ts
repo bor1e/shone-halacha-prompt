@@ -32,6 +32,7 @@ export class ApiService {
             analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,
             halachaNumber,
+            isAdvancedLevel,
             textLength: processedHebrewText.length,
             endpoint: this.endpoint,
             hasOverride: this.analysisLanguageService.hasOverride
@@ -44,7 +45,11 @@ export class ApiService {
             isAdvancedLevel
         };
 
-        console.info('[ApiService] Sending request to function:', request);
+        console.info('[ApiService] Sending request to function:', {
+            ...request,
+            isAdvancedLevel: request.isAdvancedLevel,
+            isAdvancedLevelType: typeof request.isAdvancedLevel
+        });
 
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)

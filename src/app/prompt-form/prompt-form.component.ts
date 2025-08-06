@@ -158,6 +158,7 @@ export class PromptFormComponent {
             locale: this.locale,
             analysisLanguage: this.currentAnalysisLanguage(),
             halachaNumber: finalHalachaNumber,
+            isAdvancedLevel: this.isAdvancedLevel(),
             textLength: this.hebrewText().length
         });
 
