@@ -1,0 +1,84 @@
+@use '../abstracts/variables';
+
+// Thematic Yad-Style Cursor for Jewish Texts
+// Following the cursor rules for elegant, context-aware cursors
+
+@media (pointer: fine) {
+
+    // Define cursor SVGs as CSS variables
+    :root {
+        // Default yad cursor (neutral dark gray)
+        --cursor-yad-default: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%23666" d="M2 2L2 14L4 14L4 4L14 4L14 2L2 2Z M6 6L6 8L12 8L12 6L6 6Z M6 10L6 12L10 12L10 10L6 10Z"/></svg>') 4 4, auto;
+
+        // Pointer yad cursor (Material blue for interactive elements)
+        --cursor-yad-pointer: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%231976d2" d="M2 2L2 14L4 14L4 4L14 4L14 2L2 2Z M6 6L6 8L12 8L12 6L6 6Z M6 10L6 12L10 12L10 10L6 10Z"/></svg>') 4 4, pointer;
+    }
+
+    // Apply default yad cursor to RTL pages (Hebrew content)
+    html[dir="rtl"] {
+        cursor: var(--cursor-yad-default);
+
+        // Interactive elements get the pointer version
+        a[href],
+        button,
+        [role="button"],
+        label,
+        .clickable {
+            cursor: var(--cursor-yad-pointer);
+        }
+
+        // Text input fields revert to standard text cursor for usability
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="search"],
+        textarea,
+        [contenteditable] {
+            cursor: text;
+        }
+
+        // Form controls keep their native cursors
+        select,
+        input[type="checkbox"],
+        input[type="radio"],
+        input[type="range"] {
+            cursor: auto;
+        }
+    }
+
+    // Fallback class for manual application on specific LTR pages
+    .yad-cursor-enabled {
+        cursor: var(--cursor-yad-default);
+
+        a[href],
+        button,
+        [role="button"],
+        label,
+        .clickable {
+            cursor: var(--cursor-yad-pointer);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="search"],
+        textarea,
+        [contenteditable] {
+            cursor: text;
+        }
+
+        select,
+        input[type="checkbox"],
+        input[type="radio"],
+        input[type="range"] {
+            cursor: auto;
+        }
+    }
+}
+
+// Ensure cursors are hidden in print media
+@media print {
+    * {
+        cursor: auto !important;
+    }
+}

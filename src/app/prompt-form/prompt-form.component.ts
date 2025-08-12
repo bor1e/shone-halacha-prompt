@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
-import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../utils/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';

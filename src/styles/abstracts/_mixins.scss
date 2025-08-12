@@ -1,0 +1,167 @@
+// Responsive breakpoints
+@mixin mobile-only {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin tablet-up {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin desktop-up {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin large-desktop-up {
+    @media (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin extra-large-desktop-up {
+    @media (min-width: 1400px) {
+        @content;
+    }
+}
+
+// Common component mixins
+@mixin card-base {
+    background: var(--background-card);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+@mixin button-base {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    border: none;
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+@mixin section-header {
+    margin: 0 0 var(--spacing-md) 0;
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-lg);
+}
+
+// RTL support mixin
+@mixin rtl-support($property, $ltr-value, $rtl-value) {
+    #{$property}: $ltr-value;
+
+    [dir="rtl"] & {
+        #{$property}: $rtl-value;
+    }
+}
+
+// Focus states
+@mixin focus-ring {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+// Truncate text
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+// Visually hidden (for accessibility)
+@mixin visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+// Loading spinner
+@mixin loading-spinner($size: 24px) {
+    width: $size;
+    height: $size;
+    border: 2px solid var(--border-light);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Hebrew text styling
+@mixin hebrew-text {
+    font-family: var(--font-family-hebrew);
+    direction: rtl;
+    text-align: right;
+    line-height: var(--line-height-loose);
+}
+
+// Gradient background for header
+@mixin header-gradient {
+    background: linear-gradient(135deg, var(--secondary-light) 0%, var(--gradient-secondary-end) 100%);
+    border-bottom: 1px solid var(--gradient-border);
+    color: var(--secondary-color);
+}
+
+// Responsive container
+@mixin container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+
+    @include tablet-up {
+        padding: 0 var(--spacing-lg);
+    }
+
+    @include large-desktop-up {
+        max-width: 1200px;
+    }
+}
+
+// Flex center
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Flex between
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// Full viewport dimensions
+@mixin full-viewport {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}

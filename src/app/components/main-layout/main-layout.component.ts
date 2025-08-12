@@ -10,7 +10,6 @@ import { signal } from '@angular/core';
 
 import { HalachaSidebarComponent, SummaryRequestEvent } from '../halacha-sidebar/halacha-sidebar.component';
 import { HalachaWithSummaries } from '../../types/halacha.types';
-import { ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-main-layout',

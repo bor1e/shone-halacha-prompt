@@ -1,131 +1,108 @@
-/* 1. Define the main header container style */
-.app-header {
-    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-    border-bottom: 1px solid #c3e6c3;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #2e7d32;
-    /* Set the default text color here */
+@use '../styles/abstracts/variables';
+@use '../styles/abstracts/mixins';
+
+// 1. Fix the app-root container structure
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+
+    // Ensure consistent box-sizing
+    * {
+        box-sizing: border-box;
+    }
 }
 
-/* 2. Override mat-toolbar to be transparent */
-.app-header mat-toolbar {
-    // Make the toolbar transparent to let the parent .app-header background show through.
-    background: transparent !important;
+// 2. Fix the header positioning
+.app-header {
+    position: relative; // Ensure it's in document flow
+    z-index: 100; // Keep it above other content but not too high
+    flex-shrink: 0; // Prevent header from shrinking
+    @include mixins.header-gradient;
+    box-shadow: var(--shadow-md);
 
-    // The text color will be inherited from .app-header, so !important may not be needed.
-    // If you still have issues, you can use it.
-    color: inherit;
+    // Ensure the toolbar has proper height
+    mat-toolbar {
+        background: transparent !important;
+        color: inherit;
+        @include mixins.flex-between;
+        min-height: 64px; // Standard Material toolbar height
+        padding: 0 var(--spacing-lg);
+
+        @include mixins.mobile-only {
+            min-height: 56px; // Shorter on mobile
+            padding: 0 var(--spacing-md);
+        }
+    }
 }
 
 .app-title {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--secondary-color);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+    @include mixins.mobile-only {
+        font-size: var(--font-size-base);
+        max-width: 150px;
+        @include mixins.truncate;
+    }
 }
 
 .spacer {
     flex: 1 1 auto;
+}
+
+// 3. Fix the main container positioning
+.main-container,
+.app-main {
+    flex: 1; // Take remaining space
+    display: flex;
+    flex-direction: column;
+    min-height: 0; // Allow flexbox to work properly
+    background-color: var(--background-primary);
+
+    // Remove any conflicting positioning
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
 }
 
 .header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-.app-main {
-    flex: 1;
-    background-color: #fafafa;
-}
-
-.main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 24px;
-    min-height: calc(100vh - 64px - 80px);
-    /* Subtract toolbar and footer heights */
-}
-
-.mat-mdc-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%) !important;
-    color: #2e7d32 !important;
-    border-bottom: 1px solid #c3e6c3;
-}
-
-.app-title {
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-.spacer {
-    flex: 1 1 auto;
+    @include mixins.container;
 }
 
 .bsd-text {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #2e7d32;
-    font-family: 'Times New Roman', serif;
-    direction: rtl;
-    text-align: right;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--secondary-color);
+    font-family: var(--font-family-serif);
+    @include mixins.hebrew-text;
     white-space: nowrap;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    margin-left: 16px;
-}
 
-.language-switcher {
-    display: flex;
-    gap: 8px;
+    @include mixins.rtl-support(margin-left, var(--spacing-md), 0);
+    @include mixins.rtl-support(margin-right, 0, var(--spacing-md));
 
-    button {
-        color: #2e7d32;
-        border: 1px solid rgba(46, 125, 50, 0.3);
-        background: rgba(255, 255, 255, 0.7);
-        padding: 6px 12px;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.9);
-            border-color: rgba(46, 125, 50, 0.5);
-        }
-
-        &.active {
-            background: rgba(255, 255, 255, 1);
-            border-color: rgba(46, 125, 50, 0.7);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    @include mixins.mobile-only {
+        font-size: var(--font-size-base);
+        margin-left: var(--spacing-sm);
     }
 }
 
-.mobile-language-button {
-    color: #2e7d32 !important;
-
-    mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-    }
-}
+// Language switcher styles are now in components/_buttons.scss
 
 .language-menu {
     .menu-item-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        @include mixins.flex-between;
         width: 100%;
 
         .flag {
-            font-size: 1.2rem;
-            margin-right: 8px;
+            font-size: var(--font-size-xl);
+            margin-right: var(--spacing-sm);
         }
 
         .name {
@@ -133,8 +110,8 @@
         }
 
         .check-icon {
-            color: #1976d2;
-            margin-left: 8px;
+            color: var(--primary-color);
+            margin-left: var(--spacing-sm);
         }
     }
 }
@@ -151,99 +128,27 @@
     }
 }
 
-// RTL support for bsd-text in toolbar
-[dir="rtl"] .bsd-text {
-    margin-left: 0;
-    margin-right: 16px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
-
-    .mobile-only {
-        display: block !important;
-    }
-
-    .app-title {
-        font-size: 1rem;
-        max-width: 150px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #2e7d32;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
+// Responsive design
+@include mixins.mobile-only {
     .bsd-text {
-        font-size: 1rem;
-        margin-left: 12px;
-        color: #2e7d32;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .mat-mdc-toolbar {
-        padding: 0 8px;
+        margin-left: var(--spacing-sm);
     }
 
     main {
         min-height: calc(100vh - 64px - 120px);
-        /* Adjust for mobile footer */
     }
 }
 
-@media (min-width: 769px) {
-    .desktop-only {
-        display: flex !important;
-    }
-
-    .mobile-only {
-        display: none !important;
-    }
-}
-
-/* Ensure בס״ד is always visible */
+// Extra small screens
 @media (max-width: 480px) {
     .app-title {
         max-width: 120px;
-        color: #2e7d32;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .bsd-text {
-        font-size: 0.9rem;
-        margin-left: 8px;
-        color: #2e7d32;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        font-size: var(--font-size-sm);
+        margin-left: var(--spacing-sm);
     }
 }
 
-/* Design Library Link Styles */
-.design-library-link {
-    color: #2e7d32 !important;
-    border: 1px solid rgba(46, 125, 50, 0.3) !important;
-    background: rgba(255, 255, 255, 0.7) !important;
-    margin-right: 16px;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: rgba(255, 255, 255, 0.9) !important;
-        border-color: rgba(46, 125, 50, 0.5) !important;
-    }
-
-    mat-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-        margin-right: 4px;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-    }
-}
-
-/* RTL support for design library link */
-[dir="rtl"] .design-library-link {
-    margin-right: 0;
-    margin-left: 16px;
-}
+// Button styles are now in components/_buttons.scss

@@ -1,0 +1,398 @@
+@use '../abstracts/mixins';
+
+// Card component styles
+.card {
+    @include mixins.card-base;
+
+    // Card variations
+    &.card-elevated {
+        box-shadow: var(--shadow-lg);
+    }
+
+    &.card-flat {
+        box-shadow: none;
+        border: 1px solid var(--border-light);
+    }
+
+    // Card content
+    .card-header {
+        @include mixins.flex-between;
+        padding: var(--spacing-md);
+        border-bottom: 1px solid var(--border-light);
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: var(--font-weight-medium);
+        }
+    }
+
+    .card-content {
+        padding: var(--spacing-md);
+        overflow: visible;
+    }
+
+    .card-actions {
+        @include mixins.flex-between;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-top: 1px solid var(--border-light);
+
+        .actions-left,
+        .actions-right {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+    }
+}
+
+// Material Design Card overrides
+.mat-mdc-card {
+    margin: var(--spacing-md);
+
+    &.no-margin {
+        margin: 0;
+    }
+
+    &.margin-sm {
+        margin: var(--spacing-sm);
+    }
+
+    &.margin-lg {
+        margin: var(--spacing-lg);
+    }
+}
+
+// Halacha specific cards
+.halacha-card {
+    @include mixins.card-base;
+    margin-bottom: var(--spacing-sm);
+    transition: box-shadow var(--transition-base);
+
+    &:hover {
+        box-shadow: var(--shadow-lg);
+    }
+
+    mat-card-header {
+        @include mixins.flex-between;
+        padding-bottom: var(--spacing-sm);
+
+        .halacha-number {
+            font-weight: var(--font-weight-semibold);
+            color: var(--primary-color);
+            font-size: var(--font-size-base);
+        }
+
+        .halacha-date {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+        }
+    }
+
+    mat-card-content {
+        .hebrew-text {
+            @include mixins.hebrew-text;
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .summaries-section {
+            .summaries-header {
+                font-size: var(--font-size-xs);
+                color: var(--text-secondary);
+                margin-bottom: var(--spacing-xs);
+                font-weight: var(--font-weight-medium);
+            }
+
+            .summary-chips {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--spacing-xs);
+
+                mat-chip-set {
+                    margin: 0;
+                }
+
+                .summary-chip {
+                    font-size: 11px;
+                    height: 24px;
+
+                    mat-icon {
+                        font-size: 14px;
+                        height: 14px;
+                        width: 14px;
+                    }
+                }
+            }
+        }
+    }
+
+    mat-card-actions {
+        @include mixins.flex-between;
+        padding: var(--spacing-sm) var(--spacing-md);
+
+        .summary-actions {
+            display: flex;
+            gap: var(--spacing-xs);
+
+            button {
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+
+                mat-icon {
+                    font-size: 16px;
+                    height: 16px;
+                    width: 16px;
+                }
+            }
+        }
+    }
+}
+
+// Summary cards
+.summaries-card {
+    @include mixins.card-base;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+
+    mat-card-content {
+        padding: var(--spacing-md);
+        overflow: visible;
+    }
+}
+
+.summary-display-card {
+    @include mixins.card-base;
+    flex: 1;
+
+    .summary-display-header {
+        @include mixins.flex-between;
+        width: 100%;
+
+        mat-card-title {
+            margin: 0;
+        }
+
+        mat-chip-set {
+            margin: 0;
+        }
+    }
+
+    .summary-content {
+        font-size: var(--font-size-base);
+        line-height: var(--line-height-relaxed);
+        color: var(--text-primary);
+
+        // Markdown styling
+        :deep(h1),
+        :deep(h2),
+        :deep(h3) {
+            color: var(--primary-color);
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        :deep(h1) {
+            font-size: var(--font-size-xxl);
+        }
+
+        :deep(h2) {
+            font-size: var(--font-size-xl);
+        }
+
+        :deep(h3) {
+            font-size: var(--font-size-lg);
+        }
+
+        :deep(p) {
+            margin-bottom: var(--spacing-md);
+        }
+
+        :deep(ul),
+        :deep(ol) {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-lg);
+        }
+
+        :deep(li) {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        :deep(strong) {
+            color: var(--primary-color);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        :deep(em) {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        :deep(blockquote) {
+            border-left: 4px solid var(--primary-color);
+            padding-left: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+    }
+}
+
+.no-summary-card {
+    @include mixins.card-base;
+    flex: 1;
+    @include mixins.flex-center;
+
+    .no-summary-message {
+        text-align: center;
+        color: var(--text-secondary);
+        width: 100%;
+
+        mat-icon {
+            font-size: var(--spacing-xxl);
+            height: var(--spacing-xxl);
+            width: var(--spacing-xxl);
+            margin-bottom: var(--spacing-md);
+            color: var(--primary-color);
+        }
+
+        h3 {
+            margin: 0 0 var(--spacing-sm) 0;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+
+// Hebrew text card
+.hebrew-card {
+    @include mixins.card-base;
+
+    .hebrew-text {
+        @include mixins.hebrew-text;
+        font-size: var(--font-size-lg);
+        color: var(--text-primary);
+        padding: var(--spacing-md);
+        background: var(--background-secondary);
+        border-radius: var(--border-radius-sm);
+        border-right: 4px solid var(--primary-color);
+    }
+}
+
+// Summary controls card
+.summary-controls-card {
+    @include mixins.card-base;
+
+    .existing-summaries {
+        margin-bottom: var(--spacing-md);
+
+        h4 {
+            @include mixins.section-header;
+            font-size: var(--font-size-base);
+            color: var(--text-secondary);
+        }
+
+        .summaries-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .summary-button {
+            width: 100%;
+            text-align: left;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+            background: var(--background-card);
+
+            &:hover {
+                border-color: var(--primary-color);
+                background-color: var(--background-secondary);
+            }
+
+            &.selected {
+                border-color: var(--primary-color);
+                background-color: var(--primary-light);
+                color: var(--primary-color);
+            }
+
+            &:focus {
+                @include mixins.focus-ring;
+            }
+
+            .summary-button-content {
+                @include mixins.flex-between;
+                width: 100%;
+
+                .language-info {
+                    font-weight: var(--font-weight-medium);
+                }
+            }
+        }
+    }
+
+    .create-summary-section {
+        h4 {
+            @include mixins.section-header;
+            font-size: var(--font-size-base);
+            color: var(--text-secondary);
+        }
+
+        .language-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .language-section {
+            @include mixins.flex-between;
+            padding: var(--spacing-sm) 0;
+
+            .language-header {
+                .language-name {
+                    font-weight: var(--font-weight-medium);
+                    font-size: var(--font-size-sm);
+                }
+            }
+
+            .summary-actions {
+                display: flex;
+                gap: var(--spacing-sm);
+
+                button {
+                    min-width: 90px;
+
+                    mat-icon {
+                        margin-right: var(--spacing-xs);
+                    }
+                }
+            }
+        }
+
+        .generating-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background-color: var(--background-secondary);
+            border-radius: var(--border-radius-sm);
+
+            span {
+                font-size: var(--font-size-sm);
+                color: var(--text-secondary);
+            }
+        }
+    }
+}

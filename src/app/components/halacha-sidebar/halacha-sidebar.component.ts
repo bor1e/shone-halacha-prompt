@@ -92,7 +92,7 @@ export class HalachaSidebarComponent {
         return isAdvancedLevel ? 'Erweiterte Analyse' : 'Kurze Zusammenfassung';
     }
 
-    truncateText(text: string, maxLength: number = 100): string {
+    truncateText(text: string, maxLength = 100): string {
         if (text.length <= maxLength) return text;
         return text.substring(0, maxLength) + '...';
     }

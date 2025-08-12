@@ -1,3 +1,7 @@
+@use '../../../styles/abstracts/variables';
+@use '../../../styles/abstracts/mixins';
+
+// 5. Fix the main layout structure
 .main-layout {
     height: 100vh;
     width: 100vw;
@@ -5,55 +9,88 @@
     flex-direction: column;
     margin: 0;
     padding: 0;
-}
+    overflow: hidden; // Prevent scroll on the main container
 
-.sidenav-container {
-    height: 100vh;
-    width: 100vw;
-    flex: 1;
-    margin: 0;
-    padding: 0;
-}
+    // Direct child layout
+    >.app-header {
+        flex-shrink: 0;
+    }
 
-.halacha-sidenav {
-    width: 350px;
-    border-right: 1px solid #e0e0e0;
-    background: #fafafa;
-
-    @media (max-width: 768px) {
-        width: 100%;
-        max-width: 350px;
+    >.sidenav-container {
+        flex: 1;
+        overflow: hidden;
     }
 }
 
+// 4. Fix the sidenav container
+.sidenav-container {
+    flex: 1; // Take all available space below header
+    width: 100%;
+    position: relative; // Not fixed or absolute
+
+    // Remove conflicting height constraints
+    height: auto;
+    min-height: 0;
+}
+
+// 9. Fix sidebar positioning
+.halacha-sidenav {
+    width: 350px;
+    border-right: 1px solid var(--border-color);
+    background: var(--background-primary);
+    height: 100%; // Take full height of sidenav container
+    overflow-y: auto; // Allow scrolling within sidebar
+
+    @media (max-width: 1400px) {
+        width: 300px;
+    }
+
+    @include mixins.mobile-only {
+        width: 100%;
+        max-width: 350px;
+        position: absolute; // Overlay on mobile
+        z-index: var(--z-index-fixed);
+        height: 100%;
+    }
+}
+
+// 6. Fix content positioning within sidenav
 .main-content {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100%; // Take full height of sidenav container
     position: relative;
-    overflow: visible;
+    overflow-y: auto; // Allow scrolling within content
 }
 
+// 10. Fix sidebar toggle button positioning
 .sidebar-toggle {
     position: fixed;
-    top: 80px;
-    left: 16px;
-    z-index: 1000;
+    top: calc(64px + var(--spacing-md)); // Header height + spacing
+    left: var(--spacing-md);
+    z-index: var(--z-index-dropdown);
+
+    @include mixins.mobile-only {
+        top: calc(56px + var(--spacing-md)); // Adjust for mobile header height
+    }
 
     .toggle-fab {
         width: 48px;
         height: 48px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        box-shadow: var(--shadow-md);
     }
 }
 
+// 11. Content wrapper adjustments
 .content-wrapper {
     flex: 1;
     padding: 0;
-    overflow: visible;
+    overflow-y: auto; // Allow content to scroll
+    height: 100%;
 
-    @media (max-width: 768px) {
-        padding: 0 0 0 64px; // Account for FAB
+    @include mixins.mobile-only {
+        // Adjust for mobile FAB
+        padding: 0 0 0 64px;
     }
 }
 
@@ -64,39 +101,13 @@
     }
 }
 
-// Mobile-specific styles
-.mobile-only {
-    display: none;
-
-    @media (max-width: 768px) {
-        display: block;
-    }
-}
-
-@media (min-width: 769px) {
-    .mobile-only {
-        display: none !important;
-    }
-}
-
 // Responsive adjustments
-@media (max-width: 1200px) {
-    .halacha-sidenav {
-        width: 300px;
-    }
-}
-
-@media (max-width: 768px) {
+@include mixins.mobile-only {
     .sidenav-container {
         height: calc(100vh - 64px);
     }
 
-    .halacha-sidenav {
-        position: fixed;
-        z-index: 1001;
-    }
-
     .content-wrapper {
-        padding-left: 16px;
+        padding-left: var(--spacing-md);
     }
 }

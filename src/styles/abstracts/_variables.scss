@@ -1,0 +1,101 @@
+// CSS Variables System
+:root {
+    // Brand Colors
+    --primary-color: #1976d2;
+    --primary-light: #e3f2fd;
+    --primary-dark: #0d47a1;
+
+    --secondary-color: #2e7d32;
+    --secondary-light: #e8f5e8;
+    --secondary-dark: #1b5e20;
+
+    --success-color: #4caf50;
+    --success-light: #c8e6c9;
+
+    --warning-color: #ff9800;
+    --warning-light: #fff3e0;
+
+    --error-color: #f44336;
+    --error-light: #ffebee;
+
+    // Neutral Colors
+    --background-primary: #fafafa;
+    --background-secondary: #f5f5f5;
+    --background-card: #ffffff;
+
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+
+    --border-color: #e0e0e0;
+    --border-light: #f0f0f0;
+    --border-dark: #c0c0c0;
+
+    // Special colors for gradients
+    --gradient-secondary-end: #d4edda;
+    --gradient-border: #c3e6c3;
+
+    // Spacing Scale
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+
+    // Typography Scale
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-xxl: 1.5rem;
+    --font-size-display: 2rem;
+
+    // Line heights
+    --line-height-tight: 1.2;
+    --line-height-base: 1.4;
+    --line-height-relaxed: 1.6;
+    --line-height-loose: 1.8;
+
+    // Font weights
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+
+    // Font families
+    --font-family-base: Roboto, "Helvetica Neue", sans-serif;
+    --font-family-hebrew: 'Noto Sans Hebrew', 'David', serif;
+    --font-family-serif: 'Times New Roman', serif;
+
+    // Border Radius
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+
+    // Shadows
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+    // Transitions
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+
+    // Z-index scale
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1001;
+    --z-index-fixed: 1002;
+    --z-index-modal-backdrop: 1003;
+    --z-index-modal: 1004;
+    --z-index-popover: 1005;
+    --z-index-tooltip: 1006;
+
+    // Breakpoints (for use in custom properties)
+    --breakpoint-mobile: 768px;
+    --breakpoint-tablet: 1024px;
+    --breakpoint-desktop: 1200px;
+    --breakpoint-large-desktop: 1400px;
+}

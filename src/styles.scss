@@ -1,47 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+/* Unified CSS Architecture for Angular Halacha Application */
 
-// Global reset for full screen usage
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
+// Abstract layer - Variables and mixins
+@use 'styles/abstracts/variables';
+@use 'styles/abstracts/mixins';
 
-// Ensure all elements use border-box sizing
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+// Base layer - Reset, typography, and utilities
+@use 'styles/base/reset';
+@use 'styles/base/utilities';
 
-// Remove default margins from Angular Material components
-.mat-sidenav-container {
-  margin: 0 !important;
-  padding: 0 !important;
-}
+// Component layer - Reusable component styles
+@use 'styles/components/buttons';
+@use 'styles/components/cards';
+@use 'styles/components/forms';
+@use 'styles/components/cursors';
 
-.mat-sidenav-content {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-html,
-body {
-    height: 100%;
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: #fafafa;
-}
-
-/* Ensure Material Design components are properly styled */
+/* Material Design component overrides */
 .mat-mdc-card {
-    margin: 16px;
+    margin: var(--spacing-md);
 }
 
 .mat-mdc-form-field {
@@ -49,95 +24,56 @@ body {
 }
 
 .mat-mdc-button {
-    margin: 8px;
+    margin: var(--spacing-sm);
 }
 
-/* Global typography improvements */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: 500;
-    line-height: 1.2;
-}
-
-/* Ensure proper spacing for Material components */
 .mat-mdc-toolbar {
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: var(--z-index-sticky);
 }
 
-/* Improve form styling */
-.form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 16px;
-}
-
-/* Ensure proper contrast and readability */
-.mat-mdc-card-content {
-    color: rgba(0, 0, 0, 0.87);
-}
-
-/* Responsive design improvements */
+/* Responsive Material Design improvements */
 @media (max-width: 768px) {
-    .form-container {
-        padding: 8px;
-    }
-
     .mat-mdc-card {
-        margin: 8px;
+        margin: var(--spacing-sm);
     }
 }
 
-/* Global RTL support */
-[dir="rtl"] {
-    direction: rtl;
-    text-align: right;
+// 12. Specific fix for form container
+.form-container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: var(--spacing-md);
+    box-sizing: border-box;
+
+    // Remove min-height that might conflict
+    min-height: auto;
+
+    @media (max-width: 768px) {
+        padding: var(--spacing-sm);
+    }
+
+    @media (max-width: 480px) {
+        padding: var(--spacing-xs);
+    }
 }
 
-[dir="rtl"] .container,
-[dir="rtl"] .row {
-    direction: rtl;
+// 13. Global reset to prevent layout issues
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; // Prevent horizontal scroll
 }
 
-/* Fix for flex layouts */
-[dir="rtl"] .d-flex {
-    flex-direction: row-reverse;
+// 14. Angular Material specific fixes
+.mat-sidenav-container {
+    background-color: transparent !important;
 }
 
-/* Margin and padding adjustments */
-[dir="rtl"] .me-2 {
-    margin-right: 0;
-    margin-left: 0.5rem;
-}
-
-[dir="rtl"] .ms-2 {
-    margin-left: 0;
-    margin-right: 0.5rem;
-}
-
-[dir="rtl"] .pe-2 {
-    padding-right: 0;
-    padding-left: 0.5rem;
-}
-
-[dir="rtl"] .ps-2 {
-    padding-left: 0;
-    padding-right: 0.5rem;
-}
-
-/* Form controls */
-[dir="rtl"] input,
-[dir="rtl"] textarea,
-[dir="rtl"] select {
-    text-align: right;
-}
-
-/* Navigation adjustments */
-[dir="rtl"] .navbar-nav {
-    flex-direction: row-reverse;
+.mat-sidenav-content {
+    overflow-y: auto !important;
 }
