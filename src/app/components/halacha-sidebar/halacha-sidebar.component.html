@@ -25,64 +25,57 @@
         <p>Keine Halachot gefunden</p>
     </div>
     } @else {
-    <div class="halachot-list">
+    <mat-nav-list class="halachot-nav-list">
         @for (halacha of recentHalachot(); track halacha.halachaNumber) {
-        <mat-card class="halacha-card">
-            <mat-card-header>
-                <div class="halacha-number">{{ halacha.halachaNumber }}</div>
-                <div class="halacha-date">{{ formatDate(halacha.createdAt) }}</div>
-            </mat-card-header>
+        <mat-list-item class="halacha-list-item">
+            <div matListItemTitle class="halacha-header">
+                <span class="halacha-number">{{ halacha.halachaNumber }}</span>
+                <span class="halacha-date">{{ formatDate(halacha.createdAt) }}</span>
+            </div>
 
-            <mat-card-content>
-                <div class="hebrew-text" dir="rtl">
-                    {{ truncateText(halacha.hebrewText, 80) }}
+            <div matListItemLine class="hebrew-text" dir="rtl">
+                {{ truncateText(halacha.hebrewText, 80) }}
+            </div>
+
+            @if (halacha.summaries.length > 0) {
+            <div matListItemLine class="summaries-section">
+                <div class="summary-chips">
+                    @for (summary of halacha.summaries; track summary.id) {
+                    <mat-chip-set>
+                        <mat-chip class="summary-chip" [matTooltip]="getSummaryTypeTooltip(summary.isAdvancedLevel)">
+                            <mat-icon matChipAvatar>{{ getSummaryTypeIcon(summary.isAdvancedLevel) }}</mat-icon>
+                            {{ getLanguageDisplayName(summary.language) }}
+                        </mat-chip>
+                    </mat-chip-set>
+                    }
                 </div>
+            </div>
+            }
 
-                @if (halacha.summaries.length > 0) {
-                <div class="summaries-section">
-                    <div class="summaries-header">Zusammenfassungen:</div>
-                    <div class="summary-chips">
-                        @for (summary of halacha.summaries; track summary.id) {
-                        <mat-chip-set>
-                            <mat-chip class="summary-chip"
-                                [matTooltip]="getSummaryTypeTooltip(summary.isAdvancedLevel)">
-                                <mat-icon matChipAvatar>{{ getSummaryTypeIcon(summary.isAdvancedLevel) }}</mat-icon>
-                                {{ getLanguageDisplayName(summary.language) }}
-                            </mat-chip>
-                        </mat-chip-set>
-                        }
-                    </div>
-                </div>
-                }
-            </mat-card-content>
-
-            <mat-card-actions>
-                <button mat-button color="primary" (click)="onLoadHalacha(halacha)" matTooltip="Halacha anzeigen">
+            <div matListItemMeta class="halacha-actions">
+                <button mat-icon-button color="primary" (click)="onLoadHalacha(halacha)" matTooltip="Halacha anzeigen">
                     <mat-icon>visibility</mat-icon>
-                    Anzeigen
                 </button>
 
-                <div class="summary-actions">
-                    <!-- Quick action buttons for common summary types -->
-                    @if (!hasSummary(halacha, 'German', true)) {
-                    <button mat-icon-button color="accent"
-                        (click)="onRequestSummary(halacha.halachaNumber, 'German', true)"
-                        matTooltip="Erweiterte deutsche Analyse erstellen">
-                        <mat-icon>add_circle</mat-icon>
-                    </button>
-                    }
+                <!-- Quick action buttons for common summary types -->
+                @if (!hasSummary(halacha, 'German', true)) {
+                <button mat-icon-button color="accent" (click)="onRequestSummary(halacha.halachaNumber, 'German', true)"
+                    matTooltip="Erweiterte deutsche Analyse erstellen">
+                    <mat-icon>add_circle</mat-icon>
+                </button>
+                }
 
-                    @if (!hasSummary(halacha, 'German', false)) {
-                    <button mat-icon-button color="accent"
-                        (click)="onRequestSummary(halacha.halachaNumber, 'German', false)"
-                        matTooltip="Kurze deutsche Zusammenfassung erstellen">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                    }
-                </div>
-            </mat-card-actions>
-        </mat-card>
+                @if (!hasSummary(halacha, 'German', false)) {
+                <button mat-icon-button color="accent"
+                    (click)="onRequestSummary(halacha.halachaNumber, 'German', false)"
+                    matTooltip="Kurze deutsche Zusammenfassung erstellen">
+                    <mat-icon>add</mat-icon>
+                </button>
+                }
+            </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
         }
-    </div>
+    </mat-nav-list>
     }
 </div>

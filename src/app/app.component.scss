@@ -1,7 +1,7 @@
 @use '../styles/abstracts/variables';
 @use '../styles/abstracts/mixins';
 
-// 1. Fix the app-root container structure
+// App container structure
 .app-container {
     min-height: 100vh;
     display: flex;
@@ -15,26 +15,23 @@
     }
 }
 
-// 2. Fix the header positioning
-.app-header {
-    position: relative; // Ensure it's in document flow
-    z-index: 100; // Keep it above other content but not too high
-    flex-shrink: 0; // Prevent header from shrinking
+// App toolbar
+.app-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-shrink: 0;
     @include mixins.header-gradient;
     box-shadow: var(--shadow-md);
+    background: transparent !important;
+    color: inherit;
+    @include mixins.flex-between;
+    min-height: 64px;
+    padding: 0 var(--spacing-lg);
 
-    // Ensure the toolbar has proper height
-    mat-toolbar {
-        background: transparent !important;
-        color: inherit;
-        @include mixins.flex-between;
-        min-height: 64px; // Standard Material toolbar height
-        padding: 0 var(--spacing-lg);
-
-        @include mixins.mobile-only {
-            min-height: 56px; // Shorter on mobile
-            padding: 0 var(--spacing-md);
-        }
+    @include mixins.mobile-only {
+        min-height: 56px;
+        padding: 0 var(--spacing-md);
     }
 }
 
@@ -55,20 +52,13 @@
     flex: 1 1 auto;
 }
 
-// 3. Fix the main container positioning
-.main-container,
-.app-main {
-    flex: 1; // Take remaining space
+// App content area
+.app-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 0; // Allow flexbox to work properly
+    min-height: 0;
     background-color: var(--background-primary);
-
-    // Remove any conflicting positioning
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: none;
 }
 
 .header-container {

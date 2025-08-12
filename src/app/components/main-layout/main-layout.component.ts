@@ -4,6 +4,7 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 import { filter, map } from 'rxjs/operators';
 import { signal } from '@angular/core';
@@ -12,16 +13,17 @@ import { HalachaSidebarComponent, SummaryRequestEvent } from '../halacha-sidebar
 import { HalachaWithSummaries } from '../../types/halacha.types';
 
 @Component({
-    selector: 'app-main-layout',
-    imports: [
-        CommonModule,
-        RouterOutlet,
-        MatSidenavModule,
-        MatButtonModule,
-        MatIconModule,
-        HalachaSidebarComponent
-    ],
-    template: `
+  selector: 'app-main-layout',
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    HalachaSidebarComponent
+  ],
+  template: `
     <div class="main-layout">
       <mat-sidenav-container class="sidenav-container">
         <!-- Sidebar - only show on main page -->
@@ -62,38 +64,38 @@ import { HalachaWithSummaries } from '../../types/halacha.types';
       </mat-sidenav-container>
     </div>
   `,
-    styleUrls: ['./main-layout.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./main-layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent {
-    private router = inject(Router);
+  private router = inject(Router);
 
-    showSidebar = signal(true);
+  showSidebar = signal(true);
 
-    constructor() {
-        // Track route changes to show/hide sidebar
-        this.router.events.pipe(
-            filter(event => event instanceof NavigationEnd),
-            map(event => (event as NavigationEnd).url)
-        ).subscribe(url => {
-            // Show sidebar only on main page (root path)
-            const isMainPage = url === '/' || url === '';
-            this.showSidebar.set(isMainPage);
-        });
-    }
+  constructor() {
+    // Track route changes to show/hide sidebar
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => (event as NavigationEnd).url)
+    ).subscribe(url => {
+      // Show sidebar only on main page (root path)
+      const isMainPage = url === '/' || url === '';
+      this.showSidebar.set(isMainPage);
+    });
+  }
 
-    onRequestSummary(event: SummaryRequestEvent): void {
-        // TODO: Implement cross-component communication if needed
-        console.log('Summary requested:', event);
-    }
+  onRequestSummary(event: SummaryRequestEvent): void {
+    // TODO: Implement cross-component communication if needed
+    console.log('Summary requested:', event);
+  }
 
-    onLoadHalacha(halacha: HalachaWithSummaries): void {
-        // TODO: Implement cross-component communication if needed
-        console.log('Halacha loaded:', halacha);
-    }
+  onLoadHalacha(halacha: HalachaWithSummaries): void {
+    // TODO: Implement cross-component communication if needed
+    console.log('Halacha loaded:', halacha);
+  }
 
-    toggleSidebar(): void {
-        // For mobile - this would need to be implemented with proper sidenav reference
-        console.log('Toggle sidebar');
-    }
+  toggleSidebar(): void {
+    // For mobile - this would need to be implemented with proper sidenav reference
+    console.log('Toggle sidebar');
+  }
 }

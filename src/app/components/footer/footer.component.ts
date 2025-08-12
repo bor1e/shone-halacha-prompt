@@ -37,6 +37,11 @@ import { environment } from '../../../environments/environment';
           }
         </div>
         <div class="footer-links">
+          <span class="nuremberg-attribution">
+            <span i18n="@@footer.builtWith">Built with</span> 
+            <mat-icon class="heart-icon">favorite</mat-icon> 
+            <span i18n="@@footer.inNuremberg">in Nuremberg</span>
+          </span>
           <a href="https://github.com/bor1e/shone-halacha-prompt" target="_blank" rel="noopener noreferrer">
             <mat-icon>code</mat-icon>
             <span i18n="@@footer.source">Source</span>
@@ -105,6 +110,22 @@ import { environment } from '../../../environments/environment';
       display: flex;
       gap: 16px;
       align-items: center;
+    }
+
+    .nuremberg-attribution {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.875rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .heart-icon {
+      color: #e91e63;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
     }
 
     .footer-links a {

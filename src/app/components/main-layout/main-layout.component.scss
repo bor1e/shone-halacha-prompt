@@ -1,36 +1,21 @@
 @use '../../../styles/abstracts/variables';
 @use '../../../styles/abstracts/mixins';
 
-// 5. Fix the main layout structure
+// Main layout structure
 .main-layout {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
-    overflow: hidden; // Prevent scroll on the main container
-
-    // Direct child layout
-    >.app-header {
-        flex-shrink: 0;
-    }
-
-    >.sidenav-container {
-        flex: 1;
-        overflow: hidden;
-    }
 }
 
-// 4. Fix the sidenav container
+// Sidenav container
 .sidenav-container {
-    flex: 1; // Take all available space below header
+    flex: 1;
     width: 100%;
-    position: relative; // Not fixed or absolute
-
-    // Remove conflicting height constraints
-    height: auto;
-    min-height: 0;
+    position: relative;
+    height: 100%;
 }
 
 // 9. Fix sidebar positioning

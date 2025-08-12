@@ -1,12 +1,13 @@
 import { Component, signal, inject, output, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 import { FirestoreService } from '../../services/firestore.service';
 import { HalachaWithSummaries, HalachaSummaryDocument } from '../../types/halacha.types';
 
@@ -20,12 +21,13 @@ export interface SummaryRequestEvent {
     selector: 'app-halacha-sidebar',
     imports: [
         CommonModule,
-        MatCardModule,
+        MatListModule,
         MatButtonModule,
         MatIconModule,
         MatChipsModule,
         MatTooltipModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatDividerModule
     ],
     templateUrl: './halacha-sidebar.component.html',
     styleUrls: ['./halacha-sidebar.component.scss'],

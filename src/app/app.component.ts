@@ -14,79 +14,75 @@ import { environment } from '../environments/environment';
   standalone: true,
   imports: [CommonModule, RouterModule, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
-  <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
-      <header class="app-header">
-        <div class="header-container">
-          <mat-toolbar>
-            <span i18n="@@app.title">AI Schone Halacha</span>
-            
-            <span class="spacer"></span>
-            
-            @if (!environment.production) {
+    <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
+      <!-- Header Toolbar -->
+      <mat-toolbar class="app-toolbar">
+        <span class="app-title" i18n="@@app.title">AI Schone Halacha</span>
+        
+        <span class="spacer"></span>
+        
+        @if (!environment.production) {
+          <button 
+            mat-button 
+            routerLink="/design-library"
+            class="design-library-link"
+            [attr.aria-label]="'Design Library'"
+          >
+            <mat-icon>palette</mat-icon>
+            Design Library
+          </button>
+        }
+        
+        <div class="language-switcher desktop-only">
+          @for (lang of languages; track lang.code) {
+            <button 
+              [class.active]="lang.code === activeAnalysisLanguage"
+              (click)="switchLanguage(lang.code)"
+              [attr.aria-label]="lang.name"
+              mat-button
+            >
+              {{ lang.flag }} {{ lang.name }}
+            </button>
+          }
+        </div>
+        
+        <div class="mobile-only">
+          <button 
+            mat-icon-button 
+            [matMenuTriggerFor]="languageMenu"
+            [attr.aria-label]="'Language menu'"
+            class="mobile-language-button"
+          >
+            <mat-icon>language</mat-icon>
+          </button>
+          <mat-menu #languageMenu="matMenu" class="language-menu">
+            @for (lang of languages; track lang.code) {
               <button 
-                mat-button 
-                routerLink="/design-library"
-                class="design-library-link"
-                [attr.aria-label]="'Design Library'"
+                mat-menu-item 
+                [class.active]="lang.code === activeAnalysisLanguage"
+                (click)="switchLanguage(lang.code)"
               >
-                <mat-icon>palette</mat-icon>
-                Design Library
+                <span class="menu-item-content">
+                  <span class="flag">{{ lang.flag }}</span>
+                  <span class="name">{{ lang.name }}</span>
+                  @if (lang.code === activeAnalysisLanguage) {
+                    <mat-icon class="check-icon">check</mat-icon>
+                  }
+                </span>
               </button>
             }
-            
-            <div class="language-switcher desktop-only">
-              @for (lang of languages; track lang.code) {
-                <button 
-                  [class.active]="lang.code === activeAnalysisLanguage"
-                  (click)="switchLanguage(lang.code)"
-                  [attr.aria-label]="lang.name"
-                  mat-button
-                >
-                  {{ lang.flag }} {{ lang.name }}
-                </button>
-              }
-            </div>
-            
-            <div class="mobile-only">
-              <button 
-                mat-icon-button 
-                [matMenuTriggerFor]="languageMenu"
-                [attr.aria-label]="'Language menu'"
-                class="mobile-language-button"
-              >
-                <mat-icon>language</mat-icon>
-              </button>
-              <mat-menu #languageMenu="matMenu" class="language-menu">
-                @for (lang of languages; track lang.code) {
-                  <button 
-                    mat-menu-item 
-                    [class.active]="lang.code === activeAnalysisLanguage"
-                    (click)="switchLanguage(lang.code)"
-                  >
-                    <span class="menu-item-content">
-                      <span class="flag">{{ lang.flag }}</span>
-                      <span class="name">{{ lang.name }}</span>
-                      @if (lang.code === activeAnalysisLanguage) {
-                        <mat-icon class="check-icon">check</mat-icon>
-                      }
-                    </span>
-                  </button>
-                }
-              </mat-menu>
-            </div>
-            
-            <span class="bsd-text">בס״ד</span>
-
-          </mat-toolbar>
+          </mat-menu>
         </div>
-      </header>
+        
+        <span class="bsd-text">בס״ד</span>
+      </mat-toolbar>
       
-      <main class="app-main">
-        <div class="main-container">
-          <router-outlet></router-outlet>
-        </div>
-      </main>
+      <!-- Main Content Area -->
+      <div class="app-content">
+        <router-outlet></router-outlet>
+      </div>
 
+      <!-- Footer -->
       <app-footer></app-footer>
     </div>
   `,
