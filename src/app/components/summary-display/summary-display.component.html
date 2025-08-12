@@ -1,0 +1,32 @@
+<mat-card class="summary-display-card">
+    <mat-card-header>
+        <div class="summary-header">
+            <mat-card-title>{{ getCardTitle() }}</mat-card-title>
+            <mat-chip-set>
+                <mat-chip [color]="summaryData().isAdvancedLevel ? 'primary' : 'accent'">
+                    <mat-icon matChipAvatar>{{ getSummaryTypeIcon() }}</mat-icon>
+                    {{ summaryData().isAdvancedLevel ? 'Erweitert' : 'Kurz' }}
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="summary-content" [innerHTML]="summaryData().summary | markdown"></div>
+    </mat-card-content>
+
+    @if (showActions()) {
+    <mat-card-actions class="summary-actions">
+        <button mat-button (click)="copyToClipboard()" [class.success]="copied" matTooltip="In Zwischenablage kopieren">
+            <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
+            {{ copied ? 'Kopiert!' : 'Kopieren' }}
+        </button>
+
+        <button mat-button color="accent" (click)="shareWhatsApp()" [class.success]="whatsappShared"
+            matTooltip="Über WhatsApp teilen">
+            <mat-icon>{{ whatsappShared ? 'check' : 'share' }}</mat-icon>
+            {{ whatsappShared ? 'Geteilt!' : 'WhatsApp' }}
+        </button>
+    </mat-card-actions>
+    }
+</mat-card>

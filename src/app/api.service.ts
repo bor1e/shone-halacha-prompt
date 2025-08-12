@@ -15,7 +15,7 @@ export class ApiService {
     private http = inject(HttpClient);
     private locale = inject(LOCALE_ID);
     private analysisLanguageService = inject(AnalysisLanguageService);
-    private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
+    private endpoint = 'https://gethalachasummary-4sq22uqurq-ew.a.run.app';
 
     constructor() {
         console.info('[ApiService] Initialized with locale_ID:', this.locale);

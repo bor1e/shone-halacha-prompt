@@ -69,21 +69,8 @@
             </div>
             }
 
-            @if (summary()) {
-            <div class="output-section">
-                <div class="output-header">
-                    <h3 i18n="@@output.title">Zusammenfassung</h3>
-                    <button mat-icon-button [color]="copied() ? 'accent' : 'primary'" (click)="copyToClipboard()"
-                        [matTooltip]="copied() ? 'Kopiert!' : 'In Zwischenablage kopieren'" [disabled]="!summary()">
-                        <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
-                    </button>
-                    <button mat-icon-button [color]="'primary'" (click)="shareWhatsApp()"
-                        [matTooltip]="'Share via WhatsApp'" [disabled]="!summary()">
-                        <mat-icon>send</mat-icon>
-                    </button>
-                </div>
-                <div class="summary-content" [innerHTML]="summary() | markdown"></div>
-            </div>
+            @if (summaryData) {
+            <app-summary-display [summaryData]="summaryData"></app-summary-display>
             }
         </mat-card-content>
     </mat-card>

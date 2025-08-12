@@ -1,0 +1,37 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "halacha-summaries",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "halachaNumber",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "halacha-summaries",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "halachaNumber",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "language",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "isAdvancedLevel",
+                    "order": "ASCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}

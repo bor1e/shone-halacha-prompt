@@ -1,5 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Global reset for full screen usage
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+// Ensure all elements use border-box sizing
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+// Remove default margins from Angular Material components
+.mat-sidenav-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.mat-sidenav-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 html,
 body {
     height: 100%;

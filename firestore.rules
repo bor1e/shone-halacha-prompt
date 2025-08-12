@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to halachot (original Hebrew texts)
+    // This allows users to browse and view previously saved halachot
+    match /halachot/{halachaNumber} {
+      allow read: if true;
+      allow write: if true; // For now, allow writes from client and functions
+    }
+    
+    // Allow public read access to halacha summaries
+    // This allows users to view existing summaries
+    match /halacha-summaries/{summaryId} {
+      allow read: if true;
+      allow write: if true; // For now, allow writes from client and functions
+    }
+    
+    // For development/testing: Allow all operations
+    // TODO: In production, implement proper authentication and authorization
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

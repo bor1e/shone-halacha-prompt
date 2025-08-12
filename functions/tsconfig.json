@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "target": "ES2018",
+    "lib": [
+      "ES2018"
+    ],
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",

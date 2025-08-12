@@ -3,8 +3,14 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 
 const geminiKey = defineString("GEMINI_KEY");
+
+// Initialize Firebase Admin
+initializeApp();
+const db = getFirestore();
 
 
 export const getHalachaSummary = onRequest(
@@ -74,6 +80,43 @@ export const getHalachaSummary = onRequest(
       logger.info(`[Firebase Function] Successfully received summary for language: ${targetLanguage}.`, {
         summaryLength: summary?.length || 0
       });
+
+      // Save original halacha to Firestore (using halachaNumber as document ID)
+      try {
+        const halachaDoc = {
+          halachaNumber,
+          hebrewText,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        await db.collection("halachot").doc(halachaNumber.toString()).set(halachaDoc, { merge: true });
+        logger.info(`[Firebase Function] Original halacha saved to Firestore with ID: ${halachaNumber}`);
+      } catch (firestoreError) {
+        logger.error("[Firebase Function] Error saving original halacha to Firestore:", {
+          errorMessage: (firestoreError as Error).message
+        });
+        // Continue execution even if Firestore save fails
+      }
+
+      // Save summary to Firestore
+      try {
+        const summaryDoc = {
+          halachaNumber,
+          summary,
+          language: targetLanguage,
+          isAdvancedLevel: useAdvancedLevel,
+          createdAt: new Date()
+        };
+
+        const summaryRef = await db.collection("halacha-summaries").add(summaryDoc);
+        logger.info(`[Firebase Function] Summary saved to Firestore with ID: ${summaryRef.id}`);
+      } catch (firestoreError) {
+        logger.error("[Firebase Function] Error saving summary to Firestore:", {
+          errorMessage: (firestoreError as Error).message
+        });
+        // Continue execution even if Firestore save fails
+      }
 
       response.status(200).json({ summary });
 

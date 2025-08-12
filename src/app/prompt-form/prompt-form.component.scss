@@ -1,5 +1,11 @@
 .form-container {
     width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 16px;
+    min-height: 100vh;
+    overflow: visible;
+    box-sizing: border-box;
 }
 
 .halacha-number-display {

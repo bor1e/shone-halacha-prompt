@@ -1,0 +1,102 @@
+.main-layout {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+.sidenav-container {
+    height: 100vh;
+    width: 100vw;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.halacha-sidenav {
+    width: 350px;
+    border-right: 1px solid #e0e0e0;
+    background: #fafafa;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    overflow: visible;
+}
+
+.sidebar-toggle {
+    position: fixed;
+    top: 80px;
+    left: 16px;
+    z-index: 1000;
+
+    .toggle-fab {
+        width: 48px;
+        height: 48px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    }
+}
+
+.content-wrapper {
+    flex: 1;
+    padding: 0;
+    overflow: visible;
+
+    @media (max-width: 768px) {
+        padding: 0 0 0 64px; // Account for FAB
+    }
+}
+
+// When sidebar is hidden, adjust layout
+.main-content:not(.mat-sidenav-content) {
+    .content-wrapper {
+        width: 100%;
+    }
+}
+
+// Mobile-specific styles
+.mobile-only {
+    display: none;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+    .halacha-sidenav {
+        width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidenav-container {
+        height: calc(100vh - 64px);
+    }
+
+    .halacha-sidenav {
+        position: fixed;
+        z-index: 1001;
+    }
+
+    .content-wrapper {
+        padding-left: 16px;
+    }
+}
