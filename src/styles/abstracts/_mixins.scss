@@ -165,3 +165,21 @@
     margin: 0;
     padding: 0;
 }
+
+@mixin mobile-only {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
+
+@mixin tablet-only {
+    @media (min-width: 768px) and (max-width: 1023px) {
+        @content;
+    }
+}
+
+@mixin desktop-only {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}

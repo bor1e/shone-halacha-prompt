@@ -1,0 +1,148 @@
+<div class="halacha-view-container">
+  <!-- Header -->
+  <div class="header">
+    <button mat-icon-button (click)="goBack()" matTooltip="Zurück">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Halacha {{ halachaNumber() }}</h1>
+  </div>
+
+  @if (isLoading()) {
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Lade Halacha...</p>
+  </div>
+  } @else if (error()) {
+  <div class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-button color="primary" (click)="goBack()">Zurück</button>
+  </div>
+  } @else if (halacha()) {
+  <div class="content-layout">
+
+    <!-- Top Row: Controls -->
+    <div class="controls-row">
+      <mat-card class="summary-controls-card">
+        <mat-card-content>
+
+          <!-- Existing Summaries -->
+          @if (summaries().length > 0) {
+          <div class="existing-summaries">
+            <span class="section-title">Verfügbare Zusammenfassungen:</span>
+            <mat-chip-listbox>
+              @for (summary of summaries(); track summary.id) {
+              <mat-chip-option [selected]="selectedSummary()?.id === summary.id" (click)="onSummarySelect(summary)">
+                {{ getLanguageFlag(summary.language) }}
+                {{ getLanguageDisplayName(summary.language) }}
+                –
+                {{ summary.isAdvancedLevel ? 'Fortgeschrittene' : 'Kurz' }}
+              </mat-chip-option>
+              }
+            </mat-chip-listbox>
+          </div>
+          <mat-divider></mat-divider>
+          }
+
+          <!-- Create New Summaries -->
+          <div class="create-summary-section">
+            <span class="section-title">Neue Zusammenfassung erstellen:</span>
+
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  @for (lang of availableLanguages; track lang.code) {
+                  <th>{{ lang.flag }} {{ lang.name }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Kurz row -->
+                <tr>
+                  <td>Kurze Übersicht</td>
+                  @for (lang of availableLanguages; track lang.code) {
+                  <td>
+                    @if (hasSummary(lang.code, false)) {
+                    <mat-icon color="primary">check_circle</mat-icon>
+                    } @else {
+                    <button mat-icon-button color="accent" [disabled]="isGeneratingSummary()"
+                      (click)="onRequestSummary(lang.code, false)" matTooltip="Kurze Zusammenfassung erstellen">
+                      <mat-icon>short_text</mat-icon>
+                    </button>
+                    }
+                  </td>
+                  }
+                </tr>
+
+                <!-- Fortgeschrittene row -->
+                <tr>
+                  <td>Fortgeschrittene</td>
+                  @for (lang of availableLanguages; track lang.code) {
+                  <td>
+                    @if (hasSummary(lang.code, true)) {
+                    <mat-icon color="primary">check_circle</mat-icon>
+                    } @else {
+                    <button mat-icon-button color="primary" [disabled]="isGeneratingSummary()"
+                      (click)="onRequestSummary(lang.code, true)" matTooltip="Fortgeschrittene Analyse erstellen">
+                      <mat-icon>article</mat-icon>
+                    </button>
+                    }
+                  </td>
+                  }
+                </tr>
+              </tbody>
+            </table>
+
+            @if (isGeneratingSummary()) {
+            <div class="generating-indicator">
+              <mat-spinner diameter="16"></mat-spinner>
+              <span>Erstelle Zusammenfassung...</span>
+            </div>
+            }
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Bottom Row: Summary + Hebrew -->
+    <div class="bottom-row">
+      <!-- Summary Panel -->
+      <div class="summary-panel">
+        @if (selectedSummaryData) {
+        <app-summary-display [summaryData]="selectedSummaryData"></app-summary-display>
+        } @else {
+        <mat-card class="no-summary-card">
+          <mat-card-content>
+            <div class="no-summary-message">
+              <mat-icon>info</mat-icon>
+              @if (summaries().length === 0) {
+              <h3>Keine Zusammenfassungen vorhanden</h3>
+              <p>Erstellen Sie eine neue Zusammenfassung oben.</p>
+              } @else {
+              <h3>Keine Zusammenfassung ausgewählt</h3>
+              <p>Wählen Sie eine Zusammenfassung aus der Liste oben.</p>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+        }
+      </div>
+
+      <!-- Hebrew Text Panel -->
+      <div class="hebrew-panel">
+        <mat-card class="hebrew-card">
+          <mat-card-header>
+            <mat-card-title>Hebräischer Originaltext</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="hebrew-text" dir="rtl" [innerHTML]="halacha()?.hebrewText|| '' | markdown">
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  }
+</div>
