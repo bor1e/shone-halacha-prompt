@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.0.0...frontend-v1.1.0) (2025-11-24)
+
+
+### Features
+
+* add Polish language support and update localization ([2a39abc](https://github.com/bor1e/shone-halacha-prompt/commit/2a39abcaa04980f53e864f35ed6a02e1f0a61b09))
+
 # 1.0.0 (2025-08-06)
 
 
