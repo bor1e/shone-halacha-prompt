@@ -59,7 +59,7 @@ export const getHalachaSummary = onRequest(
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-pro",
+        model: "gemini-3-pro-preview",
         generationConfig: {
           responseMimeType: "text/plain",
           temperature: 0.1,

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de" target-language="pl" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="app.title" datatype="html">
+        <source>Schone Halacha Analyse</source>
+        <target>Analiza Schone Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="prompt.title" datatype="html">
+        <source>Halacha Prompt Zusammenfassung</source>
+        <target>Podsumowanie Promptu Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="prompt.subtitle" datatype="html">
+        <source>Geben Sie unten Ihren hebräischen Text ein. Die Halacha-Nummer wird automatisch aus dem Text extrahiert.</source>
+        <target>Wprowadź poniżej swój tekst hebrajski. Numer Halacha zostanie automatycznie wyodrębniony z tekstu.</target>
+      </trans-unit>
+      
+      <trans-unit id="form.halacha-number" datatype="html">
+        <source>Halacha Nummer</source>
+        <target>Numer Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="form.halacha-number.placeholder" datatype="html">
+        <source>z.B. 872</source>
+        <target>np. 872</target>
+      </trans-unit>
+      
+      <trans-unit id="form.hebrew-text" datatype="html">
+        <source>Hebräischer Text</source>
+        <target>Tekst hebrajski</target>
+      </trans-unit>
+      
+      <trans-unit id="form.hebrew-text.placeholder" datatype="html">
+        <source>Fügen Sie hier den hebräischen halachischen Text ein...</source>
+        <target>Wklej tutaj tekst halachiczny w języku hebrajskim...</target>
+      </trans-unit>
+      
+      <trans-unit id="form.submit-button" datatype="html">
+        <source>Zusammenfassung erstellen</source>
+        <target>Utwórz podsumowanie</target>
+      </trans-unit>
+      
+      <trans-unit id="form.loading" datatype="html">
+        <source>Zusammenfassung wird generiert...</source>
+        <target>Trwa generowanie podsumowania...</target>
+      </trans-unit>
+      
+      <trans-unit id="error.required" datatype="html">
+        <source>Bitte füllen Sie das Textfeld aus.</source>
+        <target>Proszę wypełnić pole tekstowe.</target>
+      </trans-unit>
+      
+      <trans-unit id="error.api" datatype="html">
+        <source>Fehler beim Erstellen der Zusammenfassung. Bitte versuchen Sie es erneut.</source>
+        <target>Błąd podczas tworzenia podsumowania. Proszę spróbować ponownie.</target>
+      </trans-unit>
+      
+      <trans-unit id="output.title" datatype="html">
+        <source>Zusammenfassung</source>
+        <target>Podsumowanie</target>
+      </trans-unit>
+      
+      <trans-unit id="output.copy.tooltip" datatype="html">
+        <source>In Zwischenablage kopieren</source>
+        <target>Kopiuj do schowka</target>
+      </trans-unit>
+      
+      <trans-unit id="output.copied.tooltip" datatype="html">
+        <source>Kopiert!</source>
+        <target>Skopiowano!</target>
+      </trans-unit>
+      
+      <trans-unit id="form.extracted-halacha-number" datatype="html">
+        <source>Extrahierte Halacha-Nummer: {0}</source>
+        <target>Wyodrębniony numer Halacha: {0}</target>
+      </trans-unit>
+      
+      <trans-unit id="form.extracted-halacha-number-label" datatype="html">
+        <source>Extrahierte Halacha-Nummer:</source>
+        <target>Wyodrębniony numer Halacha:</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.title" datatype="html">
+        <source>Halacha Nummer eingeben</source>
+        <target>Wprowadź numer Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.message" datatype="html">
+        <source>Die Halacha-Nummer konnte nicht automatisch aus dem Text extrahiert werden. Bitte geben Sie die Nummer manuell ein.</source>
+        <target>Nie można było automatycznie wyodrębnić numeru Halacha z tekstu. Proszę wprowadzić numer ręcznie.</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.label" datatype="html">
+        <source>Halacha Nummer</source>
+        <target>Numer Halacha</target>
+      </trans-unit>
+      
+      <trans-unit id="analysis.language.label" datatype="html">
+        <source>Analyse Sprache</source>
+        <target>Język analizy</target>
+      </trans-unit>
+      
+      <trans-unit id="toggle.advanced-summary" datatype="html">
+        <source>Fortgeschritte Zusammenfassung</source>
+        <target>Zaawansowane podsumowanie</target>
+      </trans-unit>
+      
+      <trans-unit id="toggle.concise-summary" datatype="html">
+        <source>Kurze Zusammenfassung</source>
+        <target>Krótkie podsumowanie</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <target>Wersja</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <target>Build</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <target>Commit</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <target>Środowisko</target>
+      </trans-unit>
+      
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <target>Źródło</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.error" datatype="html">
+        <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
+        <target>Proszę wprowadzić prawidłowy numer Halacha (100-9999).</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.halacha-number.preview" datatype="html">
+        <source>Textvorschau:</source>
+        <target>Podgląd tekstu:</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.cancel" datatype="html">
+        <source>Abbrechen</source>
+        <target>Anuluj</target>
+      </trans-unit>
+      
+      <trans-unit id="dialog.confirm" datatype="html">
+        <source>Bestätigen</source>
+        <target>Potwierdź</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
+

@@ -17,7 +17,8 @@ export class AnalysisLanguageService {
         { code: 'en', name: 'English', flag: '🇺🇸' },
         { code: 'fr', name: 'Français', flag: '🇫🇷' },
         { code: 'he', name: 'עברית', flag: '🇮🇱' },
-        { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+        { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+        { code: 'pl', name: 'Polski', flag: '🇵🇱' }
     ];
 
     // Language mapping for API calls
@@ -26,7 +27,8 @@ export class AnalysisLanguageService {
         'en': 'English',
         'fr': 'Français',
         'he': 'עברית',
-        'ru': 'Русский'
+        'ru': 'Русский',
+        'pl': 'Polski'
     };
 
     // User override (null means use default)

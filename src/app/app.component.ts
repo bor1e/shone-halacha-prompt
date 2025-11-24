@@ -102,7 +102,8 @@ export class AppComponent {
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
     { code: 'he', name: 'עברית', flag: '🇮🇱' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'pl', name: 'Polski', flag: '🇵🇱' }
   ];
 
   constructor() {

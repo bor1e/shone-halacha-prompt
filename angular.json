@@ -31,6 +31,10 @@
           "ru": {
             "translation": "src/locale/messages.ru.xlf",
             "baseHref": "/ru/"
+          },
+          "pl": {
+            "translation": "src/locale/messages.pl.xlf",
+            "baseHref": "/pl/"
           }
         }
       },
@@ -127,6 +131,15 @@
               "namedChunks": true,
               "localize": [
                 "ru"
+              ]
+            },
+            "development-pl": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "localize": [
+                "pl"
               ]
             },
             "production-de": {
@@ -243,6 +256,29 @@
                   "maximumError": "5MB"
                 }
               ]
+            },
+            "production-pl": {
+              "baseHref": "/pl/",
+              "localize": [
+                "pl"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractLicenses": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -271,6 +307,10 @@
             "ru": {
               "buildTarget": "shone-halacha-prompting:build:development-ru",
               "port": 4204
+            },
+            "pl": {
+              "buildTarget": "shone-halacha-prompting:build:development-pl",
+              "port": 4205
             }
           },
           "defaultConfiguration": "development"
