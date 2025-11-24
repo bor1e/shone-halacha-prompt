@@ -50,10 +50,10 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "^20.1.1",
-    "@angular-eslint/eslint-plugin": "^20.1.1",
-    "@angular-eslint/eslint-plugin-template": "^20.1.1",
-    "@angular-eslint/template-parser": "^20.1.1",
+    "@angular-eslint/builder": "^21.0.1",
+    "@angular-eslint/eslint-plugin": "^21.0.1",
+    "@angular-eslint/eslint-plugin-template": "^21.0.1",
+    "@angular-eslint/template-parser": "^21.0.1",
     "@angular/build": "^21.0.0",
     "@angular/cli": "^21.0.0",
     "@angular/compiler-cli": "^21.0.0",
@@ -65,7 +65,7 @@
     "@semantic-release/npm": "^11.0.2",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
-    "angular-eslint": "20.1.1",
+    "angular-eslint": "21.0.1",
     "eslint": "^9.29.0",
     "husky": "^9.0.11",
     "jasmine-core": "~5.1.0",
