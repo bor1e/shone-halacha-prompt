@@ -9,7 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CommonModule } from '@angular/common';
+
 import { MarkdownPipe } from '../../markdown.pipe';
 import { HalachaNumberExtractor } from '../../utils/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../halacha-number-dialog/halacha-number-dialog.component';
@@ -22,21 +22,20 @@ import { AnalysisLanguageSelectorComponent } from '../analysis-language-selector
     selector: 'app-mock-prompt-form',
     standalone: true,
     imports: [
-        CommonModule,
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatCardModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatSlideToggleModule,
-        MatDialogModule,
-        MarkdownPipe,
-        AnalysisLanguageSelectorComponent
-    ],
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MarkdownPipe,
+    AnalysisLanguageSelectorComponent
+],
     template: `
         <div class="prompt-form-container" [dir]="textDirection">
             <mat-card class="form-card">

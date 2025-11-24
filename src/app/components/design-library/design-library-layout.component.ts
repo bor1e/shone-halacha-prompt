@@ -1,5 +1,5 @@
 import { Component, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,15 +14,14 @@ import { environment } from '../../../environments/environment';
     selector: 'app-design-library-layout',
     standalone: true,
     imports: [
-        CommonModule,
-        RouterModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        DesignLibraryComponent,
-        FooterComponent
-    ],
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    DesignLibraryComponent,
+    FooterComponent
+],
     template: `
     <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <mat-toolbar color="primary">

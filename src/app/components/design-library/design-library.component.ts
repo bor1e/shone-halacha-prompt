@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,16 +16,15 @@ import { MockPromptFormComponent } from './mock-prompt-form.component';
     selector: 'app-design-library',
     standalone: true,
     imports: [
-        CommonModule,
-        MatCardModule,
-        MatDividerModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDialogModule,
-        AnalysisLanguageSelectorComponent,
-        FooterComponent,
-        MockPromptFormComponent
-    ],
+    MatCardModule,
+    MatDividerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    AnalysisLanguageSelectorComponent,
+    FooterComponent,
+    MockPromptFormComponent
+],
     template: `
     <div class="design-library">
       <div class="design-library-header">

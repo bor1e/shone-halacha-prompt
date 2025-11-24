@@ -1,5 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { VersionService } from '../../services/version.service';
@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatIconModule],
+  imports: [MatToolbarModule, MatIconModule],
   template: `
     <footer class="footer">
       <div class="footer-content">

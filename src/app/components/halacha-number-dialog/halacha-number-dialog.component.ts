@@ -1,5 +1,5 @@
 import { Component, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,13 +19,12 @@ export interface HalachaNumberDialogResult {
   selector: 'app-halacha-number-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule
-  ],
+],
   template: `
     <div class="dialog-container" [dir]="isRTL ? 'rtl' : 'ltr'">
       <h2 mat-dialog-title i18n="@@dialog.halacha-number.title">

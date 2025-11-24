@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,14 +12,13 @@ import { AnalysisLanguageService } from '../../services/analysis-language.servic
   selector: 'app-analysis-language-selector',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule
-  ],
+],
   template: `
     <div class="analysis-language-selector">
       <mat-form-field appearance="outline" class="language-field">

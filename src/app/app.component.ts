@@ -1,5 +1,5 @@
 import { Component, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [RouterModule, FooterComponent, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
   template: `
   <div class="app-container" [attr.dir]="isRTL ? 'rtl' : 'ltr'">
       <header class="app-header">
