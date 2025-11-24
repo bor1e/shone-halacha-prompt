@@ -309,17 +309,17 @@ import { HalachaWithSummaries } from '../../types/halacha.types';
 })
 export class MainLayoutComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  
+
   private router = inject(Router);
   private breakpointObserver = inject(BreakpointObserver);
-  
+
   sidebarOpened = signal(true);
   currentLanguage = signal('DE');
   currentRoute = signal('');
   isMobile = signal(false);
   currentYear = new Date().getFullYear();
   appVersion = '1.0.0'; // You can import this from your environment or version file
-  
+
   constructor() {
     // Track route changes
     this.router.events.pipe(
@@ -372,7 +372,7 @@ export class MainLayoutComponent {
 
   setLanguage(language: string): void {
     this.currentLanguage.set(language);
-    
+
     console.info('[MainLayout] Language switch requested:', {
       from: this.currentLanguage(),
       to: language,
@@ -382,7 +382,7 @@ export class MainLayoutComponent {
     // This logic correctly reloads the page to the new language path.
     const baseUrl = window.location.origin;
     const langCode = language.toLowerCase();
-    
+
     if (langCode === 'de') {
       // German is the base URL
       const newUrl = baseUrl;
@@ -407,7 +407,7 @@ export class MainLayoutComponent {
   onLoadHalacha(halacha: HalachaWithSummaries): void {
     // Navigate to halacha detail page
     this.router.navigate(['/halacha', halacha.halachaNumber]);
-    
+
     // Close sidebar on mobile after navigation
     if (this.isMobile()) {
       this.closeSidebar();

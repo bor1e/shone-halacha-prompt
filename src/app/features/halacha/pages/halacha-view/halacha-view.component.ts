@@ -20,18 +20,18 @@ import { MarkdownPipe } from "../../../../shared/pipes/markdown.pipe";
 @Component({
     selector: 'app-halacha-view',
     imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatChipsModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    SummaryDisplayComponent,
-    MarkdownPipe
-],
+        CommonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatChipsModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        SummaryDisplayComponent,
+        MarkdownPipe
+    ],
     templateUrl: './halacha-view.component.html',
     styleUrls: ['./halacha-view.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush

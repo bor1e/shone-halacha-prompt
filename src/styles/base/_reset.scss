@@ -84,3 +84,90 @@ p {
 [dir="rtl"] .navbar-nav {
     flex-direction: row-reverse;
 }
+
+// Global reset for full screen usage
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+// Ensure all elements use border-box sizing
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
+    line-height: var(--line-height-base);
+}
+
+// Remove default margins from Angular Material components
+.mat-sidenav-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mat-sidenav-content {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+// Global typography improvements
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+    margin: 0;
+    color: var(--text-primary);
+}
+
+p {
+    margin: 0 0 var(--spacing-md) 0;
+    line-height: var(--line-height-relaxed);
+}
+
+// Ensure proper contrast and readability
+.mat-mdc-card-content {
+    color: var(--text-primary);
+}
+
+// Global RTL support
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .container,
+[dir="rtl"] .row {
+    direction: rtl;
+}
+
+// Fix for flex layouts in RTL
+[dir="rtl"] .d-flex {
+    flex-direction: row-reverse;
+}
+
+// Form controls in RTL
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+    text-align: right;
+}
+
+// Navigation adjustments for RTL
+[dir="rtl"] .navbar-nav {
+    flex-direction: row-reverse;
+}

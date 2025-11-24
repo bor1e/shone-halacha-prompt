@@ -1,11 +1,20 @@
 @use '../../../styles/abstracts/variables';
 @use '../../../styles/abstracts/mixins';
 
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .main-layout {
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--background-primary, #fafafa);
+  overflow: hidden;
 }
 
 // Top Navigation Bar
@@ -31,7 +40,7 @@
   }
 }
 
-// Navbar Sections
+// Navbar Sections (keeping existing styles)
 .navbar-left {
   display: flex;
   align-items: center;
@@ -83,8 +92,6 @@
       font-weight: 600;
       letter-spacing: 0.5px;
     }
-
-
   }
 }
 
@@ -205,7 +212,7 @@
     letter-spacing: 1px;
 
     @include mixins.mobile-only {
-      display: none; // Hide on very small screens
+      display: none;
     }
   }
 }
@@ -226,17 +233,26 @@
   }
 }
 
-// Main Content Area
+// FIXED: Main container layout
 .sidenav-container {
   flex: 1;
-  margin-top: 64px; // Account for fixed navbar
+  margin-top: 64px;
   position: relative;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  
+  @include mixins.mobile-only {
+    margin-top: 56px;
+    height: calc(100vh - 56px);
+  }
 }
 
 .halacha-sidenav {
   width: 320px;
   border-right: 1px solid var(--border-color, #e0e0e0);
   background: var(--background-card, white);
+  // Ensure sidebar content doesn't overlap with navbar
+  z-index: 100;
 
   @include mixins.mobile-only {
     width: 280px;
@@ -273,27 +289,46 @@
   }
 }
 
+// FIXED: Main content scrolling and layout
 .main-content {
   background: var(--background-primary, #fafafa);
   position: relative;
-  min-height: calc(100vh - 64px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Prevent the container from scrolling
 }
 
+// FIXED: Content wrapper with proper constraints
 .content-wrapper {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex: 1;
+  overflow-y: auto; // Allow scrolling within the content area
+  overflow-x: hidden;
+  padding: 24px; // Add padding back to create proper margins
   transition: all 0.3s ease;
+  
+  // Ensure there's space between content and edges
+  box-sizing: border-box;
+  // Add bottom padding to ensure footer doesn't overlap content
+  padding-bottom: 48px;
+  
+  @include mixins.mobile-only {
+    padding: 16px;
+    padding-bottom: 32px;
+  }
 
   &.with-sidebar {
     @include mixins.desktop-only {
-      margin-left: 320px;
-      max-width: calc(1200px - 320px);
+      // No additional margin needed - mat-sidenav handles the layout
+      // but we keep the padding for content spacing
     }
   }
 
-  @include mixins.mobile-only {
-    padding: 16px;
+  // Ensure router outlet content has proper max-width and centering
+  > * {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
   }
 }
 
@@ -320,91 +355,12 @@
   }
 }
 
-// Responsive Adjustments
-@include mixins.tablet-only {
-  .navbar-content {
-    padding: 0 12px;
-  }
-
-  .navbar-center .nav-item {
-    min-width: 70px;
-
-    span {
-      font-size: 13px;
-    }
-  }
-
-  .brand .brand-text {
-    font-size: 16px;
-  }
-}
-
-@include mixins.mobile-only {
-  .top-navbar {
-    height: 56px;
-  }
-
-  .sidenav-container {
-    margin-top: 56px;
-  }
-
-  .navbar-content {
-    padding: 0 8px;
-  }
-
-  .navbar-left .brand {
-    gap: 8px;
-
-    .brand-text {
-      font-size: 16px;
-    }
-
-    .brand-hebrew {
-      display: none; // Hide on very small screens
-    }
-  }
-
-  .content-wrapper {
-    min-height: calc(100vh - 56px);
-  }
-}
-
-// Animation Enhancements
-@keyframes slideInFromLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.halacha-sidenav {
-  animation: slideInFromLeft 0.3s ease-out;
-}
-
-.content-wrapper {
-  animation: fadeIn 0.3s ease-out;
-}
-
-// Footer Styles
+// FIXED: Footer positioning and layout
 .app-footer {
   background: var(--background-card, white);
   border-top: 1px solid var(--border-color, #e0e0e0);
-  margin-top: auto;
+  flex-shrink: 0; // Prevent footer from shrinking
+  z-index: 10;
 
   .footer-content {
     max-width: 1200px;
@@ -557,14 +513,107 @@
   }
 }
 
-// Dark mode support for footer
+// Responsive Adjustments
+@include mixins.tablet-only {
+  .navbar-content {
+    padding: 0 12px;
+  }
+
+  .navbar-center .nav-item {
+    min-width: 70px;
+
+    span {
+      font-size: 13px;
+    }
+  }
+
+  .brand .brand-text {
+    font-size: 16px;
+  }
+}
+
+@include mixins.mobile-only {
+  .top-navbar {
+    height: 56px;
+  }
+
+  .sidenav-container {
+    margin-top: 56px;
+    height: calc(100vh - 56px);
+  }
+
+  .navbar-content {
+    padding: 0 8px;
+  }
+
+  .navbar-left .brand {
+    gap: 8px;
+
+    .brand-text {
+      font-size: 16px;
+    }
+  }
+
+  .brand-hebrew {
+    display: none;
+  }
+}
+
+// Animation Enhancements
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.halacha-sidenav {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+.content-wrapper {
+  animation: fadeIn 0.3s ease-out;
+}
+
+// Dark mode support
 @media (prefers-color-scheme: dark) {
+  .main-layout {
+    background: var(--background-primary-dark, #121212);
+  }
+
+  .top-navbar {
+    background: var(--primary-color-dark, #1565c0) !important;
+  }
+
+  .halacha-sidenav {
+    background: var(--background-card-dark, #1e1e1e);
+    border-right-color: var(--border-color-dark, #333);
+  }
+
+  .main-content {
+    background: var(--background-primary-dark, #121212);
+  }
+
   .app-footer {
     background: var(--background-card-dark, #1e1e1e);
     border-top-color: var(--border-color-dark, #333);
 
     .footer-section {
-
       h4,
       h5 {
         color: var(--text-primary-dark, #e0e0e0);
@@ -603,25 +652,5 @@
         }
       }
     }
-  }
-}
-
-// Dark mode support (if needed)
-@media (prefers-color-scheme: dark) {
-  .main-layout {
-    background: var(--background-primary-dark, #121212);
-  }
-
-  .top-navbar {
-    background: var(--primary-color-dark, #1565c0) !important;
-  }
-
-  .halacha-sidenav {
-    background: var(--background-card-dark, #1e1e1e);
-    border-right-color: var(--border-color-dark, #333);
-  }
-
-  .main-content {
-    background: var(--background-primary-dark, #121212);
   }
 }

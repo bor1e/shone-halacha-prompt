@@ -2,10 +2,17 @@
 @use '../../../../../styles/abstracts/mixins';
 
 .halacha-view-container {
-    min-height: 100%;
+    min-height: calc(100vh - 64px); // Account for navbar
     background: var(--background-primary, #fafafa);
     display: flex;
     flex-direction: column;
+    // Add top padding to prevent overlap with fixed navbar
+    padding-top: 80px; // 64px navbar + 16px spacing
+
+    @include mixins.mobile-only {
+        min-height: calc(100vh - 56px); // Mobile navbar
+        padding-top: 72px; // 56px mobile navbar + 16px spacing
+    }
 }
 
 /* Header */
@@ -17,10 +24,17 @@
     background: var(--background-card, #fff);
     border-bottom: 1px solid var(--border-color, #e0e0e0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin: -24px -24px 24px -24px; // Extend to parent padding edges
+
+    @include mixins.mobile-only {
+        margin: -16px -16px 16px -16px;
+        padding: 16px;
+    }
 
     h1 {
         font-size: 24px;
         margin: 0;
+        color: var(--text-primary, #333);
     }
 }
 
@@ -29,54 +43,167 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 24px;
     flex: 1;
-}
+    padding: 0 24px 24px 24px; // Add horizontal padding
 
-/* Top row: controls */
-.controls-row {
-    width: 100%;
-
-    .summary-controls-card {
-        width: 100%;
+    @include mixins.mobile-only {
+        padding: 0 16px 16px 16px;
     }
 }
 
-/* Bottom row: summary + hebrew */
-.bottom-row {
+/* Top row: controls - FIXED TO MATCH BOTTOM ROW */
+.controls-row {
+    width: 100%;
     display: grid;
-    grid-template-columns: 2fr 2fr;
-    /* 3/5 vs 2/5 split */
-    gap: 24px;
-    flex: 1;
+    grid-template-columns: 1fr 1fr; // Match bottom row structure
+    gap: 24px; // Match bottom row gap
+
+    @include mixins.tablet-only {
+        gap: 20px;
+    }
 
     @include mixins.mobile-only {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .summary-controls-card {
+        grid-column: 1 / -1; // Span both columns
+        width: 100%;
+
+        // Override any global material card margins
+        &.mat-mdc-card {
+            margin: 0 !important;
+        }
     }
 }
 
-/* Summary Panel */
+/* Bottom row: summary + hebrew - IMPROVED LAYOUT */
+.bottom-row {
+    display: grid;
+    // Equal width columns for better balance
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 500px; // Minimum height for better UX
+    align-items: stretch; // Make both panels same height
+
+    @include mixins.tablet-only {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        min-height: 400px;
+    }
+
+    @include mixins.mobile-only {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        min-height: auto;
+    }
+}
+
+/* Summary Panel - IMPROVED */
 .summary-panel {
     display: flex;
     flex-direction: column;
+    height: 100%; // Fill available height
+
+    // Override any global material card margins
+    .mat-mdc-card {
+        margin: 0 !important;
+    }
+
+    // Make the summary display component fill available space
+    app-summary-display {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        // Ensure the internal content adapts properly with better padding
+        ::ng-deep .output-section {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem !important; // More generous padding
+
+            .summary-content {
+                flex: 1;
+                padding: 1.5rem !important; // Add internal padding
+                background: #ffffff;
+                border-radius: 8px;
+                border: 1px solid #e9ecef;
+                // Remove scroll - let content flow naturally
+                overflow: visible;
+            }
+        }
+    }
 
     .no-summary-card {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
+        min-height: 400px;
+
+        // Override any global material card margins
+        &.mat-mdc-card {
+            margin: 0 !important;
+        }
+
+        @include mixins.mobile-only {
+            min-height: 300px;
+        }
+
+        .no-summary-message {
+            text-align: center;
+
+            mat-icon {
+                font-size: 48px;
+                height: 48px;
+                width: 48px;
+                color: var(--text-secondary, #666);
+                margin-bottom: 16px;
+            }
+
+            h3 {
+                color: var(--text-primary, #333);
+                margin: 0 0 8px 0;
+            }
+
+            p {
+                color: var(--text-secondary, #666);
+                margin: 0;
+            }
+        }
     }
 }
 
-/* Hebrew Panel */
+/* Hebrew Panel - IMPROVED */
 .hebrew-panel {
     display: flex;
     flex-direction: column;
+    height: 100%; // Match summary panel height
 
     .hebrew-card {
         flex: 1;
         display: flex;
         flex-direction: column;
+        height: 100%;
+
+        // Override any global material card margins
+        &.mat-mdc-card {
+            margin: 0 !important;
+        }
+
+        mat-card-header {
+            flex-shrink: 0; // Don't shrink header
+        }
+
+        mat-card-content {
+            flex: 1;
+            padding: 24px !important; // More generous padding
+            // Remove scroll - let content flow naturally
+            overflow: visible;
+        }
 
         .hebrew-text {
             font-family: var(--font-family-hebrew, 'Noto Sans Hebrew', serif);
@@ -85,6 +212,16 @@
             white-space: pre-wrap;
             text-align: right;
             direction: rtl;
+            color: var(--text-primary, #333);
+
+            // Handle long text gracefully
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+
+            // Better text rendering for Hebrew
+            font-feature-settings: "kern" 1, "liga" 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     }
 }
@@ -98,167 +235,342 @@
     justify-content: center;
     padding: 64px 32px;
     text-align: center;
+    min-height: 400px;
+
+    mat-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        margin-bottom: 16px;
+    }
+
+    p {
+        color: var(--text-secondary, #666);
+        margin: 16px 0;
+    }
 }
 
+/* Summary Controls - IMPROVED */
 .summary-controls-card {
-    padding: 12px;
+
+    // Override any global material card margins that might interfere
+    &.mat-mdc-card {
+        margin: 0 !important;
+    }
+
+    mat-card-content {
+        padding: 20px !important;
+    }
 
     .section-title {
         font-weight: 600;
         font-size: 14px;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         display: block;
+        color: var(--text-primary, #333);
+    }
+
+    .existing-summaries {
+        margin-bottom: 20px;
+
+        mat-chip-listbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            mat-chip-option {
+                font-size: 13px;
+                padding: 8px 12px;
+                border-radius: 16px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                &[aria-selected="true"] {
+                    background-color: var(--primary-color, #1976d2);
+                    color: white;
+                }
+            }
+        }
     }
 
     .create-summary-section {
-        margin-top: 12px;
-
         .summary-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
+            margin-top: 12px;
             font-size: 13px;
+            background: var(--background-card, white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
             th,
             td {
                 text-align: center;
-                padding: 6px;
+                padding: 12px 8px;
+                border-bottom: 1px solid var(--border-color, #e0e0e0);
+            }
+
+            th {
+                background-color: var(--background-primary, #f5f5f5);
+                font-weight: 600;
+                color: var(--text-primary, #333);
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
             th:first-child,
             td:first-child {
                 text-align: left;
                 font-weight: 600;
-                padding-left: 8px;
+                padding-left: 16px;
             }
 
-            tr:nth-child(even) {
-                background: var(--background-primary, #f9f9f9);
+            tr:last-child {
+                td {
+                    border-bottom: none;
+                }
+            }
+
+            tbody tr:hover {
+                background-color: var(--background-primary, #fafafa);
             }
 
             mat-icon {
                 vertical-align: middle;
                 font-size: 20px;
+
+                &[color="primary"] {
+                    color: #4caf50; // Green for completed
+                }
+            }
+
+            button[mat-icon-button] {
+                transition: all 0.2s ease;
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                }
             }
         }
 
         .generating-indicator {
-            margin-top: 8px;
+            margin-top: 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
             color: var(--text-secondary, #666);
+            padding: 12px;
+            background-color: var(--background-primary, #f5f5f5);
+            border-radius: 8px;
+
+            mat-spinner {
+                width: 18px !important;
+                height: 18px !important;
+            }
         }
     }
 }
 
-.create-summary-section {
-    margin-bottom: 16px;
-
-    .summary-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 8px;
-
-        th,
-        td {
-            text-align: center;
-            padding: 6px;
-        }
-
-        th:first-child,
-        td:first-child {
-            text-align: left;
-            font-weight: 600;
-        }
+/* ENHANCED RESPONSIVE ADJUSTMENTS */
+@include mixins.tablet-only {
+    .halacha-view-container {
+        padding-top: 76px; // Slightly less padding on tablet
     }
 
-    .generating-indicator {
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: var(--text-secondary, #666);
+    .bottom-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        min-height: 400px;
+    }
+
+    .summary-panel,
+    .hebrew-panel {
+        height: 100%;
+    }
+
+    .summary-controls-card {
+        .create-summary-section .summary-table {
+            font-size: 12px;
+
+            th,
+            td {
+                padding: 10px 6px;
+            }
+        }
     }
 }
 
-/* Divider spacing */
-.section-divider {
-    margin: 16px 0;
-}
-
-/* Existing summaries block */
-.existing-summaries {
-    margin-top: 8px;
-
-    .section-title {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
+@include mixins.mobile-only {
+    .halacha-view-container {
+        padding-top: 72px; // 56px mobile navbar + 16px spacing
     }
 
-    mat-chip-listbox {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-    }
-}
-
-/* ✅ Green icon style */
-.success-icon {
-    color: #4caf50; // Material green
-    font-size: 20px;
-    vertical-align: middle;
-}
-
-.create-summary-section {
-    margin-bottom: 20px;
-
-    .section-title {
-        font-weight: 600;
-        margin-bottom: 8px;
-        display: block;
-    }
-
-    .summary-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 8px;
-        font-size: 13px;
-
-        th,
-        td {
-            text-align: center;
-            padding: 6px;
-        }
-
-        th:first-child,
-        td:first-child {
-            text-align: left;
-            font-weight: 600;
-            padding-left: 8px;
-        }
-
-        tr:nth-child(even) {
-            background: var(--background-primary, #fafafa);
+    .header {
+        h1 {
+            font-size: 20px;
         }
     }
 
-    /* ✅ Green check icon */
-    .success-icon {
-        color: #4caf50;
-        font-size: 20px;
-        vertical-align: middle;
+    .content-layout {
+        gap: 16px;
+        padding: 0 16px 16px 16px;
     }
 
-    .generating-indicator {
-        margin-top: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: var(--text-secondary, #666);
+    .bottom-row {
+        // Stack vertically on mobile with better spacing
+        grid-template-columns: 1fr;
+        gap: 16px;
+
+        // On mobile, give more space to summary
+        .summary-panel {
+            order: 1;
+            height: auto;
+            min-height: 400px;
+        }
+
+        .hebrew-panel {
+            order: 2;
+            height: auto;
+            min-height: 300px;
+        }
+    }
+
+    .summary-controls-card {
+        mat-card-content {
+            padding: 16px !important;
+        }
+
+        .create-summary-section .summary-table {
+            font-size: 11px;
+
+            th,
+            td {
+                padding: 8px 4px;
+            }
+
+            th:first-child,
+            td:first-child {
+                padding-left: 8px;
+            }
+        }
+    }
+
+    .hebrew-panel .hebrew-card .hebrew-text {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+}
+
+/* VERY SMALL SCREENS */
+@media (max-width: 380px) {
+    .halacha-view-container {
+        padding-top: 68px;
+    }
+
+    .content-layout {
+        padding: 0 8px 8px 8px;
+    }
+
+    .header {
+        margin: -8px -8px 8px -8px;
+        padding: 12px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .halacha-view-container {
+        background: var(--background-primary-dark, #121212);
+    }
+
+    .header {
+        background: var(--background-card-dark, #1e1e1e);
+        border-bottom-color: var(--border-color-dark, #333);
+
+        h1 {
+            color: var(--text-primary-dark, #e0e0e0);
+        }
+    }
+
+    .summary-controls-card {
+        .section-title {
+            color: var(--text-primary-dark, #e0e0e0);
+        }
+
+        .create-summary-section .summary-table {
+            background: var(--background-card-dark, #1e1e1e);
+
+            th {
+                background-color: var(--background-primary-dark, #121212);
+                color: var(--text-primary-dark, #e0e0e0);
+            }
+
+            td {
+                border-bottom-color: var(--border-color-dark, #333);
+            }
+
+            tbody tr:hover {
+                background-color: var(--background-primary-dark, #0a0a0a);
+            }
+        }
+
+        .generating-indicator {
+            background-color: var(--background-primary-dark, #121212);
+            color: var(--text-secondary-dark, #b0b0b0);
+        }
+    }
+
+    .hebrew-panel .hebrew-card .hebrew-text {
+        color: var(--text-primary-dark, #e0e0e0);
+    }
+
+    .no-summary-card .no-summary-message {
+        mat-icon {
+            color: var(--text-secondary-dark, #b0b0b0);
+        }
+
+        h3 {
+            color: var(--text-primary-dark, #e0e0e0);
+        }
+
+        p {
+            color: var(--text-secondary-dark, #b0b0b0);
+        }
+    }
+}
+
+/* Print styles */
+@media print {
+    .halacha-view-container {
+        padding-top: 0;
+        background: white;
+    }
+
+    .header {
+        box-shadow: none;
+        border-bottom: 2px solid #000;
+    }
+
+    .summary-controls-card {
+        display: none; // Hide controls when printing
+    }
+
+    .bottom-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        page-break-inside: avoid;
     }
 }
