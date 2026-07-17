@@ -45,9 +45,35 @@ export async function saveOriginal(
   return "created";
 }
 
+function translationDocumentId(halachaNumber: number, language: string, level: TranslationLevel): string {
+  const languageSlug = language.toLowerCase().replace(/[^a-z]/g, "");
+  return `${halachaNumber}_${languageSlug}_${level}`;
+}
+
+export async function loadTranslation(
+  halachaNumber: number,
+  language: string,
+  level: TranslationLevel
+): Promise<string | null> {
+  const snapshot = await db
+    .collection(TRANSLATIONS_COLLECTION)
+    .doc(translationDocumentId(halachaNumber, language, level))
+    .get();
+
+  if (!snapshot.exists) {
+    return null;
+  }
+  const summary = snapshot.get("summary");
+  if (typeof summary !== "string" || summary.length === 0) {
+    throw new Error(
+      `Translation document ${snapshot.id} exists but has no valid summary field. Got: ${typeof summary}`
+    );
+  }
+  return summary;
+}
+
 export async function saveTranslation(record: TranslationRecord): Promise<void> {
-  const languageSlug = record.language.toLowerCase().replace(/[^a-z]/g, "");
-  const documentId = `${record.halachaNumber}_${languageSlug}_${record.level}`;
+  const documentId = translationDocumentId(record.halachaNumber, record.language, record.level);
 
   // ponytail: single updatedAt only, add createdAt preservation if version history matters
   await db.collection(TRANSLATIONS_COLLECTION).doc(documentId).set({

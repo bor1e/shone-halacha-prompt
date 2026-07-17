@@ -3,7 +3,7 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
-import { saveOriginal, saveTranslation } from "./halacha-store";
+import { loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
 
@@ -26,7 +26,7 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel } = request.body;
+    const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel, forceRegenerate } = request.body;
 
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
@@ -46,6 +46,24 @@ export const getHalachaSummary = onRequest(
     }
 
     const useAdvancedLevel = isAdvancedLevel === undefined ? true : Boolean(isAdvancedLevel);
+    const level = useAdvancedLevel ? "advanced" : "concise";
+
+    if (!forceRegenerate) {
+      try {
+        const cachedSummary = await loadTranslation(Number(halachaNumber), targetLanguage, level);
+        if (cachedSummary !== null) {
+          logger.info("[Firebase Function] Returning cached translation.", { halachaNumber, targetLanguage, level });
+          response.status(200).json({ summary: cachedSummary, cached: true, persisted: true });
+          return;
+        }
+      } catch (cacheError) {
+        logger.error("[Firebase Function] Cache lookup failed, generating fresh translation.", {
+          halachaNumber,
+          targetLanguage,
+          reason: errorMessage(cacheError),
+        });
+      }
+    }
 
     logger.info("[Firebase Function] Prompt level decision:", {
       isAdvancedLevel: isAdvancedLevel,
@@ -83,7 +101,7 @@ export const getHalachaSummary = onRequest(
         saveTranslation({
           halachaNumber: Number(halachaNumber),
           language: targetLanguage,
-          level: useAdvancedLevel ? "advanced" : "concise",
+          level,
           summary,
         }),
       ]);
@@ -99,7 +117,7 @@ export const getHalachaSummary = onRequest(
           });
         });
 
-      response.status(200).json({ summary, persisted });
+      response.status(200).json({ summary, cached: false, persisted });
 
     } catch (apiError) {
       logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: errorMessage(apiError) });
