@@ -1,4 +1,5 @@
 import { Component, signal, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
@@ -113,7 +114,11 @@ export class PromptFormComponent {
         setTimeout(() => this.copied.set(false), 2000);
     }
 
-    async submit() {
+    regenerate() {
+        this.submit(true);
+    }
+
+    async submit(forceRegenerate = false) {
         console.info('[PromptFormComponent] Submit called with locale_ID:', this.locale);
 
         if (!this.hebrewText()) {
@@ -139,7 +144,7 @@ export class PromptFormComponent {
                 });
 
                 try {
-                    const result = await dialogRef.afterClosed().toPromise();
+                    const result = await firstValueFrom(dialogRef.afterClosed());
                     if (result && result.halachaNumber) {
                         finalHalachaNumber = result.halachaNumber;
                         this.halachaNumber.set(finalHalachaNumber);
@@ -167,7 +172,7 @@ export class PromptFormComponent {
         this.summary.set('');
 
         // Pass both Hebrew text and halacha number to the API
-        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined, this.isAdvancedLevel()).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined, this.isAdvancedLevel(), forceRegenerate).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,

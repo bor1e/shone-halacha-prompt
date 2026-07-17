@@ -73,6 +73,10 @@
             <div class="output-section">
                 <div class="output-header">
                     <h3 i18n="@@output.title">Zusammenfassung</h3>
+                    <button mat-icon-button color="primary" (click)="regenerate()" [disabled]="isLoading()"
+                        matTooltip="Übersetzung neu generieren" i18n-matTooltip="@@output.regenerate-tooltip">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
                     <button mat-icon-button [color]="copied() ? 'accent' : 'primary'" (click)="copyToClipboard()"
                         [matTooltip]="copied() ? 'Kopiert!' : 'In Zwischenablage kopieren'" [disabled]="!summary()">
                         <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>

@@ -61,6 +61,10 @@
         <source>Zusammenfassung</source>
         <target>Zusammenfassung</target>
       </trans-unit>
+      <trans-unit id="output.regenerate-tooltip" datatype="html">
+        <source>Übersetzung neu generieren</source>
+        <target>Übersetzung neu generieren</target>
+      </trans-unit>
       
       <trans-unit id="output.copy.tooltip" datatype="html">
         <source>In Zwischenablage kopieren</source>

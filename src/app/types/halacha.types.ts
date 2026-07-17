@@ -1,17 +1,17 @@
-// Request interface
 export interface HalachaSummaryRequest {
     hebrewText: string;
     targetLanguage?: string;
     halachaNumber?: number;
     isAdvancedLevel?: boolean;
+    forceRegenerate?: boolean;
 }
 
-// Response interface matching your Firebase function
 export interface HalachaSummaryResponse {
     summary: string;
+    cached?: boolean;
+    persisted?: boolean;
 }
 
-// Error response interface
 export interface HalachaErrorResponse {
     error: string;
 }

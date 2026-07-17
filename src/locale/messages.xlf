@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="de" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="app.title" datatype="html">
+        <source>AI Schone Halacha</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.component.ts</context>
+          <context context-type="linenumber">21,23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/design-library/design-library-layout.component.ts</context>
+          <context context-type="linenumber">29,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="analysis.language.label" datatype="html">
+        <source>Sprache auswählen</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/analysis-language-selector/analysis-language-selector.component.ts</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.version" datatype="html">
+        <source>Version</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/footer/footer.component.ts</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.build" datatype="html">
+        <source>Build</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/footer/footer.component.ts</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.commit" datatype="html">
+        <source>Commit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/footer/footer.component.ts</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.environment" datatype="html">
+        <source>Environment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/footer/footer.component.ts</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="footer.source" datatype="html">
+        <source>Source</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/footer/footer.component.ts</context>
+          <context context-type="linenumber">42,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.halacha-number.title" datatype="html">
+        <source> Halacha Nummer eingeben </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">32,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.halacha-number.message" datatype="html">
+        <source> Die Halacha-Nummer konnte nicht automatisch aus dem Text extrahiert werden. Bitte geben Sie die Nummer manuell ein. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">37,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.halacha-number.label" datatype="html">
+        <source>Halacha Nummer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">42,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.halacha-number.error" datatype="html">
+        <source> Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999). </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">56,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.halacha-number.preview" datatype="html">
+        <source>Textvorschau:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.cancel" datatype="html">
+        <source> Abbrechen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">73,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="dialog.confirm" datatype="html">
+        <source> Bestätigen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/halacha-number-dialog/halacha-number-dialog.component.ts</context>
+          <context context-type="linenumber">82,84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="prompt.title" datatype="html">
+        <source>Gesteuerte AI Halacha Zusammenfassung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="prompt.subtitle" datatype="html">
+        <source>Geben Sie unten Ihren hebräischen Text ein. Die Halacha-Nummer wird automatisch aus dem Text extrahiert.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.extracted-halacha-number-label" datatype="html">
+        <source>Extrahierte Halacha-Nummer:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.hebrew-text" datatype="html">
+        <source>Hebräischer Text</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.hebrew-text.placeholder" datatype="html">
+        <source>Fügen Sie hier den hebräischen halachischen Text ein...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="toggle.advanced-summary" datatype="html">
+        <source>Fortgeschritte Zusammenfassung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="toggle.concise-summary" datatype="html">
+        <source>Kurze Zusammenfassung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.submit-button" datatype="html">
+        <source> Zusammenfassung erstellen </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="form.loading" datatype="html">
+        <source>Analyse wird generiert...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">68,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="output.title" datatype="html">
+        <source>Zusammenfassung</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="output.regenerate-tooltip" datatype="html">
+        <source>Übersetzung neu generieren</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
+          <context context-type="linenumber">77</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
