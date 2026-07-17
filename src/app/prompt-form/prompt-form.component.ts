@@ -63,7 +63,6 @@ export class PromptFormComponent {
     constructor() {
         console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
 
-        // Subscribe to summary language changes
         this.analysisLanguageService.currentLanguage$.subscribe({
             next: (lang) => {
                 this.currentAnalysisLanguage.set(lang);
@@ -76,13 +75,11 @@ export class PromptFormComponent {
     }
 
     get textDirection(): 'rtl' | 'ltr' {
-        // Determine text direction based on locale
         return this.locale === 'he' ? 'rtl' : 'ltr';
     }
 
     updateHebrewText(value: string) {
         this.hebrewText.set(value);
-        // Try to extract halacha number when text changes
         this.extractHalachaNumber();
     }
 
@@ -104,12 +101,9 @@ export class PromptFormComponent {
         const summary = this.summary();
         if (!summary) return;
         const formatted = this.whatsappFormatter.formatForWhatsApp(summary);
-        // Copy to clipboard
         await navigator.clipboard.writeText(formatted);
-        // Open WhatsApp share URL
         const url = this.whatsappFormatter.createWhatsAppShareUrl(formatted);
         window.open(url, '_blank');
-        // Visual feedback
         this.copied.set(true);
         setTimeout(() => this.copied.set(false), 2000);
     }
@@ -126,16 +120,13 @@ export class PromptFormComponent {
             return;
         }
 
-        // Check if we have a halacha number
         let finalHalachaNumber = this.halachaNumber();
 
         if (!finalHalachaNumber) {
-            // Try to extract again
             this.extractHalachaNumber();
             finalHalachaNumber = this.halachaNumber();
 
             if (!finalHalachaNumber) {
-                // Show dialog for manual input
                 const dialogRef = this.dialog.open(HalachaNumberDialogComponent, {
                     width: '500px',
                     data: {
@@ -149,7 +140,6 @@ export class PromptFormComponent {
                         finalHalachaNumber = result.halachaNumber;
                         this.halachaNumber.set(finalHalachaNumber);
                     } else {
-                        // User cancelled
                         return;
                     }
                 } catch (error) {
@@ -171,7 +161,6 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        // Pass both Hebrew text and halacha number to the API
         this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined, this.isAdvancedLevel(), forceRegenerate).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {

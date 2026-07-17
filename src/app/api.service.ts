@@ -10,6 +10,18 @@ import {
 import { AnalysisLanguageService } from './services/analysis-language.service';
 import { HalachaNumberExtractor } from './utils/halacha-number-extractor';
 
+function isHalachaErrorResponse(value: unknown): value is HalachaErrorResponse {
+    return typeof value === 'object' && value !== null
+        && 'error' in value && typeof value.error === 'string';
+}
+
+function extractServerErrorMessage(error: HttpErrorResponse): string {
+    if (isHalachaErrorResponse(error.error)) {
+        return error.error.error;
+    }
+    return `Error Code: ${error.status}\nMessage: ${error.message}`;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     private http = inject(HttpClient);
@@ -24,7 +36,6 @@ export class ApiService {
     generateSummary(hebrewText: string, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
 
-        // Replace double quotes with Hebrew gershayim before sending to API
         const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText) || hebrewText;
 
         console.info('[ApiService] generateSummary called:', {
@@ -58,16 +69,9 @@ export class ApiService {
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
-        let errorMessage = 'An unknown error occurred';
-
-        if (error.error instanceof ErrorEvent) {
-            // Client-side error
-            errorMessage = `Error: ${error.error.message}`;
-        } else {
-            // Server-side error
-            const serverError = error.error as HalachaErrorResponse;
-            errorMessage = serverError?.error || `Error Code: ${error.status}\nMessage: ${error.message}`;
-        }
+        const errorMessage = error.error instanceof ErrorEvent
+            ? `Error: ${error.error.message}`
+            : extractServerErrorMessage(error);
 
         console.error('[ApiService] API Error:', errorMessage);
         return throwError(() => new Error(errorMessage));
