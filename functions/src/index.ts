@@ -6,6 +6,7 @@ import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
 import { loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
+const GEMINI_MODEL = "gemini-pro-latest";
 
 function errorMessage(reason: unknown): string {
   return reason instanceof Error ? reason.message : String(reason);
@@ -80,7 +81,7 @@ export const getHalachaSummary = onRequest(
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
       const model = genAI.getGenerativeModel({
-        model: "gemini-3-pro-preview",
+        model: GEMINI_MODEL,
         generationConfig: {
           responseMimeType: "text/plain",
           temperature: 0.1,
@@ -103,6 +104,7 @@ export const getHalachaSummary = onRequest(
           language: targetLanguage,
           level,
           summary,
+          model: GEMINI_MODEL,
         }),
       ]);
 

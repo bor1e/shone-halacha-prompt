@@ -14,6 +14,7 @@ export interface TranslationRecord {
   language: string;
   level: TranslationLevel;
   summary: string;
+  model: string;
 }
 
 export async function saveOriginal(
@@ -81,7 +82,7 @@ export async function saveTranslation(record: TranslationRecord): Promise<void> 
     language: record.language,
     level: record.level,
     summary: record.summary,
-    model: "gemini-3-pro-preview",
+    model: record.model,
     updatedAt: new Date().toISOString(),
   });
 }
