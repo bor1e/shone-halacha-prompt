@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.2.0...frontend-v1.2.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* **functions:** replace retired gemini-3-pro-preview with gemini-pro-latest alias ([c072f04](https://github.com/bor1e/shone-halacha-prompt/commit/c072f04b285ccbb2f947899effb2e57f72626206))
+
 # [1.2.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.1.0...frontend-v1.2.0) (2026-07-17)
 
 
