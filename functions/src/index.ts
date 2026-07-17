@@ -3,8 +3,13 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
+import { saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
+
+function errorMessage(reason: unknown): string {
+  return reason instanceof Error ? reason.message : String(reason);
+}
 
 
 export const getHalachaSummary = onRequest(
@@ -23,7 +28,6 @@ export const getHalachaSummary = onRequest(
 
     const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel } = request.body;
 
-    // Debug the isAdvancedLevel value
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
       halachaNumber,
@@ -41,7 +45,6 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    // Determine which prompt to use with proper fallback
     const useAdvancedLevel = isAdvancedLevel === undefined ? true : Boolean(isAdvancedLevel);
 
     logger.info("[Firebase Function] Prompt level decision:", {
@@ -75,10 +78,31 @@ export const getHalachaSummary = onRequest(
         summaryLength: summary?.length || 0
       });
 
-      response.status(200).json({ summary });
+      const persistenceResults = await Promise.allSettled([
+        saveOriginal(Number(halachaNumber), hebrewText),
+        saveTranslation({
+          halachaNumber: Number(halachaNumber),
+          language: targetLanguage,
+          level: useAdvancedLevel ? "advanced" : "concise",
+          summary,
+        }),
+      ]);
+
+      const persisted = persistenceResults.every((result) => result.status === "fulfilled");
+      persistenceResults
+        .filter((result): result is PromiseRejectedResult => result.status === "rejected")
+        .forEach((result) => {
+          logger.error("[Firebase Function] Firestore persistence failed.", {
+            halachaNumber,
+            targetLanguage,
+            reason: errorMessage(result.reason),
+          });
+        });
+
+      response.status(200).json({ summary, persisted });
 
     } catch (apiError) {
-      logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: (apiError as Error).message });
+      logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: errorMessage(apiError) });
       response.status(500).json({ error: "Die Zusammenfassung konnte nicht generiert werden." });
     }
   }
