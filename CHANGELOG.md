@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.1.0...frontend-v1.2.0) (2026-07-17)
+
+
+### Bug Fixes
+
+* **functions:** set tsc target to es2022 for Node 20 runtime ([52bef4b](https://github.com/bor1e/shone-halacha-prompt/commit/52bef4bf823f0fde8e24b855fb2a587339338240))
+
+
+### Features
+
+* **functions:** persist originals and translations to shone-halachot Firestore ([33941a9](https://github.com/bor1e/shone-halacha-prompt/commit/33941a9478e25317e50d7d5d7fb8a3f50adfb0d2))
+* **functions:** serve cached translation unless forceRegenerate is set ([3250882](https://github.com/bor1e/shone-halacha-prompt/commit/32508829a5df70707151b1e120fd8bba9c09eb76))
+* **ui:** load cached translation by default, add regenerate button ([67fc4eb](https://github.com/bor1e/shone-halacha-prompt/commit/67fc4ebee4a03e901d56d3c8fc21811978f41104))
+
 # [1.1.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.0.0...frontend-v1.1.0) (2025-11-24)
 
 
