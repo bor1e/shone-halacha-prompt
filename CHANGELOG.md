@@ -1,3 +1,13 @@
+# [1.3.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.2.1...frontend-v1.3.0) (2026-07-23)
+
+
+### Features
+
+* **functions:** add listTranslations endpoint for cached translation metadata ([f732db8](https://github.com/bor1e/shone-halacha-prompt/commit/f732db8cf5d2a7c8964ec87b6cc1853ab1501808))
+* **functions:** allow cached-translation lookup without hebrewText ([1922e73](https://github.com/bor1e/shone-halacha-prompt/commit/1922e73250f1962ac005518e50cb6a44e0f324c8))
+* **ui:** add translation list view at /translations ([313105c](https://github.com/bor1e/shone-halacha-prompt/commit/313105c2ff6ab696db6495715e73dbb20186ebb0))
+* **ui:** open stored translation from list with regenerate support ([bf6d6d8](https://github.com/bor1e/shone-halacha-prompt/commit/bf6d6d8eef869615162ada500891ec05d80b61b0))
+
 ## [1.2.1](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.2.0...frontend-v1.2.1) (2026-07-17)
 
 
