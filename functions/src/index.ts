@@ -108,7 +108,7 @@ export const getHalachaSummary = onRequest(
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
       halachaNumber,
-      textLength: summaryRequest.hebrewText?.length ?? 0,
+      textLength: summaryRequest.hebrewText?.length,
       level,
     });
 
@@ -172,7 +172,7 @@ export const getHalachaSummary = onRequest(
       const summary = result.response.text();
 
       logger.info(`[Firebase Function] Successfully received summary for language: ${targetLanguage}.`, {
-        summaryLength: summary?.length || 0
+        summaryLength: summary.length
       });
 
       const persistenceResults = await Promise.allSettled([

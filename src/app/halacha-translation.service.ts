@@ -44,7 +44,7 @@ export class HalachaTranslationService {
             targetLanguage,
             halachaNumber,
             isAdvancedLevel,
-            textLength: hebrewText?.length ?? 0,
+            textLength: hebrewText?.length,
             endpoint: this.endpoint,
             hasOverride: this.analysisLanguageService.hasOverride
         });

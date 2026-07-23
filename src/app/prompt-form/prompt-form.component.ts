@@ -196,7 +196,7 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        this.api.generateSummary(this.hebrewText(), finalHalachaNumber || undefined, this.isAdvancedLevel(), forceRegenerate).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber ?? undefined, this.isAdvancedLevel(), forceRegenerate).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,
