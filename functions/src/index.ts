@@ -3,7 +3,7 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
-import { TranslationLevel, listTranslations as loadTranslationList, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
+import { TranslationLevel, listTranslations as loadTranslationList, loadOriginal, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
 const GEMINI_MODEL = "gemini-pro-latest";
@@ -13,7 +13,7 @@ function errorMessage(reason: unknown): string {
 }
 
 interface SummaryRequest {
-  hebrewText: string;
+  hebrewText: string | undefined;
   targetLanguage: string;
   halachaNumber: number;
   level: TranslationLevel;
@@ -31,12 +31,12 @@ interface SummaryRequestBody {
 function parseSummaryRequest(body: SummaryRequestBody): SummaryRequest {
   const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel = true, forceRegenerate = false } = body;
 
-  if (typeof hebrewText !== "string" || hebrewText.length === 0) {
-    throw new Error("hebrewText und halachaNumber sind erforderliche Felder.");
+  if (hebrewText !== undefined && (typeof hebrewText !== "string" || hebrewText.length === 0)) {
+    throw new Error(`hebrewText muss ein nicht-leerer String sein. Got: ${typeof hebrewText}`);
   }
   const parsedHalachaNumber = Number(halachaNumber);
   if (!Number.isInteger(parsedHalachaNumber) || parsedHalachaNumber <= 0) {
-    throw new Error("hebrewText und halachaNumber sind erforderliche Felder.");
+    throw new Error("halachaNumber ist ein erforderliches Feld.");
   }
   if (typeof targetLanguage !== "string" || targetLanguage.length === 0) {
     throw new Error(`targetLanguage muss ein nicht-leerer String sein. Got: ${typeof targetLanguage}`);
@@ -103,21 +103,42 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const { hebrewText, targetLanguage, halachaNumber, level, forceRegenerate } = summaryRequest;
+    const { targetLanguage, halachaNumber, level, forceRegenerate } = summaryRequest;
 
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
       halachaNumber,
-      textLength: hebrewText.length,
+      textLength: summaryRequest.hebrewText?.length ?? 0,
       level,
     });
+
+    let hebrewText = summaryRequest.hebrewText;
+    if (hebrewText === undefined) {
+      try {
+        const original = await loadOriginal(halachaNumber);
+        if (original === null) {
+          response.status(404).json({
+            error: `Kein Originaltext für Halacha ${halachaNumber} gefunden. hebrewText ist erforderlich.`
+          });
+          return;
+        }
+        hebrewText = original;
+      } catch (originalError) {
+        logger.error("[Firebase Function] Loading original text failed.", {
+          halachaNumber,
+          reason: errorMessage(originalError),
+        });
+        response.status(500).json({ error: "Der Originaltext konnte nicht geladen werden." });
+        return;
+      }
+    }
 
     if (!forceRegenerate) {
       try {
         const cachedSummary = await loadTranslation(halachaNumber, targetLanguage, level);
         if (cachedSummary !== null) {
           logger.info("[Firebase Function] Returning cached translation.", { halachaNumber, targetLanguage, level });
-          response.status(200).json({ summary: cachedSummary, cached: true, persisted: true });
+          response.status(200).json({ summary: cachedSummary, hebrewText, cached: true, persisted: true });
           return;
         }
       } catch (cacheError) {
@@ -176,7 +197,7 @@ export const getHalachaSummary = onRequest(
           });
         });
 
-      response.status(200).json({ summary, cached: false, persisted });
+      response.status(200).json({ summary, hebrewText, cached: false, persisted });
 
     } catch (apiError) {
       logger.error("[Firebase Function] Error communicating with Gemini API.", { errorMessage: errorMessage(apiError) });

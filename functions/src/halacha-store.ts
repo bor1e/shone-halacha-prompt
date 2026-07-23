@@ -46,6 +46,25 @@ export async function saveOriginal(
   return "created";
 }
 
+export async function loadOriginal(halachaNumber: number): Promise<string | null> {
+  const snapshot = await db
+    .collection(HALACHOT_COLLECTION)
+    .where("number", "==", halachaNumber)
+    .limit(1)
+    .get();
+
+  if (snapshot.empty) {
+    return null;
+  }
+  const body = snapshot.docs[0].get("body");
+  if (typeof body !== "string" || body.length === 0) {
+    throw new Error(
+      `Halacha document for number ${halachaNumber} exists but has no valid body field. Got: ${typeof body}`
+    );
+  }
+  return body;
+}
+
 function translationDocumentId(halachaNumber: number, language: string, level: TranslationLevel): string {
   const languageSlug = language.toLowerCase().replace(/[^a-z]/g, "");
   return `${halachaNumber}_${languageSlug}_${level}`;
