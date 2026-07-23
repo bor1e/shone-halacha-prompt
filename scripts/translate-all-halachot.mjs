@@ -46,7 +46,23 @@ async function translateHalacha(halachaNumber) {
   });
 }
 
-const missing = await loadMissingHalachaNumbers();
+function parseLimit() {
+  const limitFlagIndex = process.argv.indexOf('--limit');
+  if (limitFlagIndex === -1) {
+    return Infinity;
+  }
+  const limit = Number(process.argv[limitFlagIndex + 1]);
+  if (!Number.isInteger(limit) || limit <= 0) {
+    throw new Error(`--limit muss eine positive Ganzzahl sein. Got: ${process.argv[limitFlagIndex + 1]}`);
+  }
+  return limit;
+}
+
+const limit = parseLimit();
+const missing = (await loadMissingHalachaNumbers()).slice(0, limit === Infinity ? undefined : limit);
+if (limit !== Infinity) {
+  console.log(`Limitiert auf ${missing.length} Übersetzungen.`);
+}
 const failures = [];
 
 for (const [index, halachaNumber] of missing.entries()) {
