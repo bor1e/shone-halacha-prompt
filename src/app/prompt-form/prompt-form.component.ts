@@ -16,7 +16,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../hebrew-text/halacha-number-extractor';
-import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../components/halacha-number-dialog/halacha-number-dialog.component';
+import { HalachaNumberDialogComponent, HalachaNumberDialogData, HalachaNumberDialogResult } from '../components/halacha-number-dialog/halacha-number-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WhatsAppFormatterService } from '../services/whatsapp-formatter.service';
 import { AnalysisLanguageService } from '../services/analysis-language.service';
@@ -162,11 +162,16 @@ export class PromptFormComponent {
             finalHalachaNumber = this.halachaNumber();
 
             if (!finalHalachaNumber) {
-                const dialogRef = this.dialog.open(HalachaNumberDialogComponent, {
+                const dialogData: HalachaNumberDialogData = {
+                    hebrewText: this.hebrewText(),
+                };
+                const dialogRef = this.dialog.open<
+                    HalachaNumberDialogComponent,
+                    HalachaNumberDialogData,
+                    HalachaNumberDialogResult
+                >(HalachaNumberDialogComponent, {
                     width: '500px',
-                    data: {
-                        hebrewText: this.hebrewText(),
-                    } as HalachaNumberDialogData
+                    data: dialogData
                 });
 
                 try {
@@ -196,7 +201,7 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        this.api.generateSummary(this.hebrewText(), finalHalachaNumber ?? undefined, this.isAdvancedLevel(), forceRegenerate).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber, this.isAdvancedLevel(), forceRegenerate).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,
