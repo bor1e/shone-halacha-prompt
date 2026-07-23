@@ -3,7 +3,7 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
-import { TranslationLevel, listTranslations as loadTranslationList, loadOriginal, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
+import { TranslationLevel, listHalachaNumbers, listTranslations as loadTranslationList, loadOriginal, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
 const GEMINI_MODEL = "gemini-pro-latest";
@@ -76,6 +76,28 @@ export const listTranslations = onRequest(
     } catch (listError) {
       logger.error("[Firebase Function] Listing translations failed.", { errorMessage: errorMessage(listError) });
       response.status(500).json({ error: "Die Übersetzungsliste konnte nicht geladen werden." });
+    }
+  }
+);
+
+export const listHalachot = onRequest(
+  {
+    cors: true,
+    region: "europe-west1",
+  },
+  async (request, response) => {
+    if (request.method !== "GET") {
+      response.setHeader("Allow", "GET");
+      response.status(405).send("Method Not Allowed");
+      return;
+    }
+
+    try {
+      const halachaNumbers = await listHalachaNumbers();
+      response.status(200).json({ halachaNumbers, count: halachaNumbers.length });
+    } catch (listError) {
+      logger.error("[Firebase Function] Listing halachot failed.", { errorMessage: errorMessage(listError) });
+      response.status(500).json({ error: "Die Halacha-Liste konnte nicht geladen werden." });
     }
   }
 );

@@ -46,6 +46,18 @@ export async function saveOriginal(
   return "created";
 }
 
+export async function listHalachaNumbers(): Promise<number[]> {
+  const snapshot = await db.collection(HALACHOT_COLLECTION).select("number").get();
+  const numbers = snapshot.docs.map((doc) => {
+    const number = doc.get("number");
+    if (typeof number !== "number") {
+      throw new Error(`Halacha document ${doc.id} has no valid number field. Got: ${typeof number}`);
+    }
+    return number;
+  });
+  return [...new Set(numbers)].sort((a, b) => a - b);
+}
+
 export async function loadOriginal(halachaNumber: number): Promise<string | null> {
   const snapshot = await db
     .collection(HALACHOT_COLLECTION)
