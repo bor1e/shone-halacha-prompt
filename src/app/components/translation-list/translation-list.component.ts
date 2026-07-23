@@ -1,9 +1,11 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { HalachaTranslationService } from '../../halacha-translation.service';
+import { AnalysisLanguageService } from '../../services/analysis-language.service';
 import { TranslationListEntry } from '../../types/halacha.types';
 
 @Component({
@@ -39,7 +41,13 @@ import { TranslationListEntry } from '../../types/halacha.types';
             </thead>
             <tbody>
               @for (entry of translations(); track entry.halachaNumber + entry.language + entry.level) {
-                <tr>
+                <tr
+                  class="translation-row"
+                  role="link"
+                  tabindex="0"
+                  (click)="openEntry(entry)"
+                  (keyup.enter)="openEntry(entry)"
+                >
                   <td>{{ entry.halachaNumber }}</td>
                   <td>{{ entry.language }}</td>
                   <td>
@@ -83,11 +91,20 @@ import { TranslationListEntry } from '../../types/halacha.types';
       padding: 0.5rem 0.75rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     }
+    .translation-row {
+      cursor: pointer;
+    }
+    .translation-row:hover,
+    .translation-row:focus {
+      background: rgba(0, 0, 0, 0.04);
+    }
   `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TranslationListComponent {
     private api = inject(HalachaTranslationService);
+    private router = inject(Router);
+    private analysisLanguageService = inject(AnalysisLanguageService);
 
     translations = signal<TranslationListEntry[]>([]);
     isLoading = signal(true);
@@ -103,6 +120,17 @@ export class TranslationListComponent {
                 console.error('[TranslationListComponent] Loading translations failed:', loadError);
                 this.error.set('Die Übersetzungsliste konnte nicht geladen werden.');
                 this.isLoading.set(false);
+            }
+        });
+    }
+
+    openEntry(entry: TranslationListEntry): void {
+        const languageCode = this.analysisLanguageService.languageCodeFor(entry.language);
+        this.router.navigate(['/'], {
+            queryParams: {
+                halacha: entry.halachaNumber,
+                level: entry.level,
+                ...(languageCode !== null && { lang: languageCode })
             }
         });
     }

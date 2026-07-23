@@ -1,5 +1,5 @@
 export interface HalachaSummaryRequest {
-    hebrewText: string;
+    hebrewText?: string;
     targetLanguage?: string;
     halachaNumber?: number;
     isAdvancedLevel?: boolean;
@@ -8,6 +8,7 @@ export interface HalachaSummaryRequest {
 
 export interface HalachaSummaryResponse {
     summary: string;
+    hebrewText: string;
     cached?: boolean;
     persisted?: boolean;
 }

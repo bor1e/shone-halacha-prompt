@@ -1,4 +1,5 @@
 import { Component, signal, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HalachaTranslationService } from '../halacha-translation.service';
@@ -50,6 +51,7 @@ export class PromptFormComponent {
     private locale = inject(LOCALE_ID);
     private whatsappFormatter = inject(WhatsAppFormatterService);
     private analysisLanguageService = inject(AnalysisLanguageService);
+    private route = inject(ActivatedRoute);
 
     hebrewText = signal('');
     isLoading = signal(false);
@@ -70,6 +72,39 @@ export class PromptFormComponent {
             },
             error: (error) => {
                 console.error('[PromptFormComponent] Error in language subscription:', error);
+            }
+        });
+
+        this.route.queryParamMap.subscribe((params) => {
+            const requestedHalacha = Number(params.get('halacha'));
+            if (!Number.isInteger(requestedHalacha) || requestedHalacha <= 0) {
+                return;
+            }
+            const languageCode = params.get('lang');
+            if (languageCode) {
+                this.analysisLanguageService.setOverride(languageCode);
+            }
+            this.isAdvancedLevel.set(params.get('level') !== 'concise');
+            this.halachaNumber.set(requestedHalacha);
+            this.loadStoredTranslation(requestedHalacha);
+        });
+    }
+
+    private loadStoredTranslation(requestedHalacha: number): void {
+        this.isLoading.set(true);
+        this.error.set('');
+        this.summary.set('');
+
+        this.api.generateSummary(null, requestedHalacha, this.isAdvancedLevel(), false).subscribe({
+            next: (response: HalachaSummaryResponse) => {
+                this.summary.set(response.summary);
+                this.hebrewText.set(response.hebrewText);
+                this.isLoading.set(false);
+            },
+            error: (loadError: Error) => {
+                console.error('[PromptFormComponent] Loading stored translation failed:', loadError);
+                this.error.set('Fehler beim Laden der gespeicherten Übersetzung. Bitte versuchen Sie es erneut.');
+                this.isLoading.set(false);
             }
         });
     }

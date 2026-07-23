@@ -130,6 +130,11 @@ export class AnalysisLanguageService {
         return this.locale;
     }
 
+    languageCodeFor(targetLanguage: string): string | null {
+        const lang = this.availableLanguages.find(l => l.name === targetLanguage);
+        return lang ? lang.code : null;
+    }
+
     /**
      * Get the display name for a language code
      */

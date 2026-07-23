@@ -35,10 +35,8 @@ export class HalachaTranslationService {
         console.info('[HalachaTranslationService] Initialized with locale_ID:', this.locale);
     }
 
-    generateSummary(hebrewText: string, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
+    generateSummary(hebrewText: string | null, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
-
-        const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText);
 
         console.info('[HalachaTranslationService] generateSummary called:', {
             locale: this.locale,
@@ -46,18 +44,20 @@ export class HalachaTranslationService {
             targetLanguage,
             halachaNumber,
             isAdvancedLevel,
-            textLength: processedHebrewText.length,
+            textLength: hebrewText?.length ?? 0,
             endpoint: this.endpoint,
             hasOverride: this.analysisLanguageService.hasOverride
         });
 
         const request: HalachaSummaryRequest = {
-            hebrewText: processedHebrewText,
             targetLanguage,
             halachaNumber,
             isAdvancedLevel,
             forceRegenerate
         };
+        if (hebrewText !== null) {
+            request.hebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText);
+        }
 
         console.info('[HalachaTranslationService] Sending request to function:', {
             ...request,
