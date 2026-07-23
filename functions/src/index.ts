@@ -3,13 +3,58 @@ import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
 import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
-import { listTranslations as loadTranslationList, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
+import { TranslationLevel, listTranslations as loadTranslationList, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
 const GEMINI_MODEL = "gemini-pro-latest";
 
 function errorMessage(reason: unknown): string {
   return reason instanceof Error ? reason.message : String(reason);
+}
+
+interface SummaryRequest {
+  hebrewText: string;
+  targetLanguage: string;
+  halachaNumber: number;
+  level: TranslationLevel;
+  forceRegenerate: boolean;
+}
+
+interface SummaryRequestBody {
+  hebrewText?: unknown;
+  targetLanguage?: unknown;
+  halachaNumber?: unknown;
+  isAdvancedLevel?: unknown;
+  forceRegenerate?: unknown;
+}
+
+function parseSummaryRequest(body: SummaryRequestBody): SummaryRequest {
+  const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel = true, forceRegenerate = false } = body;
+
+  if (typeof hebrewText !== "string" || hebrewText.length === 0) {
+    throw new Error("hebrewText und halachaNumber sind erforderliche Felder.");
+  }
+  const parsedHalachaNumber = Number(halachaNumber);
+  if (!Number.isInteger(parsedHalachaNumber) || parsedHalachaNumber <= 0) {
+    throw new Error("hebrewText und halachaNumber sind erforderliche Felder.");
+  }
+  if (typeof targetLanguage !== "string" || targetLanguage.length === 0) {
+    throw new Error(`targetLanguage muss ein nicht-leerer String sein. Got: ${typeof targetLanguage}`);
+  }
+  if (typeof isAdvancedLevel !== "boolean") {
+    throw new Error(`isAdvancedLevel muss ein Boolean sein. Got: ${typeof isAdvancedLevel}`);
+  }
+  if (typeof forceRegenerate !== "boolean") {
+    throw new Error(`forceRegenerate muss ein Boolean sein. Got: ${typeof forceRegenerate}`);
+  }
+
+  return {
+    hebrewText,
+    targetLanguage,
+    halachaNumber: parsedHalachaNumber,
+    level: isAdvancedLevel ? "advanced" : "concise",
+    forceRegenerate,
+  };
 }
 
 
@@ -49,31 +94,27 @@ export const getHalachaSummary = onRequest(
       return;
     }
 
-    const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel, forceRegenerate } = request.body;
+    let summaryRequest: SummaryRequest;
+    try {
+      summaryRequest = parseSummaryRequest(request.body);
+    } catch (validationError) {
+      logger.error("Ungültiger Request Body.", { body: request.body, reason: errorMessage(validationError) });
+      response.status(400).json({ error: errorMessage(validationError) });
+      return;
+    }
+
+    const { hebrewText, targetLanguage, halachaNumber, level, forceRegenerate } = summaryRequest;
 
     logger.info("[Firebase Function] Request received:", {
       targetLanguage,
       halachaNumber,
-      textLength: hebrewText?.length || 0,
-      isAdvancedLevel: isAdvancedLevel,
-      isAdvancedLevelType: typeof isAdvancedLevel,
-      requestBody: request.body
+      textLength: hebrewText.length,
+      level,
     });
-
-    if (!hebrewText || !halachaNumber) {
-      logger.error("Fehlende Daten im Request Body.", { body: request.body });
-      response.status(400).json({
-        error: "hebrewText und halachaNumber sind erforderliche Felder."
-      });
-      return;
-    }
-
-    const useAdvancedLevel = isAdvancedLevel === undefined ? true : Boolean(isAdvancedLevel);
-    const level = useAdvancedLevel ? "advanced" : "concise";
 
     if (!forceRegenerate) {
       try {
-        const cachedSummary = await loadTranslation(Number(halachaNumber), targetLanguage, level);
+        const cachedSummary = await loadTranslation(halachaNumber, targetLanguage, level);
         if (cachedSummary !== null) {
           logger.info("[Firebase Function] Returning cached translation.", { halachaNumber, targetLanguage, level });
           response.status(200).json({ summary: cachedSummary, cached: true, persisted: true });
@@ -88,17 +129,11 @@ export const getHalachaSummary = onRequest(
       }
     }
 
-    logger.info("[Firebase Function] Prompt level decision:", {
-      isAdvancedLevel: isAdvancedLevel,
-      useAdvancedLevel: useAdvancedLevel,
-      promptType: useAdvancedLevel ? "ADVANCED" : "CONCISE"
-    });
+    const fullPrompt = level === "advanced"
+      ? createHalachaPrompt(hebrewText, targetLanguage, String(halachaNumber))
+      : createConciseHalachaPrompt(hebrewText, targetLanguage, String(halachaNumber));
 
-    const fullPrompt = useAdvancedLevel
-      ? createHalachaPrompt(hebrewText, targetLanguage, halachaNumber)
-      : createConciseHalachaPrompt(hebrewText, targetLanguage, halachaNumber);
-
-    logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage} with ${useAdvancedLevel ? "ADVANCED" : "CONCISE"} prompt...`);
+    logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage} with ${level.toUpperCase()} prompt...`);
 
     try {
       const genAI = new GoogleGenerativeAI(geminiKey.value());
@@ -120,9 +155,9 @@ export const getHalachaSummary = onRequest(
       });
 
       const persistenceResults = await Promise.allSettled([
-        saveOriginal(Number(halachaNumber), hebrewText),
+        saveOriginal(halachaNumber, hebrewText),
         saveTranslation({
-          halachaNumber: Number(halachaNumber),
+          halachaNumber,
           language: targetLanguage,
           level,
           summary,
