@@ -46,21 +46,27 @@ async function translateHalacha(halachaNumber) {
   });
 }
 
-function parseLimit() {
-  const limitFlagIndex = process.argv.indexOf('--limit');
-  if (limitFlagIndex === -1) {
-    return Infinity;
+function parseFlag(name) {
+  const flagIndex = process.argv.indexOf(`--${name}`);
+  if (flagIndex === -1) {
+    return null;
   }
-  const limit = Number(process.argv[limitFlagIndex + 1]);
-  if (!Number.isInteger(limit) || limit <= 0) {
-    throw new Error(`--limit muss eine positive Ganzzahl sein. Got: ${process.argv[limitFlagIndex + 1]}`);
+  const value = Number(process.argv[flagIndex + 1]);
+  if (!Number.isInteger(value) || value <= 0) {
+    throw new Error(`--${name} muss eine positive Ganzzahl sein. Got: ${process.argv[flagIndex + 1]}`);
   }
-  return limit;
+  return value;
 }
 
-const limit = parseLimit();
-const missing = (await loadMissingHalachaNumbers()).slice(0, limit === Infinity ? undefined : limit);
-if (limit !== Infinity) {
+const from = parseFlag('from');
+const limit = parseFlag('limit');
+let missing = await loadMissingHalachaNumbers();
+if (from !== null) {
+  missing = missing.filter((number) => number >= from);
+  console.log(`Ab Halacha ${from}: ${missing.length} fehlend.`);
+}
+if (limit !== null) {
+  missing = missing.slice(0, limit);
   console.log(`Limitiert auf ${missing.length} Übersetzungen.`);
 }
 const failures = [];
