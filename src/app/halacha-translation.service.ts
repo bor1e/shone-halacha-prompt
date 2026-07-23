@@ -24,7 +24,7 @@ function extractServerErrorMessage(error: HttpErrorResponse): string {
 }
 
 @Injectable({ providedIn: 'root' })
-export class ApiService {
+export class HalachaTranslationService {
     private http = inject(HttpClient);
     private locale = inject(LOCALE_ID);
     private analysisLanguageService = inject(AnalysisLanguageService);
@@ -32,7 +32,7 @@ export class ApiService {
     private endpoint = `${this.functionsBaseUrl}/getHalachaSummary`;
 
     constructor() {
-        console.info('[ApiService] Initialized with locale_ID:', this.locale);
+        console.info('[HalachaTranslationService] Initialized with locale_ID:', this.locale);
     }
 
     generateSummary(hebrewText: string, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
@@ -40,7 +40,7 @@ export class ApiService {
 
         const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText);
 
-        console.info('[ApiService] generateSummary called:', {
+        console.info('[HalachaTranslationService] generateSummary called:', {
             locale: this.locale,
             analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,
@@ -59,7 +59,7 @@ export class ApiService {
             forceRegenerate
         };
 
-        console.info('[ApiService] Sending request to function:', {
+        console.info('[HalachaTranslationService] Sending request to function:', {
             ...request,
             isAdvancedLevel: request.isAdvancedLevel,
             isAdvancedLevelType: typeof request.isAdvancedLevel
@@ -81,7 +81,7 @@ export class ApiService {
             ? `Error: ${error.error.message}`
             : extractServerErrorMessage(error);
 
-        console.error('[ApiService] API Error:', errorMessage);
+        console.error('[HalachaTranslationService] API Error:', errorMessage);
         return throwError(() => new Error(errorMessage));
     }
 }

@@ -57,7 +57,7 @@ describe('HalachaNumberExtractor', () => {
             expect(result).toBeNull();
         });
 
-        it('should extract from first few lines only', () => {
+        it('should extract the number from the first lines and ignore later matches', () => {
             const text = `ב"ה {הלכה מספר 872} first line
       second line
       third line
@@ -65,7 +65,7 @@ describe('HalachaNumberExtractor', () => {
       fifth line
       sixth line with {הלכה מספר 999}`;
             const result = HalachaNumberExtractor.extractHalachaNumber(text);
-            expect(result).toBe(872); // Should get the first one, not 999
+            expect(result).toBe(872);
         });
     });
 

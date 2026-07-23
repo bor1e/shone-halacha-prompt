@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { ApiService } from '../../api.service';
+import { HalachaTranslationService } from '../../halacha-translation.service';
 import { TranslationListEntry } from '../../types/halacha.types';
 
 @Component({
@@ -87,7 +87,7 @@ import { TranslationListEntry } from '../../types/halacha.types';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TranslationListComponent {
-    private api = inject(ApiService);
+    private api = inject(HalachaTranslationService);
 
     translations = signal<TranslationListEntry[]>([]);
     isLoading = signal(true);

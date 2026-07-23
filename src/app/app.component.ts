@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { AnalysisLanguageService } from './services/analysis-language.service';
+import { AnalysisLanguageService, LanguageOption } from './services/analysis-language.service';
 import { environment } from '../environments/environment';
 
 const BASE_URL_LOCALE = 'de';
@@ -108,14 +108,7 @@ export class AppComponent {
   currentLocale = inject(LOCALE_ID);
   private analysisLanguageService = inject(AnalysisLanguageService);
 
-  languages = [
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
-    { code: 'he', name: 'עברית', flag: '🇮🇱' },
-    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-    { code: 'pl', name: 'Polski', flag: '🇵🇱' }
-  ];
+  languages: readonly LanguageOption[] = this.analysisLanguageService.availableLanguageOptions;
 
   constructor() {
     console.info('[AppComponent] Initialized with locale_ID:', this.currentLocale);

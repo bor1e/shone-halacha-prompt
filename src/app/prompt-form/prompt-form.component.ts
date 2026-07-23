@@ -1,7 +1,7 @@
 import { Component, signal, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '../api.service';
+import { HalachaTranslationService } from '../halacha-translation.service';
 import { HalachaSummaryResponse } from '../types/halacha.types';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -45,7 +45,7 @@ import { AnalysisLanguageSelectorComponent } from '../components/analysis-langua
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PromptFormComponent {
-    private api = inject(ApiService);
+    private api = inject(HalachaTranslationService);
     private dialog = inject(MatDialog);
     private locale = inject(LOCALE_ID);
     private whatsappFormatter = inject(WhatsAppFormatterService);
