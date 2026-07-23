@@ -1,5 +1,5 @@
 import { Component, signal, inject, LOCALE_ID, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HalachaTranslationService } from '../halacha-translation.service';
@@ -70,12 +70,12 @@ export class PromptFormComponent {
                 this.currentAnalysisLanguage.set(lang);
                 console.info('[PromptFormComponent] Summary language changed to:', lang);
             },
-            error: (error) => {
+            error: (error: unknown) => {
                 console.error('[PromptFormComponent] Error in language subscription:', error);
             }
         });
 
-        this.route.queryParamMap.subscribe((params) => {
+        this.route.queryParamMap.subscribe((params: ParamMap) => {
             const requestedHalacha = Number(params.get('halacha'));
             if (!Number.isInteger(requestedHalacha) || requestedHalacha <= 0) {
                 return;
