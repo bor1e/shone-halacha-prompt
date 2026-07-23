@@ -181,6 +181,42 @@
           <context context-type="linenumber">77</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="nav.translations" datatype="html">
+        <source>Übersetzungen</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.title" datatype="html">
+        <source>Verfügbare Übersetzungen</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.empty" datatype="html">
+        <source>Noch keine Übersetzungen vorhanden.</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.number" datatype="html">
+        <source>Halacha Nr.</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.language" datatype="html">
+        <source>Sprache</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.level" datatype="html">
+        <source>Stufe</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.updated" datatype="html">
+        <source>Aktualisiert</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.advanced" datatype="html">
+        <source>Ausführlich</source>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.concise" datatype="html">
+        <source>Kompakt</source>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

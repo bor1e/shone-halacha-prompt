@@ -160,6 +160,51 @@
         <source>Bestätigen</source>
         <target>Confirm</target>
       </trans-unit>
+      <trans-unit id="nav.translations" datatype="html">
+        <source>Übersetzungen</source>
+        <target>Translations</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.title" datatype="html">
+        <source>Verfügbare Übersetzungen</source>
+        <target>Available Translations</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.empty" datatype="html">
+        <source>Noch keine Übersetzungen vorhanden.</source>
+        <target>No translations yet.</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.number" datatype="html">
+        <source>Halacha Nr.</source>
+        <target>Halacha No.</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.language" datatype="html">
+        <source>Sprache</source>
+        <target>Language</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level" datatype="html">
+        <source>Stufe</source>
+        <target>Level</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.updated" datatype="html">
+        <source>Aktualisiert</source>
+        <target>Updated</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.advanced" datatype="html">
+        <source>Ausführlich</source>
+        <target>Detailed</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.concise" datatype="html">
+        <source>Kompakt</source>
+        <target>Concise</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff> 

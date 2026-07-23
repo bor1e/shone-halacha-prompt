@@ -15,3 +15,18 @@ export interface HalachaSummaryResponse {
 export interface HalachaErrorResponse {
     error: string;
 }
+
+export type TranslationLevel = 'advanced' | 'concise';
+
+export interface TranslationListEntry {
+    halachaNumber: number;
+    language: string;
+    level: TranslationLevel;
+    model: string;
+    updatedAt: string;
+}
+
+export interface TranslationListResponse {
+    translations: TranslationListEntry[];
+    count: number;
+}

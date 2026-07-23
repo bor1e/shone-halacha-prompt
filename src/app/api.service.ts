@@ -5,7 +5,8 @@ import { catchError } from 'rxjs/operators';
 import {
     HalachaErrorResponse,
     HalachaSummaryRequest,
-    HalachaSummaryResponse
+    HalachaSummaryResponse,
+    TranslationListResponse
 } from './types/halacha.types';
 import { AnalysisLanguageService } from './services/analysis-language.service';
 import { HalachaNumberExtractor } from './utils/halacha-number-extractor';
@@ -27,7 +28,8 @@ export class ApiService {
     private http = inject(HttpClient);
     private locale = inject(LOCALE_ID);
     private analysisLanguageService = inject(AnalysisLanguageService);
-    private endpoint = 'https://europe-west1-fir-prompting.cloudfunctions.net/getHalachaSummary';
+    private functionsBaseUrl = 'https://europe-west1-fir-prompting.cloudfunctions.net';
+    private endpoint = `${this.functionsBaseUrl}/getHalachaSummary`;
 
     constructor() {
         console.info('[ApiService] Initialized with locale_ID:', this.locale);
@@ -64,6 +66,12 @@ export class ApiService {
         });
 
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    listTranslations(): Observable<TranslationListResponse> {
+        return this.http.get<TranslationListResponse>(`${this.functionsBaseUrl}/listTranslations`).pipe(
             catchError(this.handleError)
         );
     }

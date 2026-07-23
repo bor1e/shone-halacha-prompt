@@ -160,6 +160,51 @@
         <source>Source</source>
         <target>Исходный код</target>
       </trans-unit>
+      <trans-unit id="nav.translations" datatype="html">
+        <source>Übersetzungen</source>
+        <target>Переводы</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.title" datatype="html">
+        <source>Verfügbare Übersetzungen</source>
+        <target>Доступные переводы</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.empty" datatype="html">
+        <source>Noch keine Übersetzungen vorhanden.</source>
+        <target>Переводов пока нет.</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.number" datatype="html">
+        <source>Halacha Nr.</source>
+        <target>Галаха №</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.language" datatype="html">
+        <source>Sprache</source>
+        <target>Язык</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level" datatype="html">
+        <source>Stufe</source>
+        <target>Уровень</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.updated" datatype="html">
+        <source>Aktualisiert</source>
+        <target>Обновлено</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.advanced" datatype="html">
+        <source>Ausführlich</source>
+        <target>Подробный</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.concise" datatype="html">
+        <source>Kompakt</source>
+        <target>Краткий</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff> 

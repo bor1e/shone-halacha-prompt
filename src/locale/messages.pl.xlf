@@ -160,6 +160,51 @@
         <source>Bestätigen</source>
         <target>Potwierdź</target>
       </trans-unit>
+      <trans-unit id="nav.translations" datatype="html">
+        <source>Übersetzungen</source>
+        <target>Tłumaczenia</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.title" datatype="html">
+        <source>Verfügbare Übersetzungen</source>
+        <target>Dostępne tłumaczenia</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.empty" datatype="html">
+        <source>Noch keine Übersetzungen vorhanden.</source>
+        <target>Brak tłumaczeń.</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.number" datatype="html">
+        <source>Halacha Nr.</source>
+        <target>Halacha nr</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.language" datatype="html">
+        <source>Sprache</source>
+        <target>Język</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level" datatype="html">
+        <source>Stufe</source>
+        <target>Poziom</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.updated" datatype="html">
+        <source>Aktualisiert</source>
+        <target>Zaktualizowano</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.advanced" datatype="html">
+        <source>Ausführlich</source>
+        <target>Szczegółowy</target>
+      </trans-unit>
+
+      <trans-unit id="translationList.level.concise" datatype="html">
+        <source>Kompakt</source>
+        <target>Zwięzły</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

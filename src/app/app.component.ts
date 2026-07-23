@@ -22,6 +22,15 @@ import { environment } from '../environments/environment';
             
             <span class="spacer"></span>
             
+            <button
+              mat-button
+              routerLink="/translations"
+              [attr.aria-label]="'Übersetzungen'"
+            >
+              <mat-icon>translate</mat-icon>
+              <span class="desktop-only" i18n="@@nav.translations">Übersetzungen</span>
+            </button>
+
             @if (!environment.production) {
               <button 
                 mat-button 
