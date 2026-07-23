@@ -9,7 +9,7 @@ import {
     TranslationListResponse
 } from './types/halacha.types';
 import { AnalysisLanguageService } from './services/analysis-language.service';
-import { HalachaNumberExtractor } from './utils/halacha-number-extractor';
+import { HalachaNumberExtractor } from './hebrew-text/halacha-number-extractor';
 
 function isHalachaErrorResponse(value: unknown): value is HalachaErrorResponse {
     return typeof value === 'object' && value !== null
@@ -38,7 +38,7 @@ export class ApiService {
     generateSummary(hebrewText: string, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
 
-        const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText) || hebrewText;
+        const processedHebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText);
 
         console.info('[ApiService] generateSummary called:', {
             locale: this.locale,

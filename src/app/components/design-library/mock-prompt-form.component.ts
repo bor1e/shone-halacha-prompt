@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../../markdown.pipe';
-import { HalachaNumberExtractor } from '../../utils/halacha-number-extractor';
+import { HalachaNumberExtractor } from '../../hebrew-text/halacha-number-extractor';
 import { HalachaNumberDialogComponent, HalachaNumberDialogData } from '../halacha-number-dialog/halacha-number-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WhatsAppFormatterService } from '../../services/whatsapp-formatter.service';

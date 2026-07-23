@@ -9,6 +9,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AnalysisLanguageService } from './services/analysis-language.service';
 import { environment } from '../environments/environment';
 
+const BASE_URL_LOCALE = 'de';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -123,9 +125,6 @@ export class AppComponent {
     return ['he', 'ar', 'fa', 'ur'].includes(this.currentLocale);
   }
 
-  /**
- * Get the currently active summary language
- */
   get activeAnalysisLanguage(): string {
     return this.analysisLanguageService.currentLanguage;
   }
@@ -141,24 +140,21 @@ export class AppComponent {
       currentUrl: window.location.href
     });
 
-    // Reset summary language to default when switching routes
+    this.resetSummaryLanguageOverride();
+    window.location.href = this.localizedUrl(locale);
+  }
+
+  private resetSummaryLanguageOverride(): void {
     if (this.analysisLanguageService.hasOverride) {
-      console.info('[AppComponent] Resetting summary language due to route change');
       this.analysisLanguageService.resetToDefault();
     }
+  }
 
-    // This logic correctly reloads the page to the new language path.
+  private localizedUrl(locale: string): string {
     const baseUrl = window.location.origin;
-    if (locale === 'de') {
-      // German is the base URL
-      const newUrl = baseUrl;
-      console.info('[AppComponent] Redirecting to German (base URL):', newUrl);
-      window.location.href = newUrl;
-    } else {
-      const shortLocale = locale.split('-')[0];
-      const newUrl = `${baseUrl}/${shortLocale}`;
-      console.info('[AppComponent] Redirecting to localized URL:', newUrl);
-      window.location.href = newUrl;
+    if (locale === BASE_URL_LOCALE) {
+      return baseUrl;
     }
+    return `${baseUrl}/${locale.split('-')[0]}`;
   }
 }

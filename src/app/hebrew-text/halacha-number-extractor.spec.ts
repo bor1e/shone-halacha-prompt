@@ -136,16 +136,6 @@ describe('HalachaNumberExtractor', () => {
             expect(result).toBe('');
         });
 
-        it('should handle null input gracefully', () => {
-            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(null);
-            expect(result).toBe(null);
-        });
-
-        it('should handle undefined input gracefully', () => {
-            const result = HalachaNumberExtractor.replaceQuotesWithGershayim(undefined);
-            expect(result).toBe(undefined);
-        });
-
         it('should not replace existing gershayim', () => {
             const text = 'ב״ה {הלכה מספר 872} with ״existing״ gershayim';
             const result = HalachaNumberExtractor.replaceQuotesWithGershayim(text);
