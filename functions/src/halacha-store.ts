@@ -73,6 +73,39 @@ export async function loadTranslation(
   return summary;
 }
 
+export interface TranslationListEntry {
+  halachaNumber: number;
+  language: string;
+  level: TranslationLevel;
+  model: string;
+  updatedAt: string;
+}
+
+export async function listTranslations(): Promise<TranslationListEntry[]> {
+  const snapshot = await db
+    .collection(TRANSLATIONS_COLLECTION)
+    .orderBy("halachaNumber")
+    .get();
+
+  return snapshot.docs.map((doc) => {
+    const halachaNumber = doc.get("halachaNumber");
+    const language = doc.get("language");
+    const level = doc.get("level");
+    if (typeof halachaNumber !== "number" || typeof language !== "string" || (level !== "advanced" && level !== "concise")) {
+      throw new Error(
+        `Translation document ${doc.id} has invalid metadata. Got: halachaNumber=${typeof halachaNumber}, language=${typeof language}, level=${String(level)}`
+      );
+    }
+    return {
+      halachaNumber,
+      language,
+      level,
+      model: doc.get("model"),
+      updatedAt: doc.get("updatedAt"),
+    };
+  });
+}
+
 export async function saveTranslation(record: TranslationRecord): Promise<void> {
   const documentId = translationDocumentId(record.halachaNumber, record.language, record.level);
 
