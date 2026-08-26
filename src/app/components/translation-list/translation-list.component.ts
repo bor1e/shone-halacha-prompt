@@ -51,10 +51,16 @@ import { TranslationListEntry } from '../../types/halacha.types';
                   <td>{{ entry.halachaNumber }}</td>
                   <td>{{ entry.language }}</td>
                   <td>
-                    @if (entry.level === 'advanced') {
-                      <span i18n="@@translationList.level.advanced">Ausführlich</span>
-                    } @else {
-                      <span i18n="@@translationList.level.concise">Kompakt</span>
+                    @switch (entry.level) {
+                      @case ('advanced') {
+                        <span i18n="@@level.advanced">Ausführlich</span>
+                      }
+                      @case ('concise') {
+                        <span i18n="@@level.concise">Kompakt</span>
+                      }
+                      @case ('full') {
+                        <span i18n="@@level.full">Volltext</span>
+                      }
                     }
                   </td>
                   <td>{{ entry.updatedAt | date: 'medium' }}</td>

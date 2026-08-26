@@ -1,114 +1,144 @@
 /**
- * Erzeugt einen hochspezialisierten, mehrsprachigen Prompt für ein LLM,
- * um eine formatierte Markdown-Zusammenfassung zu erstellen.
- * @param hebrewText Der hebräische Originaltext der Halacha.
- * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
- * @param halachaNumber Die extrahierte Nummer der Halacha.
- * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
+ * Universelles, bereinigtes Glossar für halachische Grundbegriffe und Konventionen.
+ * Frei von fallspezifischem Ballast (YAGNI), exakt in der halachischen Bedeutung.
  */
-export const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
-### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text. Deine einzige Aufgabe ist es, eine umfassende, gut strukturierte Zusammenfassung als reinen Markdown-Text zu erstellen. Die gesamte Analyse muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
-
-### Anweisungen für den Inhalt der Zusammenfassung:
--   **Einleitung und Start:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel. Schreibe **keinen** separaten Einleitungsabsatz.
--   **Tonalität und Perspektive:**
-    -   Verwende durchgehend eine **direkte, inhaltliche Tonalität**. Berichte *über die halachischen Argumente*, nicht *über den Text, der die Argumente enthält*.
-    -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...", „Diese Analyse zeigt...", „Der Autor schreibt...".
--   **Struktur:** Gliedere die Zusammenfassung **logisch, linear und faktenbasiert**.
--   **Fokus auf Hervorgehobenes:** Behandle Textpassagen, die im Originaltext mit Sternchen \`*...*\` hervorgehoben sind, als die Kernaussagen und stelle sicher, dass diese den Schwerpunkt der Zusammenfassung bilden.
--   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 2-5 der wichtigsten). Markiere relevante Aussagen im Text mit einer **hochgestellten Ziffer** (z.B. so¹). Erstelle am Ende einen Abschnitt \`**Quellen**\`, in dem die Zitationen als **nummerierte Liste** formatiert sind (z.B. \`1. *Zitation...*\`).
--   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). **Formatiere diesen Abschnitt als Aufzählungsliste (bullet list)**, wobei jeder Begriff ein eigener Listenpunkt ist. Jeder Eintrag soll eine kurze, aber vollständige pädagogische Erklärung enthalten. **Wichtig:** Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
--   **Verwende hebräsische Translitaraion entsprechend der Zielsprache ${targetLanguage}**
-
-### Stil- und Formatierungsrichtlinien (Markdown):
--   **Titel:** Der Titel muss dem Format folgen: \`**{Titel in Zielsprache} ${halachaNumber}: {Beschreibender Untertitel}**\`. Übersetze "Halachische Betrachtung" in die Zielsprache.
--   **Hervorhebung:**
-    -   Verwende **Fettdruck** (\`**Wort**\`) für Titel, leitende Fragen sowie für mehrere **wichtige Momente, Kernaussagen und die finale praktische Schlussfolgerung**.
-    -   Verwende *Kursivschrift* (\`*Wort*\`) für hebräische Fachbegriffe im Text, die gesamten Zitationen im Quellenverzeichnis sowie die Begriffe in der Konzeptliste.
--   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen müssen ebenfalls in die Zielsprache übersetzt werden (z.B. "Quellen" -> "Sources", "Relevante Halachische Konzepte" -> "Relevant Halachic Concepts").
-
-### Glossar für Einzelbegriffe und Transliteration:
-**Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen.
--   **Transliteration:** Nutze eine passende Transkription für die Zielsprache (z.B. deutsch: sch, z, j). Die Wendung **אגרות משה** ist als **"Igrot Mosche"** zu transliterieren.
--   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren".
--   \`פסולת\` (Pesolet) → *das Unbrauchbare*
--   \`חייב\` (Chajaw) → *schuldig*
--   \`בהיתר\` (b'Heter) → *in zulässiger Weise*
--   \`חומרא\` (Chumra) → **die Strenge / die Schwere**
--   \`לא מיירי אלא\` (lo mairi ella) → *Dies bezieht sich nur auf...*
--   **Gott →** Schreibe den Namen G-ttes immer als „G-tt".
-
-### Glossar für wiederkehrende Phrasen:
--   \`ארבעה צריכין להודות\` → Vier sind zum Danken verpflichtet
--   \`חולה שנתרפא\` → Ein Kranker, der geheilt wurde
--   \`חולה שנפל למטה / מוטל במטה\` → Ein Kranker, der ans Bett gefesselt war
--   \`עלה למטה וירד\` → Ans Bett gefesselt wurde und wieder aufstand
--   \`חולי שיש בו סכנה\` → Eine Krankheit, die mit Lebensgefahr verbunden ist
--   \`מכה של חלל\` → Eine lebensbedrohliche Wunde/Krankheit
--   \`כל החולים בחזקת סכנה\` → Alle Kranken haben den Status potenzieller Gefahr
--   \`מוטל במטה יותר מג' ימים\` → Mehr als drei Tage ans Bett gefesselt sein
-
-### EINGABE (Hebräischer Text):
-${hebrewText}
-
-Gib NUR den Markdown-Text zurück, ohne zusätzliche Erklärungen oder Formatierungen.
+const glossary = (targetLanguage: string): string => `
+### Glossar & Terminologie-Regeln (${targetLanguage}):
+- **G-ttesschreibweise:** Schreibe den Namen G-ttes in der Zielsprache immer ehrerbietig mit Bindestrich (z.B. deutsch: „G-tt", „g-ttlich", „G-ttlichkeit"; englisch: „G-d", „g-dly").
+- **G-ttesbezeichnungen:** \`הקב"ה\` → *der Heilige, gepriesen sei Er* / \`הוי'\` oder \`ה'\` im Fließtext → *HaSchem* / in Bibelversen → *der Ewige*.
+- **Transliteration:** Nutze die für **${targetLanguage}** übliche Transkription (z.B. deutsch: *sch, z, j, w* [Schabbos, Mizwos, Chometz]; englisch: *sh, tz, y, v* [Shabbos, Mitzvos]).
+- **Halachische Kernbegriffe:**
+  - \`חייב\` → *verpflichtet* (bei Geboten/Pflichten) bzw. *schuldig / haftbar* (bei Verboten/Schadensersatz).
+  - \`פטור\` → *befreit / nicht verpflichtet* (bei Geboten) bzw. *straffrei* (bei Verboten).
+  - \`לכתחילה\` → *von vornherein / im Idealfall (Lechatchila)*
+  - \`בדיעבד\` → *nachträglich / im Nachhinein (Bedi'awad)*
+  - \`חומרא\` → *Erschwerung / Verschärfung / strengere Auffassung (Chumra)*
+  - \`קולא\` → *Erleichterung / mildere Auffassung (Kula)*
+  - \`ספק\` → *Zweifelsfall (Safek)*
+  - \`מדאורייתא\` → *aus der Tora / biblisch (de'Oraita)*
+  - \`מדרבנן\` → *rabbinisch (de'Rabbanan)*
+  - \`מנהג\` → *Brauch (Minhag)*
+  - \`נפקא מינה / נפק"מ\` → *praktischer Unterschied (Nafka Mina)*
+  - \`אין לפרוץ גדר\` → *man darf die Schutzschranke nicht durchbrechen*
+  - \`שואל שלא מדעת\` → *Entleihen ohne Wissen des Eigentümers*
+  - \`כילוי קרנא\` → *Substanzverzehr*
+  - \`חסרון כיס\` → *finanzieller Verlust*
+  - \`בישול עכו"ם\` → *Bischul Akum (von Nichtjuden Gekochtes)*
+  - \`ששים / ביטול בששים\` → *Batel be-Schischim (Aufhebung im Sechzigfachen)*
+  - \`אנ"ש\` → *Anasch (unsere Chassidim / Chabad-Gemeinschaft)*
 `;
 
 /**
- * Erzeugt einen hochspezialisierten Prompt für ein LLM, um eine **prägnante** Markdown-Zusammenfassung zu erstellen.
- * Der Fokus liegt auf der leitenden Frage, den Kernaussagen und der finalen Schlussfolgerung.
- * @param hebrewText Der hebräische Originaltext der Halacha.
- * @param targetLanguage Die Zielsprache für die Zusammenfassung (z.B. "Deutsch", "English").
- * @param halachaNumber Die extrahierte Nummer der Halacha.
- * @returns Einen vollständig formatierten String, der als Prompt für die Gemini API dient.
+ * Erzeugt einen Prompt für eine vollständige, originalgetreue Übersetzung.
+ * Höchste Texttreue, exakte Struktur und vollständige Fußnoten-Wiedergabe.
  */
-export const createConciseHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
+export const createFullTranslationPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
 ### Aufgabe:
-Analysiere den folgenden hebräischen halachischen Text. Deine einzige Aufgabe ist es, eine **prägnante und auf den Punkt gebrachte** Zusammenfassung als reinen Markdown-Text zu erstellen, die sich auf die zentralen Meinungsverschiedenheiten und die finale Schlussfolgerung konzentriert. Die gesamte Analyse muss in der folgenden Sprache verfasst sein: **${targetLanguage}**.
+Übersetze den folgenden hebräischen halachischen Text **vollständig, präzise und originalgetreu** in die folgende Sprache: **${targetLanguage}**. 
+Dies ist **keine** Zusammenfassung und **keine** freie Nacherzählung. Der Zieltext muss denselben Inhalt, dieselbe gedankliche Abfolge und dieselbe Struktur aufweisen wie das Original.
 
-### Anweisungen für den Inhalt der Zusammenfassung:
--   **Struktur und Fokus:** Die Zusammenfassung darf **ausschließlich** aus den folgenden drei Teilen bestehen:
-    1.  **Leitfrage:** Beginne die Zusammenfassung **direkt mit der leitenden Frage**, unmittelbar nach dem Titel.
-    2.  **Kernaussagen:** Stelle die **hauptsächlichen, gegensätzlichen Meinungen** oder Argumente kurz und prägnant dar. Konzentriere dich auf den Kern des halachischen Diskurses, insbesondere auf die mit \`*...*\` markierten Passagen.
-    3.  **Schlussfolgerung:** Formuliere klar die **finale praktische Halacha** oder die entscheidende Konklusion.
--   **Tonalität und Perspektive:**
-    -   Verwende durchgehend eine **direkte, inhaltliche Tonalität**. Berichte *über die halachischen Argumente*, nicht *über den Text, der die Argumente enthält*.
-    -   **Vermeide explizit Meta-Formulierungen** wie: „Der Text argumentiert...", „Diese Analyse zeigt...", „Der Autor schreibt...".
--   **Quellen:** Sei bei der Verwendung von Fußnoten sehr zurückhaltend (nur 1-3 der wichtigsten). Markiere relevante Aussagen im Text mit einer **hochgestellten Ziffer** (z.B. so¹). Erstelle am Ende einen Abschnitt \`**Quellen**\`, in dem die Zitationen als **nummerierte Liste** formatiert sind (z.B. \`1. *Zitation...*\`).
--   **Konzepte:** Erstelle ganz am Ende einen Abschnitt, dessen Titel in die Zielsprache übersetzt wird (z.B. "Relevante Halachische Konzepte"). **Formatiere diesen Abschnitt als Aufzählungsliste (bullet list)**. Jeder Eintrag soll eine **sehr kurze Ein-Satz-Erklärung** enthalten. Gib nach dem transliterierten Begriff immer den originalen hebräischen Begriff in Klammern an, z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`.
--   **Verwende hebräsische Translitaraion entsprechend der Zielsprache ${targetLanguage}**
+### 1. Grundregeln der Texttreue:
+- **Vollständigkeit:** Übersetze jeden Satz, jede Frage, jede Antwort und alle Quellenangaben vollständig. Lasse nichts aus (auch keine Einleitungen, Zwischenbemerkungen oder Klammern).
+- **Keine Hinzufügungen:** Ergänze keine eigenen Erklärungen, Glättungen oder Schlussfolgerungen. Was nicht im Original steht, steht nicht in der Übersetzung.
+- **Unentschiedene Punkte:** Offene Fragen und Wendungen wie \`וצ"ע\` / \`וצלע"ע\` (*dies bedarf weiterer Klärung*) bleiben exakt als solche erhalten.
+- **Natürliche Zielsprache:** Verwende flüssige, lesbare Syntax. Vermeide unnatürliche wörtliche Wort-für-Wort-Fehlkonstruktionen (z.B. nicht „Und es schreibt der Rosch", sondern „Und [der Autor] schrieb:" oder „Dazu schrieb [der Autor]:").
 
-### Stil- und Formatierungsrichtlinien (Markdown):
--   **Titel:** Der Titel muss dem Format folgen: \`**{Titel in Zielsprache} ${halachaNumber}: {Beschreibender Untertitel}**\`. Übersetze "Halachische Betrachtung" in die Zielsprache.
--   **Hervorhebung:**
-    -   Verwende **Fettdruck** (\`**Wort**\`) für Titel, leitende Fragen sowie für die Kernaussagen und die finale praktische Schlussfolgerung.
-    -   Verwende *Kursivschrift* (\`*Wort*\`) für hebräische Fachbegriffe im Text, die gesamten Zitationen im Quellenverzeichnis sowie die Begriffe in der Konzeptliste.
--   **Struktur-Überschriften:** Die Überschriften der Abschlusssektionen müssen ebenfalls in die Zielsprache übersetzt werden (z.B. "Quellen" -> "Sources", "Relevante Halachische Konzepte" -> "Relevant Halachic Concepts").
+### 2. Struktur und Formatierung:
+- **Titelzeile:** Die allererste Zeile lautet exakt: \`**Halacha ${halachaNumber}: {übersetzter Originaltitel}**\` (z.B. \`**Halacha ${halachaNumber}: Gesetze des Eintauchens von Gefäßen [31]**\`).
+- **Einleitender Text:** Falls vor der ersten Frage ein Textabschnitt oder eine Überschrift steht, übersetze diesen vollständig an den Anfang.
+- **Fragen und Antworten:**
+  - Jedes \`שאלה:\` wird zu \`**Frage:**\` (bzw. Zielsprachen-Äquivalent, z.B. \`**Question:**\`).
+  - Jedes \`תשובה:\` wird zu \`**Antwort:**\` (bzw. \`**Answer:**\`).
+- **Zwischenüberschriften & Trenner:** Eigene Überschriftenzeilen (z.B. \`*הרבי הרש"ב*\`) werden als eigene Zeile in Fettdruck (\`**...**\`) übernommen. Trennzeichen wie \`★ ★ ★\` bleiben auf einer eigenen Zeile erhalten.
+- **Hervorhebungen:** Textstellen, die im hebräischen Text mit \`*...*\` markiert sind, werden als **Fettdruck** (\`**...**\`) wiedergegeben.
+- **Klammereinschübe:** Einschübe des Autors in eckigen Klammern (\`[=...]\`, \`[...]\`) bleiben als eckige Klammern erhalten und werden mitübersetzt.
 
-### Glossar für Einzelbegriffe und Transliteration:
-**Wichtiger Hinweis:** Die folgenden Glossare sind auf Deutsch. Deine Aufgabe ist es, diese Begriffe und Phrasen korrekt in die Zielsprache (**${targetLanguage}**) zu übersetzen.
--   **Transliteration:** Nutze eine passende Transkription für die Zielsprache (z.B. deutsch: sch, z, j). Die Wendung **אגרות משה** ist als **"Igrot Mosche"** zu transliterieren.
--   \`*Borer* (בורר)\` → Verwende im Fließtext das Wort „Sortieren".
--   \`פסולת\` (Pesolet) → *das Unbrauchbare*
--   \`חייב\` (Chajaw) → *schuldig*
--   \`בהיתר\` (b'Heter) → *in zulässiger Weise*
--   \`חומרא\` (Chumra) → **die Strenge / die Schwere**
--   \`לא מיירי אלא\` (lo mairi ella) → *Dies bezieht sich nur auf...*
--   **Gott →** Schreibe den Namen G-ttes immer als „G-tt".
+### 3. Zitate, Autoritäten und Werke:
+- **Wörtliche Zitate:** Passagen in einfachen Anführungszeichen \`'...'\` sind wörtliche Zitate. Übersetze sie präzise und setze sie in typografische Anführungszeichen der Zielsprache.
+- **Autoritäten & Werke (Abkürzungen auflösen):**
+  - \`אדה"ז / אדמו"ר הזקן\` → *der Alte Rebbe (Admur HaSaken)*
+  - \`המחבר / מרן\` → *der Mechaber (Schulchan Aruch)*
+  - \`רמ"א\` → *der Rema*
+  - \`מג"א / מגן אברהם\` → *der Magen Awraham*
+  - \`ט"ז / טורי זהב\` → *der Taz*
+  - \`ש"ך / שפתי כהן\` → *der Schach*
+  - \`פמ"ג / פרי מגדים\` → *der Pri Megadim* (mit \`משב"ז\` → *Mischbetzot Sahaw*, \`שפ"ד\` → *Siftej Da'at*)
+  - \`משנ"ב / מ"ב / משנה ברורה\` → *die Mischna Berura*
+  - \`הרא"ש\` → *der Rosch*, \`הרי"ף\` → *der Rif*, \`הרמב"ם\` → *der Rambam*, \`הר"ן\` → *der Ran*, \`הרשב"א\` → *der Raschba*, \`הריטב"א\` → *der Ritwa*, \`השל"ה\` → *der Schelah*
+  - \`שו"ע\` → *Schulchan Aruch*, \`או"ח\` → *Orach Chajim*, \`יו"ד\` → *Jore Dea*, \`חו"מ\` → *Choschen Mischpat*, \`אהע"ז\` → *Ewen HaEser*
+  - \`לקו"ש\` → *Likkutej Sichot*, \`תו"מ\` → *Torat Menachem*, \`אג"ק\` → *Igrot Kodesh*
+- **Stellenangaben:** Simanim, Absätze und Blattangaben exakt wiedergeben (z.B. \`סי' פט ס"ג\` → „Siman 89, Se'if 3"; \`דף לה, ב\` → „Blatt 35b").
 
-### Glossar für wiederkehrende Phrasen:
--   \`ארבעה צריכין להודות\` → Vier sind zum Danken verpflichtet
--   \`חולה שנתרפא\` → Ein Kranker, der geheilt wurde
--   \`חולה שנפל למטה / מוטל במטה\` → Ein Kranker, der ans Bett gefesselt war
--   \`עלה למטה וירד\` → Ans Bett gefesselt wurde und wieder aufstand
--   \`חולי שיש בו סכנה\` → Eine Krankheit, die mit Lebensgefahr verbunden ist
--   \`מכה של חלל\` → Eine lebensbedrohliche Wunde/Krankheit
--   \`כל החולים בחזקת סכנה\` → Alle Kranken haben den Status potenzieller Gefahr
--   \`מוטל במטה יותר מג' ימים\` → Mehr als drei Tage ans Bett gefesselt sein
+### 4. Strukturelle Wendungen:
+- \`וכתב / וכ"כ\` → *Und [der Autor] schrieb: / Ebenso schrieb:*
+- \`כלומר\` → *das heißt*
+- \`ועד"ז / ועפ"ז / עפי"ז\` → *in gleicher Weise / demgemäß / auf dieser Grundlage*
+- \`ולהלכה / א"כ למעשה / ולמעשה\` → *Zur praktischen Halacha / In der Praxis gilt somit / Praktische Schlussfolgerung:*
+- \`נחלקו הפוסקים\` → *Die Poskim sind geteilter Meinung*
+- \`וצ"ע / וצלע"ע\` → *und dies bedarf (großer) weiterer Klärung*
+- \`ואכמ"ל\` → *und hier ist nicht der Ort, dies weiter auszuführen*
+- \`ע"ש / עיי"ש\` → *siehe dort*
+- \`ד"ה\` → *unter dem Stichwort*
+- \`ש"מ\` → *daraus geht hervor*
+
+### 5. Quellenapparat / Fußnoten:
+- **Fußnotenzeichen im Text:** Hochgestellte Ziffern (¹, ², ³, ¹⁰ ...) bleiben **exakt an ihrer Position** im Fließtext stehen.
+- **Abschnitt am Ende:** Setze das Quellenverzeichnis unter die Überschrift \`**Quellen**\` (bzw. in der Zielsprache, z.B. \`**Sources**\`), formatiert als nummerierte Liste (z.B. \`1. ...\`).
+- **Vollständigkeit der Fußnoten:** Übersetze alle in den Fußnoten enthaltenen Erläuterungen, Zitate und Diskussionen **vollständig** – nicht nur reine bibliografische Stellenangaben!
+
+${glossary(targetLanguage)}
 
 ### EINGABE (Hebräischer Text):
 ${hebrewText}
 
-Gib NUR den Markdown-Text zurück, ohne zusätzliche Erklärungen oder Formatierungen.
+Gib AUSSCHLIESSLICH den übersetzten Markdown-Text zurück, ohne einleitende Floskeln oder umschließende Code-Fences.
+`;
+
+/**
+ * Erzeugt einen Prompt für eine strukturierte Markdown-Zusammenfassung.
+ */
+export const createHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
+### Aufgabe:
+Analysiere den folgenden hebräischen halachischen Text. Erstelle eine umfassende, gut strukturierte Zusammenfassung als reinen Markdown-Text in der Zielsprache: **${targetLanguage}**.
+
+### Anweisungen:
+- **Einleitung:** Beginne direkt mit der leitenden Fragestellung nach dem Titel. Keinen separaten Einleitungsabsatz.
+- **Tonalität:** Sachlich, linear, faktenbasiert. Keine Meta-Formulierungen (z.B. nicht „Der Autor schreibt...", sondern direkte Darstellung der halachischen Rechtslage).
+- **Fokus:** Mit \`*...*\` hervorgehobene Kernaussagen bilden den Schwerpunkt.
+- **Quellen:** 2–5 Hauptquellen im Text mit hochgestellten Ziffern markieren. Am Ende einen Abschnitt \`**Quellen**\` als nummerierte Liste anfügen.
+- **Konzepte:** Am Ende einen Abschnitt (z.B. \`**Relevante Halachische Konzepte**\`) als Aufzählungsliste anfügen mit kurzen pädagogischen Erklärungen und Hebräisch in Klammern (z.B. \`*Berakhat Hagomel (ברכת הגומל)*\`).
+- **Titel:** \`**Halachische Betrachtung ${halachaNumber}: {Beschreibender Untertitel}**\` (in die Zielsprache übersetzt).
+
+${glossary(targetLanguage)}
+
+### EINGABE (Hebräischer Text):
+${hebrewText}
+
+Gib NUR den Markdown-Text zurück.
+`;
+
+/**
+ * Erzeugt einen Prompt für eine prägnante Zusammenfassung (Leitfrage, Kernaussagen, Konklusion).
+ */
+export const createConciseHalachaPrompt = (hebrewText: string, targetLanguage: string, halachaNumber: string): string => `
+### Aufgabe:
+Analysiere den folgenden hebräischen halachischen Text. Erstelle eine **prägnante, punktgenaue** Zusammenfassung als reinen Markdown-Text in der Zielsprache: **${targetLanguage}**.
+
+### Struktur (ausschließlich diese 3 Teile):
+1. **Leitfrage:** Direkt nach dem Titel.
+2. **Kernaussagen:** Gegensätzliche Meinungen und Kernargumente kurz und prägnant.
+3. **Schlussfolgerung:** Klare praktische Halacha / Endkonklusion.
+
+### Anweisungen:
+- **Tonalität:** Direkt, sachbezogen, keine Meta-Formulierungen.
+- **Quellen:** Nur 1–3 Hauptquellen (hochgestellte Ziffern + Abschnitt \`**Quellen**\` am Ende).
+- **Konzepte:** Am Ende Abschnitt \`**Relevante Halachische Konzepte**\` mit Ein-Satz-Erklärungen.
+- **Titel:** \`**Halachische Betrachtung ${halachaNumber}: {Beschreibender Untertitel}**\` (in die Zielsprache übersetzt).
+
+${glossary(targetLanguage)}
+
+### EINGABE (Hebräischer Text):
+${hebrewText}
+
+Gib NUR den Markdown-Text zurück.
 `;

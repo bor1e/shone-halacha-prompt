@@ -6,6 +6,7 @@ import {
     HalachaErrorResponse,
     HalachaSummaryRequest,
     HalachaSummaryResponse,
+    TranslationLevel,
     TranslationListResponse
 } from './types/halacha.types';
 import { AnalysisLanguageService } from './services/analysis-language.service';
@@ -35,7 +36,7 @@ export class HalachaTranslationService {
         console.info('[HalachaTranslationService] Initialized with locale_ID:', this.locale);
     }
 
-    generateSummary(hebrewText: string | null, halachaNumber?: number, isAdvancedLevel = true, forceRegenerate = false): Observable<HalachaSummaryResponse> {
+    generateSummary(hebrewText: string | null, halachaNumber?: number, level: TranslationLevel = 'advanced', forceRegenerate = false): Observable<HalachaSummaryResponse> {
         const targetLanguage = this.analysisLanguageService.currentTargetLanguage;
 
         console.info('[HalachaTranslationService] generateSummary called:', {
@@ -43,7 +44,7 @@ export class HalachaTranslationService {
             analysisLanguage: this.analysisLanguageService.currentLanguage,
             targetLanguage,
             halachaNumber,
-            isAdvancedLevel,
+            level,
             textLength: hebrewText?.length,
             endpoint: this.endpoint,
             hasOverride: this.analysisLanguageService.hasOverride
@@ -52,18 +53,14 @@ export class HalachaTranslationService {
         const request: HalachaSummaryRequest = {
             targetLanguage,
             halachaNumber,
-            isAdvancedLevel,
+            level,
             forceRegenerate
         };
         if (hebrewText !== null) {
             request.hebrewText = HalachaNumberExtractor.replaceQuotesWithGershayim(hebrewText);
         }
 
-        console.info('[HalachaTranslationService] Sending request to function:', {
-            ...request,
-            isAdvancedLevel: request.isAdvancedLevel,
-            isAdvancedLevelType: typeof request.isAdvancedLevel
-        });
+        console.info('[HalachaTranslationService] Sending request to function:', request);
 
         return this.http.post<HalachaSummaryResponse>(this.endpoint, request).pipe(
             catchError(this.handleError)

@@ -7,7 +7,13 @@ const db = getFirestore(app, "halachot");
 const HALACHOT_COLLECTION = "halachot";
 const TRANSLATIONS_COLLECTION = "translations";
 
-export type TranslationLevel = "advanced" | "concise";
+export type TranslationLevel = "advanced" | "concise" | "full";
+
+const TRANSLATION_LEVELS: readonly TranslationLevel[] = ["advanced", "concise", "full"];
+
+export function isTranslationLevel(value: unknown): value is TranslationLevel {
+  return typeof value === "string" && (TRANSLATION_LEVELS as readonly string[]).includes(value);
+}
 
 export interface TranslationRecord {
   halachaNumber: number;
@@ -122,7 +128,7 @@ export async function listTranslations(): Promise<TranslationListEntry[]> {
     const halachaNumber = doc.get("halachaNumber");
     const language = doc.get("language");
     const level = doc.get("level");
-    if (typeof halachaNumber !== "number" || typeof language !== "string" || (level !== "advanced" && level !== "concise")) {
+    if (typeof halachaNumber !== "number" || typeof language !== "string" || !isTranslationLevel(level)) {
       throw new Error(
         `Translation document ${doc.id} has invalid metadata. Got: halachaNumber=${typeof halachaNumber}, language=${typeof language}, level=${String(level)}`
       );

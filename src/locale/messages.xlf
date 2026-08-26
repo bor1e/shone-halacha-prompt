@@ -139,20 +139,6 @@
           <context context-type="linenumber">23,24</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="toggle.advanced-summary" datatype="html">
-        <source>Fortgeschritte Zusammenfassung</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
-          <context context-type="linenumber">40,41</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="toggle.concise-summary" datatype="html">
-        <source>Kurze Zusammenfassung</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/prompt-form/prompt-form.component.html</context>
-          <context context-type="linenumber">42,43</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="form.submit-button" datatype="html">
         <source> Zusammenfassung erstellen </source>
         <context-group purpose="location">
@@ -209,12 +195,20 @@
         <source>Aktualisiert</source>
       </trans-unit>
 
-      <trans-unit id="translationList.level.advanced" datatype="html">
+      <trans-unit id="level.caption" datatype="html">
+        <source>Stufe</source>
+      </trans-unit>
+
+      <trans-unit id="level.advanced" datatype="html">
         <source>Ausführlich</source>
       </trans-unit>
 
-      <trans-unit id="translationList.level.concise" datatype="html">
+      <trans-unit id="level.concise" datatype="html">
         <source>Kompakt</source>
+      </trans-unit>
+
+      <trans-unit id="level.full" datatype="html">
+        <source>Volltext</source>
       </trans-unit>
 
     </body>

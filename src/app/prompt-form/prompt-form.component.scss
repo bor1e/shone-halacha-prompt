@@ -76,9 +76,19 @@
 
 
 
+.level-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
 .level-toggle {
     font-weight: 500;
     color: #495057;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 

@@ -32,16 +32,23 @@
 
                     <div class="summary-level-section">
                         <div class="toggle-container">
-                            <mat-slide-toggle [checked]="isAdvancedLevel()"
-                                (change)="isAdvancedLevel.set($event.checked)" color="primary"
-                                [matTooltip]="isAdvancedLevel() ? 'Switch to concise summary mode' : 'Switch to advanced detailed mode'"
-                                [attr.aria-label]="'Toggle summary level'" class="level-toggle">
-                                @if (isAdvancedLevel()) {
-                                <span i18n="@@toggle.advanced-summary">Fortgeschritte Zusammenfassung</span>
-                                } @else {
-                                <span i18n="@@toggle.concise-summary">Kurze Zusammenfassung</span>
-                                }
-                            </mat-slide-toggle>
+                            <span class="level-label" i18n="@@level.caption">Stufe</span>
+                            <mat-button-toggle-group class="level-toggle" [value]="level()"
+                                (change)="setLevel($event.value)" hideSingleSelectionIndicator
+                                [attr.aria-label]="'Select translation level'">
+                                <mat-button-toggle value="advanced"
+                                    matTooltip="Umfassende, strukturierte Zusammenfassung">
+                                    <span i18n="@@level.advanced">Ausführlich</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle value="concise"
+                                    matTooltip="Leitfrage, Kernaussagen und Schlussfolgerung">
+                                    <span i18n="@@level.concise">Kompakt</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle value="full"
+                                    matTooltip="Vollständige, originalgetreue Übersetzung ohne Kürzung">
+                                    <span i18n="@@level.full">Volltext</span>
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
                         </div>
                     </div>
                 </div>

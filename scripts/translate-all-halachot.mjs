@@ -41,7 +41,7 @@ async function translateHalacha(halachaNumber) {
     body: JSON.stringify({
       halachaNumber,
       targetLanguage: TARGET_LANGUAGE,
-      isAdvancedLevel: LEVEL === 'advanced',
+      level: LEVEL,
     }),
   });
 }

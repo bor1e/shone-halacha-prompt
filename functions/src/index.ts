@@ -2,8 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as logger from "firebase-functions/logger";
 import { onRequest } from "firebase-functions/v2/https";
 import { defineString } from "firebase-functions/params";
-import { createHalachaPrompt, createConciseHalachaPrompt } from "./prompts";
-import { TranslationLevel, listHalachaNumbers, listTranslations as loadTranslationList, loadOriginal, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
+import { createHalachaPrompt, createConciseHalachaPrompt, createFullTranslationPrompt } from "./prompts";
+import { TranslationLevel, isTranslationLevel, listHalachaNumbers, listTranslations as loadTranslationList, loadOriginal, loadTranslation, saveOriginal, saveTranslation } from "./halacha-store";
 
 const geminiKey = defineString("GEMINI_KEY");
 const GEMINI_MODEL = "gemini-pro-latest";
@@ -24,12 +24,40 @@ interface SummaryRequestBody {
   hebrewText?: unknown;
   targetLanguage?: unknown;
   halachaNumber?: unknown;
+  level?: unknown;
   isAdvancedLevel?: unknown;
   forceRegenerate?: unknown;
 }
 
+const promptForLevel: Record<TranslationLevel, (hebrewText: string, targetLanguage: string, halachaNumber: string) => string> = {
+  advanced: createHalachaPrompt,
+  concise: createConciseHalachaPrompt,
+  full: createFullTranslationPrompt,
+};
+
+/**
+ * Loest die angeforderte Uebersetzungsstufe auf. `level` ist der aktuelle Vertrag;
+ * der boolesche `isAdvancedLevel` ist der Alt-Vertrag und bleibt unterstuetzt,
+ * damit bereits ausgelieferte Clients weiterhin funktionieren.
+ */
+function parseLevel(level: unknown, isAdvancedLevel: unknown): TranslationLevel {
+  if (level !== undefined) {
+    if (!isTranslationLevel(level)) {
+      throw new Error(`level muss "advanced", "concise" oder "full" sein. Got: ${String(level)}`);
+    }
+    return level;
+  }
+  if (isAdvancedLevel === undefined) {
+    return "advanced";
+  }
+  if (typeof isAdvancedLevel !== "boolean") {
+    throw new Error(`isAdvancedLevel muss ein Boolean sein. Got: ${typeof isAdvancedLevel}`);
+  }
+  return isAdvancedLevel ? "advanced" : "concise";
+}
+
 function parseSummaryRequest(body: SummaryRequestBody): SummaryRequest {
-  const { hebrewText, targetLanguage = "Deutsch", halachaNumber, isAdvancedLevel = true, forceRegenerate = false } = body;
+  const { hebrewText, targetLanguage = "Deutsch", halachaNumber, level, isAdvancedLevel, forceRegenerate = false } = body;
 
   if (hebrewText !== undefined && (typeof hebrewText !== "string" || hebrewText.length === 0)) {
     throw new Error(`hebrewText muss ein nicht-leerer String sein. Got: ${typeof hebrewText}`);
@@ -41,9 +69,6 @@ function parseSummaryRequest(body: SummaryRequestBody): SummaryRequest {
   if (typeof targetLanguage !== "string" || targetLanguage.length === 0) {
     throw new Error(`targetLanguage muss ein nicht-leerer String sein. Got: ${typeof targetLanguage}`);
   }
-  if (typeof isAdvancedLevel !== "boolean") {
-    throw new Error(`isAdvancedLevel muss ein Boolean sein. Got: ${typeof isAdvancedLevel}`);
-  }
   if (typeof forceRegenerate !== "boolean") {
     throw new Error(`forceRegenerate muss ein Boolean sein. Got: ${typeof forceRegenerate}`);
   }
@@ -52,7 +77,7 @@ function parseSummaryRequest(body: SummaryRequestBody): SummaryRequest {
     hebrewText,
     targetLanguage,
     halachaNumber: parsedHalachaNumber,
-    level: isAdvancedLevel ? "advanced" : "concise",
+    level: parseLevel(level, isAdvancedLevel),
     forceRegenerate,
   };
 }
@@ -172,9 +197,7 @@ export const getHalachaSummary = onRequest(
       }
     }
 
-    const fullPrompt = level === "advanced"
-      ? createHalachaPrompt(hebrewText, targetLanguage, String(halachaNumber))
-      : createConciseHalachaPrompt(hebrewText, targetLanguage, String(halachaNumber));
+    const fullPrompt = promptForLevel[level](hebrewText, targetLanguage, String(halachaNumber));
 
     logger.info(`[Firebase Function] Starting Gemini API request for language: ${targetLanguage} with ${level.toUpperCase()} prompt...`);
 

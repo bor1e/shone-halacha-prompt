@@ -106,16 +106,6 @@
         <target>Analysis Language</target>
       </trans-unit>
       
-      <trans-unit id="toggle.advanced-summary" datatype="html">
-        <source>Fortgeschritte Zusammenfassung</source>
-        <target>Advanced Summary</target>
-      </trans-unit>
-      
-      <trans-unit id="toggle.concise-summary" datatype="html">
-        <source>Kurze Zusammenfassung</source>
-        <target>Concise Summary</target>
-      </trans-unit>
-      
       <trans-unit id="footer.version" datatype="html">
         <source>Version</source>
         <target>Version</target>
@@ -195,14 +185,24 @@
         <target>Updated</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.advanced" datatype="html">
+      <trans-unit id="level.caption" datatype="html">
+        <source>Stufe</source>
+        <target>Level</target>
+      </trans-unit>
+
+      <trans-unit id="level.advanced" datatype="html">
         <source>Ausführlich</source>
         <target>Detailed</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.concise" datatype="html">
+      <trans-unit id="level.concise" datatype="html">
         <source>Kompakt</source>
         <target>Concise</target>
+      </trans-unit>
+
+      <trans-unit id="level.full" datatype="html">
+        <source>Volltext</source>
+        <target>Full text</target>
       </trans-unit>
 
     </body>

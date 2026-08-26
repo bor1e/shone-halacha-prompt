@@ -106,16 +106,6 @@
         <target>Zusammenfassungs-Sprache</target>
       </trans-unit>
       
-      <trans-unit id="toggle.advanced-summary" datatype="html">
-        <source>Fortgeschritte Zusammenfassung</source>
-        <target>Fortgeschritte Zusammenfassung</target>
-      </trans-unit>
-      
-      <trans-unit id="toggle.concise-summary" datatype="html">
-        <source>Kurze Zusammenfassung</source>
-        <target>Kurze Zusammenfassung</target>
-      </trans-unit>
-      
       <trans-unit id="dialog.halacha-number.error" datatype="html">
         <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
         <target>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</target>
@@ -195,14 +185,24 @@
         <target>Aktualisiert</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.advanced" datatype="html">
+      <trans-unit id="level.caption" datatype="html">
+        <source>Stufe</source>
+        <target>Stufe</target>
+      </trans-unit>
+
+      <trans-unit id="level.advanced" datatype="html">
         <source>Ausführlich</source>
         <target>Ausführlich</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.concise" datatype="html">
+      <trans-unit id="level.concise" datatype="html">
         <source>Kompakt</source>
         <target>Kompakt</target>
+      </trans-unit>
+
+      <trans-unit id="level.full" datatype="html">
+        <source>Volltext</source>
+        <target>Volltext</target>
       </trans-unit>
 
     </body>

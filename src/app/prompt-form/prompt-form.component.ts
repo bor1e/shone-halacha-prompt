@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HalachaTranslationService } from '../halacha-translation.service';
-import { HalachaSummaryResponse } from '../types/halacha.types';
+import { HalachaSummaryResponse, TranslationLevel } from '../types/halacha.types';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CommonModule } from '@angular/common';
 import { MarkdownPipe } from '../markdown.pipe';
 import { HalachaNumberExtractor } from '../hebrew-text/halacha-number-extractor';
@@ -21,6 +21,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { WhatsAppFormatterService } from '../services/whatsapp-formatter.service';
 import { AnalysisLanguageService } from '../services/analysis-language.service';
 import { AnalysisLanguageSelectorComponent } from '../components/analysis-language-selector/analysis-language-selector.component';
+
+const TRANSLATION_LEVELS: readonly TranslationLevel[] = ['advanced', 'concise', 'full'];
+
+function parseTranslationLevel(value: string | null): TranslationLevel {
+    return TRANSLATION_LEVELS.find((level) => level === value) ?? 'advanced';
+}
 
 @Component({
     selector: 'app-prompt-form',
@@ -36,7 +42,7 @@ import { AnalysisLanguageSelectorComponent } from '../components/analysis-langua
         MatToolbarModule,
         MatIconModule,
         MatTooltipModule,
-        MatSlideToggleModule,
+        MatButtonToggleModule,
         MatDialogModule,
         MarkdownPipe,
         AnalysisLanguageSelectorComponent
@@ -60,7 +66,7 @@ export class PromptFormComponent {
     copied = signal(false);
     halachaNumber = signal<number | null>(null);
     currentAnalysisLanguage = signal(this.analysisLanguageService.currentLanguage);
-    isAdvancedLevel = signal(true);
+    level = signal<TranslationLevel>('advanced');
 
     constructor() {
         console.info('[PromptFormComponent] Initialized with locale_ID:', this.locale);
@@ -84,7 +90,7 @@ export class PromptFormComponent {
             if (languageCode) {
                 this.analysisLanguageService.setOverride(languageCode);
             }
-            this.isAdvancedLevel.set(params.get('level') !== 'concise');
+            this.level.set(parseTranslationLevel(params.get('level')));
             this.halachaNumber.set(requestedHalacha);
             this.loadStoredTranslation(requestedHalacha);
         });
@@ -95,7 +101,7 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        this.api.generateSummary(null, requestedHalacha, this.isAdvancedLevel(), false).subscribe({
+        this.api.generateSummary(null, requestedHalacha, this.level(), false).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 this.summary.set(response.summary);
                 this.hebrewText.set(response.hebrewText);
@@ -107,6 +113,10 @@ export class PromptFormComponent {
                 this.isLoading.set(false);
             }
         });
+    }
+
+    setLevel(value: string): void {
+        this.level.set(parseTranslationLevel(value));
     }
 
     get textDirection(): 'rtl' | 'ltr' {
@@ -193,7 +203,7 @@ export class PromptFormComponent {
             locale: this.locale,
             analysisLanguage: this.currentAnalysisLanguage(),
             halachaNumber: finalHalachaNumber,
-            isAdvancedLevel: this.isAdvancedLevel(),
+            level: this.level(),
             textLength: this.hebrewText().length
         });
 
@@ -201,7 +211,7 @@ export class PromptFormComponent {
         this.error.set('');
         this.summary.set('');
 
-        this.api.generateSummary(this.hebrewText(), finalHalachaNumber, this.isAdvancedLevel(), forceRegenerate).subscribe({
+        this.api.generateSummary(this.hebrewText(), finalHalachaNumber, this.level(), forceRegenerate).subscribe({
             next: (response: HalachaSummaryResponse) => {
                 console.info('[PromptFormComponent] API response received:', {
                     locale: this.locale,

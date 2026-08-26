@@ -106,16 +106,6 @@
         <target>Język analizy</target>
       </trans-unit>
       
-      <trans-unit id="toggle.advanced-summary" datatype="html">
-        <source>Fortgeschritte Zusammenfassung</source>
-        <target>Zaawansowane podsumowanie</target>
-      </trans-unit>
-      
-      <trans-unit id="toggle.concise-summary" datatype="html">
-        <source>Kurze Zusammenfassung</source>
-        <target>Krótkie podsumowanie</target>
-      </trans-unit>
-      
       <trans-unit id="footer.version" datatype="html">
         <source>Version</source>
         <target>Wersja</target>
@@ -195,14 +185,24 @@
         <target>Zaktualizowano</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.advanced" datatype="html">
+      <trans-unit id="level.caption" datatype="html">
+        <source>Stufe</source>
+        <target>Poziom</target>
+      </trans-unit>
+
+      <trans-unit id="level.advanced" datatype="html">
         <source>Ausführlich</source>
         <target>Szczegółowy</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.concise" datatype="html">
+      <trans-unit id="level.concise" datatype="html">
         <source>Kompakt</source>
         <target>Zwięzły</target>
+      </trans-unit>
+
+      <trans-unit id="level.full" datatype="html">
+        <source>Volltext</source>
+        <target>Pełny tekst</target>
       </trans-unit>
 
     </body>

@@ -106,16 +106,6 @@
         <target>Язык резюме</target>
       </trans-unit>
       
-      <trans-unit id="toggle.advanced-summary" datatype="html">
-        <source>Fortgeschritte Zusammenfassung</source>
-        <target>Подробное резюме</target>
-      </trans-unit>
-      
-      <trans-unit id="toggle.concise-summary" datatype="html">
-        <source>Kurze Zusammenfassung</source>
-        <target>Краткое резюме</target>
-      </trans-unit>
-      
       <trans-unit id="dialog.halacha-number.error" datatype="html">
         <source>Bitte geben Sie eine gültige Halacha-Nummer ein (100-9999).</source>
         <target>Пожалуйста, введите действительный номер Галахи (100-9999).</target>
@@ -195,14 +185,24 @@
         <target>Обновлено</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.advanced" datatype="html">
-        <source>Ausführlich</source>
-        <target>Подробный</target>
+      <trans-unit id="level.caption" datatype="html">
+        <source>Stufe</source>
+        <target>Уровень</target>
       </trans-unit>
 
-      <trans-unit id="translationList.level.concise" datatype="html">
+      <trans-unit id="level.advanced" datatype="html">
+        <source>Ausführlich</source>
+        <target>Подробно</target>
+      </trans-unit>
+
+      <trans-unit id="level.concise" datatype="html">
         <source>Kompakt</source>
-        <target>Краткий</target>
+        <target>Кратко</target>
+      </trans-unit>
+
+      <trans-unit id="level.full" datatype="html">
+        <source>Volltext</source>
+        <target>Полный текст</target>
       </trans-unit>
 
     </body>

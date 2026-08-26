@@ -1,8 +1,10 @@
+export type TranslationLevel = 'advanced' | 'concise' | 'full';
+
 export interface HalachaSummaryRequest {
     hebrewText?: string;
     targetLanguage?: string;
     halachaNumber?: number;
-    isAdvancedLevel?: boolean;
+    level?: TranslationLevel;
     forceRegenerate?: boolean;
 }
 
@@ -16,8 +18,6 @@ export interface HalachaSummaryResponse {
 export interface HalachaErrorResponse {
     error: string;
 }
-
-export type TranslationLevel = 'advanced' | 'concise';
 
 export interface TranslationListEntry {
     halachaNumber: number;
