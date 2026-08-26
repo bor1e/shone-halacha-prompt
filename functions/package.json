@@ -25,15 +25,16 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.1.0",
-    "@semantic-release/npm": "^10.0.4",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/npm": "^11.0.3",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.29.0",
     "firebase-functions-test": "^3.1.0",
-    "semantic-release": "^21.0.0",
+    "semantic-release": "^22.0.12",
+    "semantic-release-monorepo": "^8.0.2",
     "typescript": "~5.8.3"
   },
   "private": true
