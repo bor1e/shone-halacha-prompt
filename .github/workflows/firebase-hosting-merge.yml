@@ -85,6 +85,60 @@ jobs:
           NODE_ENV: production
         run: npx semantic-release
 
+  release-functions:
+    name: Release Functions
+    needs: [detect-changes, release]
+    if: needs.detect-changes.outputs.functions-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install function dependencies
+        run: npm ci
+        working-directory: functions
+
+      - name: Release
+        run: npx semantic-release
+        working-directory: functions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_ENV: production
+
+  deploy-functions:
+    name: Deploy Functions to Firebase
+    needs: [detect-changes, release-functions]
+    if: needs.detect-changes.outputs.functions-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # The firebase.json predeploy hook runs lint and build inside functions/,
+      # so its dependencies have to be present before the deploy starts.
+      - name: Install function dependencies
+        run: npm ci
+        working-directory: functions
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHONE_HALACHOT }}
+
+      - name: Deploy functions
+        run: npx firebase-tools deploy --only functions --project fir-prompting --non-interactive
+
   deploy:
     name: Deploy to Firebase
     needs: [detect-changes, release]

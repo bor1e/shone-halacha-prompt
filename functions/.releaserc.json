@@ -1,57 +1,61 @@
 {
-    "tagFormat": "functions-v${version}",
-    "branches": [
-        "main"
-    ],
-    "plugins": [
-        "@semantic-release/commit-analyzer",
-        "@semantic-release/release-notes-generator",
-        "@semantic-release/changelog",
-        "@semantic-release/npm",
-        "@semantic-release/github"
-    ],
-    "preset": "angular",
-    "releaseRules": [
-        {
+  "tagFormat": "functions-v${version}",
+  "branches": [
+    "main"
+  ],
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "angular",
+        "releaseRules": [
+          {
             "type": "feat",
             "scope": "functions",
             "release": "minor"
-        },
-        {
+          },
+          {
             "type": "fix",
             "scope": "functions",
             "release": "patch"
-        },
-        {
+          },
+          {
             "type": "docs",
             "scope": "functions",
             "release": "patch"
-        },
-        {
+          },
+          {
             "type": "style",
             "scope": "functions",
             "release": "patch"
-        },
-        {
+          },
+          {
             "type": "refactor",
             "scope": "functions",
             "release": "patch"
-        },
-        {
+          },
+          {
             "type": "perf",
             "scope": "functions",
             "release": "patch"
-        },
-        {
+          },
+          {
             "type": "test",
             "scope": "functions",
             "release": "patch"
-        }
-    ],
-    "parserOpts": {
-        "noteKeywords": [
+          }
+        ],
+        "parserOpts": {
+          "noteKeywords": [
             "BREAKING CHANGE",
             "BREAKING CHANGES"
-        ]
-    }
+          ]
+        }
+      }
+    ],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/npm",
+    "@semantic-release/github"
+  ]
 }
