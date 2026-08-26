@@ -220,7 +220,7 @@ export const getHalachaSummary = onRequest(
         summaryLength: summary.length
       });
 
-      const persistenceResults = await Promise.allSettled([
+      const [originalResult, ...translationResults] = await Promise.allSettled([
         saveOriginal(halachaNumber, hebrewText),
         saveTranslation({
           halachaNumber,
@@ -230,6 +230,14 @@ export const getHalachaSummary = onRequest(
           model: GEMINI_MODEL,
         }),
       ]);
+      const persistenceResults = [originalResult, ...translationResults];
+
+      if (originalResult.status === "fulfilled" && originalResult.value === "unparseable") {
+        logger.warn("[Firebase Function] Original text was not stored: it does not parse into a halacha record.", {
+          halachaNumber,
+          textLength: hebrewText.length,
+        });
+      }
 
       const persisted = persistenceResults.every((result) => result.status === "fulfilled");
       persistenceResults

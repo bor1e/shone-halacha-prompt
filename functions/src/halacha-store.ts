@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { createHalacha } from "./halacha-text-parser";
 
 const app = initializeApp({ projectId: "shone-halachot" });
 const db = getFirestore(app, "halachot");
@@ -23,10 +24,21 @@ export interface TranslationRecord {
   model: string;
 }
 
+export type SaveOriginalResult = "created" | "exists" | "unparseable";
+
+/**
+ * Stores the raw text as a halacha document, parsed into the same shape that
+ * shone-halachot's own authoring UI produces.
+ *
+ * Returns "unparseable" rather than writing when the text cannot be split into a
+ * usable record: shone-halachot renders `title` and `questions` on its cards, so
+ * an unparsed document shows up there as a blank card. Translation does not depend
+ * on this write succeeding, so refusing is better than publishing a broken entry.
+ */
 export async function saveOriginal(
   halachaNumber: number,
   hebrewText: string
-): Promise<"created" | "exists"> {
+): Promise<SaveOriginalResult> {
   const existing = await db
     .collection(HALACHOT_COLLECTION)
     .where("number", "==", halachaNumber)
@@ -37,14 +49,21 @@ export async function saveOriginal(
     return "exists";
   }
 
+  const parsed = createHalacha(hebrewText, halachaNumber);
+  // A header naming a different halacha means the text would be filed under the
+  // wrong number; an empty title means the card would render blank.
+  if (parsed.number !== halachaNumber || parsed.title.trim() === "") {
+    return "unparseable";
+  }
+
   const now = new Date().toISOString();
   await db.collection(HALACHOT_COLLECTION).add({
     number: halachaNumber,
-    title: "",
+    title: parsed.title,
     dedication: "",
-    questions: "",
-    body: hebrewText,
-    sources: "",
+    questions: parsed.questions,
+    body: parsed.body,
+    sources: parsed.sources,
     viewCount: 0,
     createdAt: now,
     updatedAt: now,
