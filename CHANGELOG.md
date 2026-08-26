@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.4.0...frontend-v1.4.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* **functions:** scope the functions release to commits touching functions/ ([2f876c8](https://github.com/bor1e/shone-halacha-prompt/commit/2f876c8f523df5e93dc6317715c61330e0b77f1d))
+
 # [1.4.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.3.0...frontend-v1.4.0) (2026-08-26)
 
 
