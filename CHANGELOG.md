@@ -1,3 +1,13 @@
+# [1.4.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.3.0...frontend-v1.4.0) (2026-08-26)
+
+
+### Features
+
+* **functions:** listHalachot endpoint and batch translation script ([bfedb05](https://github.com/bor1e/shone-halacha-prompt/commit/bfedb05695a6583b5334513b2d89c8858decf6dc))
+* **scripts:** add --from flag to batch translation script ([01a49ad](https://github.com/bor1e/shone-halacha-prompt/commit/01a49ade0a5c8f7b42a51366a69ae0f56e1ef175))
+* **scripts:** add --limit flag to batch translation script ([28b92b8](https://github.com/bor1e/shone-halacha-prompt/commit/28b92b830e946ad80830f7d283441f79a0d2cb21))
+* **translation:** add full-translation level alongside the two summaries ([6e9bafd](https://github.com/bor1e/shone-halacha-prompt/commit/6e9bafd8312eca0609a553323e490fd2d7de5a06))
+
 # [1.3.0](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.2.1...frontend-v1.3.0) (2026-07-23)
 
 
