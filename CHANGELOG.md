@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.4.1...frontend-v1.4.2) (2026-08-26)
+
+
+### Bug Fixes
+
+* **functions:** parse original text before writing it to shone-halachot ([0df4ff6](https://github.com/bor1e/shone-halacha-prompt/commit/0df4ff6248e96306540f855c5e32ef230f872979))
+
 ## [1.4.1](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.4.0...frontend-v1.4.1) (2026-08-26)
 
 
