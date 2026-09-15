@@ -136,7 +136,12 @@ jobs:
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SHONE_HALACHOT }}
 
+      # GEMINI_KEY is a defineString param read from functions/.env.fir-prompting,
+      # which is gitignored, so CI has to supply it or the non-interactive deploy
+      # aborts asking for a value.
       - name: Deploy functions
+        env:
+          GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
         run: npx firebase-tools deploy --only functions --project fir-prompting --non-interactive
 
   deploy:
