@@ -34,6 +34,24 @@ function isGroupLink(line: string): boolean {
   return trimmed.includes("קישור לקבוצה") || /^https?:\/\/\S+$/.test(trimmed);
 }
 
+function isTitleCandidate(line: string): boolean {
+  return !isGroupLink(line) && !line.trim().startsWith("שאלה:");
+}
+
+/**
+ * A text with no "שאלה:" is a continuation piece whose blockquote is a closing
+ * summary, not a heading, so only the line straight after the header can be its title.
+ */
+function selectTitleLine(contentLines: readonly string[], firstQuestionIndex: number): string {
+  if (firstQuestionIndex < 0) {
+    return contentLines.find(isTitleCandidate) ?? "";
+  }
+  const linesAboveQuestion = contentLines.slice(0, firstQuestionIndex);
+  return linesAboveQuestion.find((line) => line.trim().startsWith(">")) ??
+    linesAboveQuestion.find(isTitleCandidate) ??
+    "";
+}
+
 /**
  * `existingNumber` is used when the raw text carries no {הלכה מספר N} header.
  */
@@ -44,25 +62,8 @@ export function createHalacha(rawText: string, existingNumber = 0): ParsedHalach
   const headerLine = headerIndex >= 0 ? nonEmptyLines.splice(headerIndex, 1)[0] || "" : "";
   const halachaNumber = extractNumberFromText(headerLine) ?? existingNumber;
   const questionLines = nonEmptyLines.filter((line) => line.includes("שאלה:")).join("\n");
-  // Title is normally the first blockquote line (> ) before the first "שאלה:"
   const firstQuestionIndex = nonEmptyLines.findIndex((line) => line.includes("שאלה:"));
-  let titleLine =
-    (firstQuestionIndex >= 0 ?
-      nonEmptyLines.slice(0, firstQuestionIndex).find((line) => line.trim().startsWith(">")) :
-      nonEmptyLines.find((line) => line.trim().startsWith(">"))) || "";
-  // Fallback: if no blockquote title was found, use the first non-empty, non-header, non-question line before the question (skip group link line)
-  if (!titleLine) {
-    const searchEnd = firstQuestionIndex >= 0 ? firstQuestionIndex : nonEmptyLines.length;
-    titleLine =
-      nonEmptyLines
-        .slice(0, searchEnd)
-        .find((line) =>
-          line.trim().length > 0 &&
-          line !== headerLine &&
-          !line.trim().startsWith("שאלה:") &&
-          !isGroupLink(line)
-        ) || "";
-  }
+  const titleLine = selectTitleLine(nonEmptyLines, firstQuestionIndex);
   const bodyLines = nonEmptyLines.filter((line) =>
     !line.includes("מקורות:") &&
     line !== titleLine &&
