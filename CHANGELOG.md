@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.4.2...frontend-v1.4.3) (2026-09-15)
+
+
+### Bug Fixes
+
+* **functions:** take the first content line as title when there is no question ([d0ac387](https://github.com/bor1e/shone-halacha-prompt/commit/d0ac387465a4a2c1cf3a07bb406c4447af6014be)), closes [bor1e/shone-halacha#39](https://github.com/bor1e/shone-halacha/issues/39)
+
 ## [1.4.2](https://github.com/bor1e/shone-halacha-prompt/compare/frontend-v1.4.1...frontend-v1.4.2) (2026-08-26)
 
 
